@@ -21,64 +21,64 @@ console.log("Hello World");
 
 
 
-app.post("/users", async (req, res) => {
-    const {name, email} = req.body;
-    const user = new User({
-        name,
-        email
-    })
-    const newUser = await user.save();
-    res.status(201).json(newUser);
-})
+// app.post("/users", async (req, res) => {
+//     const {name, email} = req.body;
+//     const user = new User({
+//         name,
+//         email
+//     })
+//     const newUser = await user.save();
+//     res.status(201).json(newUser);
+// })
 
-app.get("/users/:id", async (req, res) => {
-    const { id } = parseInt(req.params.id);
-    const user = await User.findOne(id);
-    if(!user) {
-        return res.status(404).json({
-            message: "User not found at all"
-        })
-    }
-    res.status(200).json(user);
-})
+// app.get("/users/:id", async (req, res) => {
+//     const { id } = parseInt(req.params.id);
+//     const user = await User.findOne(id);
+//     if(!user) {
+//         return res.status(404).json({
+//             message: "User not found at all"
+//         })
+//     }
+//     res.status(200).json(user);
+// })
 
-app.get("/users", async (req, res) => {
-    const users = await User.find();
-    if(!users) {
-        return res.status(404).json({
-            message: "No users found"
-        })
-    }
-    res.status(200).json(users);
-})
+// app.get("/users", async (req, res) => {
+//     const users = await User.find();
+//     if(!users) {
+//         return res.status(404).json({
+//             message: "No users found"
+//         })
+//     }
+//     res.status(200).json(users);
+// })
 
-app.put("/users/:id", async (req, res) => {
-    const {id} = parseInt(req.params.id);
-    const {name, email} = req.body;
-    const user = await User.findOneAndUpdate(id, {
-        name,
-        email
-    }, {new: true})
-    if(!user) {
-        return res.status(404).json({
-            message: "User not found"
-        })
-    }
-    res.status(200).json(user);
-})
+// app.put("/users/:id", async (req, res) => {
+//     const {id} = parseInt(req.params.id);
+//     const {name, email} = req.body;
+//     const user = await User.findOneAndUpdate(id, {
+//         name,
+//         email
+//     }, {new: true})
+//     if(!user) {
+//         return res.status(404).json({
+//             message: "User not found"
+//         })
+//     }
+//     res.status(200).json(user);
+// })
 
-app.delete("/users/:id", async (req, res) => {
-    const { id } = parseInt(req.params.id);
-    const user = await User.findOneAndDelete(id)
-    if(!user) {
-        return res.status(404).json({
-            message: "User not found"
-        })
-    }
-    res.status(200).json({
-        message: "User deleted successfully"
-    })
-})
+// app.delete("/users/:id", async (req, res) => {
+//     const { id } = parseInt(req.params.id);
+//     const user = await User.findOneAndDelete(id)
+//     if(!user) {
+//         return res.status(404).json({
+//             message: "User not found"
+//         })
+//     }
+//     res.status(200).json({
+//         message: "User deleted successfully"
+//     })
+// })
 
 app.use("/users/", router);
 
