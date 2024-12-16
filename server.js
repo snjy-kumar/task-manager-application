@@ -1,14 +1,87 @@
 import express from "express";
 import dotenv from "dotenv";
 import dbConfig from "./src/config/dbConfig.js";
-
+import User from "./src/models/user.model.js";
 dotenv.config();
-
 const app = express();
-const port = process.env.PORT  || 3001;
-dbConfig();
 
 app.use(express.json());
+
+const port = process.env.PORT  || 3001;
+// dbConfig(); // Connect to database
+app.use((req, res, next) => {
+    console.log("Middleware is running");
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
+
+console.log("Hello World");
+
+
+
+app.post("/users", async (req, res) => {
+    const {name, email} = req.body;
+    const user = new User({
+        name,
+        email
+    })
+    const newUser = await user.save();
+    res.status(201).json(newUser);
+})
+
+app.get("/users/:id", async (req, res) => {
+    const { id } = parseInt(req.params.id);
+    const user = await User.findOne(id);
+    if(!user) {
+        return res.status(404).json({
+            message: "User not found at all"
+        })
+    }
+    res.status(200).json(user);
+})
+
+app.get("/users", async (req, res) => {
+    const users = await User.find();
+    if(!users) {
+        return res.status(404).json({
+            message: "No users found"
+        })
+    }
+    res.status(200).json(users);
+})
+
+app.put("/users/:id", async (req, res) => {
+    const {id} = parseInt(req.params.id);
+    const {name, email} = req.body;
+    const user = await User.findOneAndUpdate(id, {
+        name,
+        email
+    }, {new: true})
+    if(!user) {
+        return res.status(404).json({
+            message: "User not found"
+        })
+    }
+    res.status(200).json(user);
+})
+
+app.delete("/users/:id", async (req, res) => {
+    const { id } = parseInt(req.params.id);
+    const user = await User.findOneAndDelete(id)
+    if(!user) {
+        return res.status(404).json({
+            message: "User not found"
+        })
+    }
+    res.status(200).json({
+        message: "User deleted successfully"
+    })
+})
+
+
+
+
 
 let users = [ 
     {
@@ -79,6 +152,14 @@ app.delete("/:id", (req, res) => {
     })
 })
 
+
+// Error handler (must be defined after all routes)
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  });
+  
+
 app.listen(port, () => {
-    console.log(`Server is running on port localhost:${port}`);
+    console.log(`Server is running on port https://localhost:${port}`);
 })
