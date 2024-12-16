@@ -2,18 +2,19 @@ import express from "express";
 import dotenv from "dotenv";
 import dbConfig from "./src/config/dbConfig.js";
 import User from "./src/models/user.model.js";
+import router from "./src/routes/useRouter.js";
 dotenv.config();
 const app = express();
 
 app.use(express.json());
 
 const port = process.env.PORT  || 3001;
-// dbConfig(); // Connect to database
-app.use((req, res, next) => {
-    console.log("Middleware is running");
-    console.log(`${req.method} ${req.url}`);
-    next();
-});
+dbConfig(); // Connect to database
+// app.use((req, res, next) => {
+//     console.log("Middleware is running");
+//     console.log(`${req.method} ${req.url}`);
+//     next();
+// });
 
 
 console.log("Hello World");
@@ -78,6 +79,8 @@ app.delete("/users/:id", async (req, res) => {
         message: "User deleted successfully"
     })
 })
+
+app.use("/users/", router);
 
 
 
