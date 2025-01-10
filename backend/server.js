@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 
-const port = process.env.PORT  || 3001;
+const port = process.env.PORT  || 4000;
 dbConfig(); // Connect to database
 // app.use((req, res, next) => {
 //     console.log("Middleware is running");
