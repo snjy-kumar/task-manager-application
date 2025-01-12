@@ -1,12 +1,21 @@
-import './App.css'
-import { Button } from './components/ui/button'
+import { BrowserRouter,  Route, Routes } from 'react-router-dom'
+import './App.css' 
+import Home from './pages/Home' 
+import LoginPage from './pages/Login'
+import SignupPage from './pages/Signup'
+import Navbar from './components/ui/Navbar'
 
 function App() {
 
   return (
-   <>
-    <Button>Click me</Button>
-   </>
+   <BrowserRouter>
+    {/* <Navbar /> */}
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/signup' element={<SignupPage />} />
+      </Routes> 
+   </BrowserRouter>
   )
 }
 
