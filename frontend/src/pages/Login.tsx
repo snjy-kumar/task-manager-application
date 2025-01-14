@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react"; 
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormData {
   email: string;
@@ -9,6 +10,7 @@ interface LoginFormData {
 }
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -24,7 +26,7 @@ const LoginPage: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.email === "" || formData.password === "") {
       setError("Please fill in all fields.");
@@ -32,6 +34,32 @@ const LoginPage: React.FC = () => {
       // Handle login logic here (e.g., API call)
       console.log("Logging in with:", formData);
     }
+
+    try {
+      const response = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+      const data = await response.json();
+
+      
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("An error occurred. Please try again.");
+      
+    }
+
+    navigate("/");
+
     setFormData({
         email: "",
         password: "",
@@ -39,7 +67,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto p-6 border rounded-lg shadow-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+    <div className="flex items-center justify-center h-screen">
+    <div className="w-full max-w-sm mx-auto p-6 border rounded-xl shadow-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
       <h2 className="text-center text-3xl font-extrabold text-white mb-6">Login</h2>
       {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
       <form onSubmit={handleSubmit}>
@@ -87,6 +116,7 @@ const LoginPage: React.FC = () => {
           Sign Up
         </a>
       </div>
+    </div>
     </div>
   );
 };

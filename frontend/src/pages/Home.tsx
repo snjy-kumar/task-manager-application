@@ -1,9 +1,10 @@
+import Main from "@/landing/Main"
 
 
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <Main />
   )
 }
 
