@@ -5,11 +5,11 @@ import { createTask, getTasks, getTask, updateTask, deleteTask } from '../contro
 
 const router = express.Router()
 
-router.post("/create", createTask)
-router.get("/all", getTasks)
-router.get("/:id", getTask)
-router.put("/:id", updateTask)
-router.delete("/:id", deleteTask)
+router.post("/tasks", createTask) // Create a new task #DONE
+router.get("/tasks", getTasks) // Get all tasks #DONE
+router.get("/task/:id", getTask) // Get a task #DONE
+router.put("/task/:id", updateTask) // Update a task #DONE
+router.delete("/task/:id", deleteTask) // Delete a task #DONE
 
 
 export default router

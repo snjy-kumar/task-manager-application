@@ -2,7 +2,11 @@ import mongoose, { Schema } from "mongoose";
 
 
 const userSchema = new mongoose.Schema({
-     
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    }, 
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -29,6 +33,6 @@ const userSchema = new mongoose.Schema({
      
 }, {timestamps: true})
 
-const User = mongoose.model("Users", userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

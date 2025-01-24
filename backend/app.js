@@ -12,13 +12,9 @@ app.use(express.json());
 app.use(cors());
 dbConfig(); 
 
-
-
 // Routes or Endpoints
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/user", taskRouter);
-
-
 
 
 
