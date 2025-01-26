@@ -15,6 +15,7 @@ dbConfig();
 // Routes or Endpoints
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/user", taskRouter);
+app.use("/api/v1/task", taskRouter);
 
 
 
