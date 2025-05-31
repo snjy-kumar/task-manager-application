@@ -1,4 +1,4 @@
-# Task Manager Application
+# Advance Task Manager Application
 
 A modern task management application to help organize and track your daily work. This tool provides an intuitive interface for creating, organizing, and monitoring tasks.
 

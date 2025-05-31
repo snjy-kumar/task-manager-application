@@ -1,11 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
 import { 
-  CheckCircle, 
-  Clock, 
-  AlertCircle, 
-  Zap, 
-  ChevronRight, 
+  ChevronRight,
+  Zap,
+  MenuSquare,
   Calendar,
   BarChart3,
   Users,
@@ -13,14 +10,10 @@ import {
   Target,
   Briefcase,
   MessageSquare,
-  ListTodo,
-  MenuSquare,
-  ArrowUpRight,
-  LucideIcon
+  ListTodo
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useAnimations } from '@/hooks/useAnimations';
 import BentoGrid from '@/components/ui/bento/BentoGrid';
 import BentoCard from '@/components/ui/bento/BentoCard';
 
@@ -46,8 +39,8 @@ const aiSuggestions = [
   "Consider delegating 'Update documentation' to team member"
 ];
 
-const DashboardHome: React.FC = () => {
-  const { ref, isInView } = useAnimations();
+const DashboardHome = () => {
+  const gridRef = useRef(null);
 
   return (
     <div className="space-y-6">
@@ -67,7 +60,7 @@ const DashboardHome: React.FC = () => {
       </div>
 
       {/* Primary Bento Grid */}
-      <BentoGrid cols={4} gap="md" ref={ref}>
+      <BentoGrid cols={4} gap="md" ref={gridRef}>
         {/* Task Overview */}
         <BentoCard
           title="Task Overview"
