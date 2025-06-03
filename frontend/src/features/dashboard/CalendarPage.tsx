@@ -29,7 +29,7 @@ const events = [
 ];
 
 // Demo data for visualization
-const generateCalendarData = (inputDate) => {
+const generateCalendarData = (inputDate: Date) => {
   const currentYear = inputDate.getFullYear();
   const currentMonth = inputDate.getMonth();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();

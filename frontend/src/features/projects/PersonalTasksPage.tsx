@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
   Clock, 
   Calendar, 
@@ -8,16 +7,12 @@ import {
   Filter, 
   Plus,
   User,
-  Tag,
   ArrowUp,
   ArrowDown,
   ListFilter
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useAnimations } from '@/hooks/useAnimations';
-import BentoGrid from '@/components/ui/bento/BentoGrid';
-import BentoCard from '@/components/ui/bento/BentoCard';
 
 // Sample data for personal tasks
 const personalTasks = [
@@ -54,7 +49,6 @@ const upcomingDates = [
 ];
 
 const PersonalTasksPage: React.FC = () => {
-  const { ref, isInView } = useAnimations();
   const [filter, setFilter] = React.useState<'all' | 'active' | 'completed'>('all');
   const [sortBy, setSortBy] = React.useState<'priority' | 'dueDate' | 'category'>('dueDate');
   const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc');

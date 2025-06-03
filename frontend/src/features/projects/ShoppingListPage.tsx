@@ -1,11 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
-  Clock, 
   CheckCircle, 
-  Filter, 
   Plus,
-  Tag,
   ShoppingCart,
   Trash2,
   DollarSign,
@@ -59,7 +55,7 @@ const stores = [
 ];
 
 const ShoppingListPage: React.FC = () => {
-  const { ref, isInView } = useAnimations();
+  const { ref } = useAnimations();
   const [filter, setFilter] = React.useState<'all' | 'pending' | 'purchased'>('all');
   const [categoryFilter, setCategoryFilter] = React.useState<string>('all');
   const [sortBy, setSortBy] = React.useState<'name' | 'price' | 'priority'>('name');

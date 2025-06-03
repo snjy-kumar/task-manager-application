@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { 
   CheckCircle, 
   Menu, 
@@ -16,11 +15,9 @@ import {
   LogOut, 
   User,
   ChevronDown,
-  ChevronRight,
   Search,
   Plus
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface DashboardLayoutProps {

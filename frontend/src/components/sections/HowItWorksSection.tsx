@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ClipboardList, BrainCircuit, TrendingUp, Rocket, Zap, BarChart, Clock, ThumbsUp, CheckCircle, ArrowRight } from "lucide-react";
 
 export default function HowItWorksSection() {
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+  const [, setHoveredStep] = useState<number | null>(null);
 
   return (
     <section id="how-it-works" className="w-full py-20 md:py-32 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">

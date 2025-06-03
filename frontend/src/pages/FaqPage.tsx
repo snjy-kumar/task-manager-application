@@ -204,7 +204,7 @@ interface FaqItemProps {
   category: string;
 }
 
-const FaqItem: React.FC<FaqItemProps> = ({ question, answer, category }) => {
+const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
   
   return (

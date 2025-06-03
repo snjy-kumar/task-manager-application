@@ -3,10 +3,6 @@ import {
   Calendar, 
   Clock, 
   Tag, 
-  AlertCircle, 
-  Bookmark, 
-  Users, 
-  Paperclip, 
   X, 
   ChevronDown,
   Plus

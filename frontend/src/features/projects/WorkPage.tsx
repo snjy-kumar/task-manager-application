@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
   Clock, 
   Calendar, 
@@ -8,10 +7,8 @@ import {
   Filter, 
   Plus,
   Users,
-  Tag,
   ArrowUp,
   ArrowDown,
-  ListFilter,
   Briefcase,
   BarChart3,
   Presentation,
@@ -60,7 +57,7 @@ const teamMembers = [
 ];
 
 const WorkPage: React.FC = () => {
-  const { ref, isInView } = useAnimations();
+  const { ref } = useAnimations();
   const [filter, setFilter] = React.useState<'all' | 'mine' | 'team'>('all');
   const [sortBy, setSortBy] = React.useState<'priority' | 'dueDate' | 'project'>('dueDate');
   const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc');

@@ -1,10 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
 import { BarChart3, Calendar, Sparkles, LayoutGrid, Activity, 
   Users, Zap, Shield, Award, Target, Briefcase, CloudCog } from 'lucide-react';
 import BentoGrid from './BentoGrid';
 import BentoCard from './BentoCard';
-import { useAnimations } from '@/hooks/useAnimations';
 
 export interface BentoShowcaseProps {
   variant?: 'default' | 'dashboard' | 'features' | 'metrics';
@@ -15,7 +13,7 @@ export const BentoShowcase: React.FC<BentoShowcaseProps> = ({
   variant = 'default',
   className 
 }) => {
-  const { ref, isInView } = useAnimations();
+  const gridRef = useRef(null);
 
   // Define different bento grid variants
   const renderVariant = () => {
@@ -383,7 +381,7 @@ export const BentoShowcase: React.FC<BentoShowcaseProps> = ({
   };
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={gridRef} className={className}>
       {renderVariant()}
     </div>
   );

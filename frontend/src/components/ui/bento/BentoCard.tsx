@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 export interface BentoCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -53,11 +52,8 @@ const BentoCard = React.forwardRef<HTMLDivElement, BentoCardProps>(
       : '';
     
     return (
-      <motion.div
+      <div
         ref={ref}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
         className={cn(
           'relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-md p-6',
           sizeClasses[size],
@@ -83,7 +79,7 @@ const BentoCard = React.forwardRef<HTMLDivElement, BentoCardProps>(
           </div>
         )}
         {children}
-      </motion.div>
+      </div>
     );
   }
 );

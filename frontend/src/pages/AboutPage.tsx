@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
-  Award, 
   Target,
   Users,
   Heart,
   Lightbulb,
-  Clock,
   Twitter,
   Linkedin,
   Globe
