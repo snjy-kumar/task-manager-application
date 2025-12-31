@@ -12,18 +12,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import BentoGrid from '@/components/ui/bento/BentoGrid';
 import BentoCard from '@/components/ui/bento/BentoCard';
-import taskService from '@/services/taskService';
-
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
-  priority: 'Low' | 'Medium' | 'High';
-  dueDate: string;
-  createdAt: string;
-  updatedAt?: string;
-}
+import taskService, { Task } from '@/services/taskService';
 
 const RecentlyViewedPage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import environment from '../config/environment.js';
 import logger from '../config/logger.js';
-import { BadRequestError, UnauthorizedError, LockedError, ConflictError, NotFoundError, asyncHandler } from '../utils/errors.js';
+import { BadRequestError, UnauthorizedError, LockedError, ConflictError, NotFoundError, asyncHandler } from '../middleware/errorHandler.js';
 
 // Account lockout configuration
 const MAX_LOGIN_ATTEMPTS = 5;

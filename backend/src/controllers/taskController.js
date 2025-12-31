@@ -1,7 +1,7 @@
 import Task from '../models/task.model.js';
 import User from '../models/user.model.js';
 import logger from '../config/logger.js';
-import { BadRequestError, NotFoundError, UnauthorizedError, asyncHandler } from '../utils/errors.js';
+import { BadRequestError, NotFoundError, UnauthorizedError, asyncHandler } from '../middleware/errorHandler.js';
 import mongoose from 'mongoose';
 
 /**

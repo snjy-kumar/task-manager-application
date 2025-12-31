@@ -17,18 +17,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import BentoGrid from '@/components/ui/bento/BentoGrid';
 import BentoCard from '@/components/ui/bento/BentoCard';
-import taskService from '@/services/taskService';
+import taskService, { Task } from '@/services/taskService';
 import { useAuth } from '@/context/AuthContext';
-
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
-  priority: 'Low' | 'Medium' | 'High';
-  dueDate: string;
-  createdAt: string;
-}
 
 interface DashboardStats {
   total: number;

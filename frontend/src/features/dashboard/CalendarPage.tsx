@@ -9,19 +9,10 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import taskService from '@/services/taskService';
+import taskService, { Task } from '@/services/taskService';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
-  priority: 'Low' | 'Medium' | 'High';
-  dueDate: string;
-}
 
 interface CalendarData {
   currentYear: number;

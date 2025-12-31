@@ -1,52 +1,23 @@
 import helmet from 'helmet';
 
 /**
- * Security headers configuration using Helmet.js
- * Provides protection against common web vulnerabilities
+ * Security headers for API backend
+ * Simplified - no CSP needed for JSON-only API
  */
 const securityHeaders = helmet({
-    // Content Security Policy
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles for React
-            scriptSrc: ["'self'"],
-            imgSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'"],
-            fontSrc: ["'self'", "https:", "data:"],
-            objectSrc: ["'none'"],
-            mediaSrc: ["'self'"],
-            frameSrc: ["'none'"]
-        }
-    },
-    // Cross-Origin policies
-    crossOriginEmbedderPolicy: false, // Disabled for API compatibility
-    crossOriginOpenerPolicy: { policy: "same-origin" },
-    crossOriginResourcePolicy: { policy: "same-origin" },
-    // DNS Prefetch Control
-    dnsPrefetchControl: { allow: false },
-    // Clickjacking protection
-    frameguard: { action: 'deny' },
-    // Hide X-Powered-By header
+    // Disable CSP for API-only backend (no HTML served)
+    contentSecurityPolicy: false,
+    // Hide X-Powered-By
     hidePoweredBy: true,
-    // HTTP Strict Transport Security
+    // HSTS for production
     hsts: {
-        maxAge: 31536000, // 1 year
+        maxAge: 31536000,
         includeSubDomains: true,
-        preload: true
     },
-    // Prevent IE from opening files
-    ieNoOpen: true,
-    // Prevent MIME type sniffing
+    // Prevent MIME sniffing
     noSniff: true,
-    // Origin-Agent-Cluster header
-    originAgentCluster: true,
-    // Permitted Cross-Domain Policies
-    permittedCrossDomainPolicies: { permittedPolicies: "none" },
-    // Referrer Policy
-    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-    // XSS Filter (legacy)
-    xssFilter: true
+    // XSS filter
+    xssFilter: true,
 });
 
 export default securityHeaders;

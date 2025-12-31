@@ -1,7 +1,7 @@
 import api from './api';
 
 export interface Task {
-    _id?: string;
+    _id: string;
     title: string;
     description: string;
     status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
@@ -17,8 +17,8 @@ export interface Task {
     parentTaskId?: string;
     completedAt?: string;
     isDeleted?: boolean;
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt: string;
+    updatedAt: string;
     // Virtual fields
     isOverdue?: boolean;
     daysUntilDue?: number;

@@ -15,19 +15,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import taskService from '@/services/taskService';
-
-// Type definition matching backend
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  dueDate: string;
-  priority: 'Low' | 'Medium' | 'High';
-  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
-  createdAt?: string;
-  updatedAt?: string;
-}
+import taskService, { Task } from '@/services/taskService';
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
