@@ -1,370 +1,281 @@
-import React, { useRef } from 'react';
-import { 
-  Star, 
-  Clock, 
-  Calendar, 
-  Briefcase, 
+import { useState, useEffect } from 'react';
+import {
+  Star,
   ChevronRight,
-  Tag,
-  FileText,
-  Folder,
-  User
+  AlertCircle,
+  RefreshCw,
+  TrendingUp,
+  Calendar,
+  Clock
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import BentoGrid from '@/components/ui/bento/BentoGrid';
 import BentoCard from '@/components/ui/bento/BentoCard';
+import taskService from '@/services/taskService';
 
-// Sample data for starred items
-const starredTasks = [
-  { id: 1, title: "Client Presentation Draft", dueDate: "Tomorrow, 5:00 PM", project: "Marketing Campaign", priority: "high", completed: false },
-  { id: 2, title: "Weekly Team Meeting Notes", dueDate: "No due date", project: "Team Management", priority: "medium", completed: true },
-  { id: 3, title: "Q3 Budget Planning", dueDate: "Friday, 3:00 PM", project: "Finance", priority: "high", completed: false },
-  { id: 4, title: "Product Launch Timeline", dueDate: "Next Monday", project: "Product Development", priority: "medium", completed: false },
-  { id: 5, title: "Customer Feedback Analysis", dueDate: "Thursday", project: "User Research", priority: "low", completed: false },
-];
-
-const starredProjects = [
-  { id: 1, name: "Website Redesign", taskCount: 12, completedCount: 5, color: "blue" },
-  { id: 2, name: "Mobile App Development", taskCount: 24, completedCount: 18, color: "green" },
-  { id: 3, name: "Marketing Campaign Q3", taskCount: 8, completedCount: 3, color: "purple" },
-];
-
-const starredDocuments = [
-  { id: 1, title: "Project Requirements", type: "document", updatedAt: "Yesterday", sharedWith: 5 },
-  { id: 2, title: "Meeting Notes", type: "document", updatedAt: "3 days ago", sharedWith: 3 },
-  { id: 3, title: "Design Assets", type: "folder", updatedAt: "Last week", sharedWith: 7 },
-];
+interface Task {
+  _id: string;
+  title: string;
+  description: string;
+  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
+  priority: 'Low' | 'Medium' | 'High';
+  dueDate: string;
+  createdAt: string;
+}
 
 const StarredPage = () => {
-  const gridRef = useRef(null);
-  
+  const [_tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const [highPriorityTasks, setHighPriorityTasks] = useState<Task[]>([]);
+  const [upcomingTasks, setUpcomingTasks] = useState<Task[]>([]);
+  const [inProgressTasks, setInProgressTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const response = await taskService.getAllTasks();
+      const taskList = response.tasks || [];
+      setTasks(taskList);
+      filterTasks(taskList);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to load tasks');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterTasks = (taskList: Task[]) => {
+    // High priority tasks (not completed)
+    const highPriority = taskList.filter(t =>
+      t.priority === 'High' && t.status !== 'Completed'
+    );
+
+    // Upcoming tasks (next 7 days, not completed)
+    const now = new Date();
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+
+    const upcoming = taskList.filter(t => {
+      const dueDate = new Date(t.dueDate);
+      return dueDate >= now && dueDate <= nextWeek && t.status !== 'Completed';
+    }).sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
+
+    // In progress tasks
+    const inProgress = taskList.filter(t => t.status === 'In Progress');
+
+    setHighPriorityTasks(highPriority);
+    setUpcomingTasks(upcoming);
+    setInProgressTasks(inProgress);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Tomorrow';
+    if (diffDays < 0) return 'Overdue';
+    if (diffDays < 7) return `In ${diffDays} days`;
+
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority.toLowerCase()) {
+      case 'high': return 'bg-red-500';
+      case 'medium': return 'bg-yellow-500';
+      case 'low': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-gray-500">Loading important tasks...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Starred Items</h1>
-          <p className="text-gray-500 dark:text-gray-400">Quick access to your important items</p>
+          <h1 className="text-2xl font-bold">Important Tasks</h1>
+          <p className="text-gray-500 dark:text-gray-400">Your high-priority and upcoming tasks</p>
         </div>
-        <div className="mt-4 md:mt-0">
-          <Button variant="outline">
-            Manage Starred Items
+        <div className="mt-4 md:mt-0 flex gap-2">
+          <Button variant="outline" onClick={fetchTasks} size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
+          <Button asChild>
+            <Link to="/dashboard/tasks/new">Create Task</Link>
           </Button>
         </div>
       </div>
-      
+
+      {/* Error Message */}
+      {error && (
+        <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center">
+          <AlertCircle className="h-5 w-5 mr-2" />
+          {error}
+        </div>
+      )}
+
       {/* Bento Grid Layout */}
-      <BentoGrid cols={4} gap="md" ref={gridRef}>
-        {/* Starred Tasks */}
+      <BentoGrid cols={3} gap="md">
+        {/* High Priority Tasks */}
         <BentoCard
-          title="Starred Tasks"
-          icon={<Star className="h-5 w-5 text-yellow-500" />}
-          size="full"
+          title="High Priority"
+          icon={<Star className="h-5 w-5 text-red-500" />}
+          size="lg"
           gradient
-          gradientFrom="from-yellow-600/20"
+          gradientFrom="from-red-600/20"
           gradientTo="to-orange-600/20"
         >
           <div className="space-y-3 mt-3">
-            {starredTasks.map((task) => (
-              <TaskItem
-                key={task.id}
-                title={task.title}
-                dueDate={task.dueDate}
-                project={task.project}
-                priority={task.priority as 'low' | 'medium' | 'high'}
-                completed={task.completed}
-              />
-            ))}
-          </div>
-          <Button variant="outline" className="w-full mt-4" asChild>
-            <Link to="/dashboard/tasks">
-              View All Tasks
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </Link>
-          </Button>
-        </BentoCard>
-        
-        {/* Starred Projects */}
-        <BentoCard
-          title="Starred Projects"
-          icon={<Briefcase className="h-5 w-5" />}
-          size="md"
-        >
-          <div className="space-y-4 mt-3">
-            {starredProjects.map((project) => (
-              <ProjectItem
-                key={project.id}
-                name={project.name}
-                taskCount={project.taskCount}
-                completedCount={project.completedCount}
-                color={project.color as 'blue' | 'green' | 'purple' | 'red' | 'yellow'}
-              />
-            ))}
-          </div>
-          <Button variant="ghost" size="sm" className="w-full mt-3" asChild>
-            <Link to="/dashboard/projects">
-              Manage Projects
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
-          </Button>
-        </BentoCard>
-        
-        {/* Recently Starred */}
-        <BentoCard
-          title="Recently Starred"
-          icon={<Clock className="h-5 w-5" />}
-          size="sm"
-        >
-          <div className="space-y-2 mt-2">
-            <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <div className="flex items-center">
-                <div className="p-2 rounded-md bg-blue-100 text-blue-600 mr-3">
-                  <FileText className="h-4 w-4" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Project Proposal.docx</p>
-                  <p className="text-xs text-gray-500">Added 2 hours ago</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <div className="flex items-center">
-                <div className="p-2 rounded-md bg-purple-100 text-purple-600 mr-3">
-                  <User className="h-4 w-4" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Sarah Chen</p>
-                  <p className="text-xs text-gray-500">Added yesterday</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <div className="flex items-center">
-                <div className="p-2 rounded-md bg-green-100 text-green-600 mr-3">
-                  <Calendar className="h-4 w-4" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Team Meeting</p>
-                  <p className="text-xs text-gray-500">Added 3 days ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </BentoCard>
-        
-        {/* Starred Documents */}
-        <BentoCard
-          title="Starred Documents"
-          icon={<FileText className="h-5 w-5" />}
-          size="md"
-        >
-          <div className="space-y-3 mt-2">
-            {starredDocuments.map((doc, index) => (
-              <div key={index} className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                <div className="flex items-start">
-                  <div className="p-2 rounded-md bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300 mr-3">
-                    {doc.type === 'folder' ? (
-                      <Folder className="h-4 w-4" />
-                    ) : (
-                      <FileText className="h-4 w-4" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <p className="text-sm font-medium">{doc.title}</p>
-                      <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
-                        <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-                      </Button>
+            {highPriorityTasks.length > 0 ? (
+              highPriorityTasks.slice(0, 8).map((task) => (
+                <Link
+                  key={task._id}
+                  to={`/dashboard/tasks/${task._id}/edit`}
+                  className="block"
+                >
+                  <div className="flex items-center p-3 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-red-500 transition-colors">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{task.title}</p>
+                      <div className="flex items-center mt-1 space-x-2">
+                        <span className={`h-2 w-2 rounded-full ${getPriorityColor(task.priority)}`}></span>
+                        <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
+                        <span className="text-xs text-gray-400">•</span>
+                        <span className="text-xs text-gray-500">{task.status}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center mt-1">
-                      <p className="text-xs text-gray-500">Updated {doc.updatedAt}</p>
-                      <span className="mx-2 text-gray-300">•</span>
-                      <p className="text-xs text-gray-500">Shared with {doc.sharedWith} people</p>
-                    </div>
+                    <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />
                   </div>
-                </div>
+                </Link>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <Star className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">No high-priority tasks</p>
               </div>
-            ))}
-            <Button variant="ghost" size="sm" className="w-full mt-1">
-              View All Documents
+            )}
+          </div>
+          {highPriorityTasks.length > 0 && (
+            <Button variant="outline" className="w-full mt-4" asChild>
+              <Link to="/dashboard/tasks">
+                View All Tasks
+                <ChevronRight className="h-4 w-4 ml-2" />
+              </Link>
             </Button>
-          </div>
+          )}
         </BentoCard>
-        
-        {/* Upcoming Starred Events */}
+
+        {/* Upcoming This Week */}
         <BentoCard
-          title="Upcoming Starred Events"
+          title="Due This Week"
           icon={<Calendar className="h-5 w-5" />}
           size="md"
           gradient
           gradientFrom="from-blue-600/20"
-          gradientTo="to-blue-400/20"
+          gradientTo="to-purple-600/20"
         >
-          <div className="space-y-3 mt-2">
-            <div className="flex items-start p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <div className="flex flex-col items-center justify-center mr-3 bg-primary/10 px-2 py-1 rounded">
-                <span className="text-xs font-bold">JUN</span>
-                <span className="text-lg font-bold">15</span>
+          <div className="space-y-2 mt-3">
+            {upcomingTasks.length > 0 ? (
+              upcomingTasks.slice(0, 6).map((task) => (
+                <Link
+                  key={task._id}
+                  to={`/dashboard/tasks/${task._id}/edit`}
+                  className="block"
+                >
+                  <div className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                    <p className="text-sm font-medium truncate">{task.title}</p>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
+                      <span className={`h-2 w-2 rounded-full ${getPriorityColor(task.priority)}`}></span>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="text-center py-6">
+                <Calendar className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">Nothing due this week</p>
               </div>
-              <div>
-                <p className="text-sm font-medium">Quarterly Planning</p>
-                <div className="flex items-center text-xs text-gray-500 mt-1">
-                  <Clock className="h-3 w-3 mr-1" />
-                  <span>10:00 AM - 12:00 PM</span>
-                </div>
+            )}
+          </div>
+        </BentoCard>
+
+        {/* In Progress */}
+        <BentoCard
+          title="In Progress"
+          icon={<TrendingUp className="h-5 w-5" />}
+          size="md"
+        >
+          <div className="space-y-2 mt-3">
+            {inProgressTasks.length > 0 ? (
+              inProgressTasks.slice(0, 6).map((task) => (
+                <Link
+                  key={task._id}
+                  to={`/dashboard/tasks/${task._id}/edit`}
+                  className="block"
+                >
+                  <div className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                    <p className="text-sm font-medium truncate">{task.title}</p>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
+                      <span className={`h-2 w-2 rounded-full ${getPriorityColor(task.priority)}`}></span>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="text-center py-6">
+                <Clock className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">No tasks in progress</p>
               </div>
+            )}
+          </div>
+        </BentoCard>
+
+        {/* Stats Card */}
+        <BentoCard
+          title="Summary"
+          icon={<Star className="h-5 w-5" />}
+          size="full"
+        >
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <div className="text-3xl font-bold text-red-600">{highPriorityTasks.length}</div>
+              <div className="text-xs text-gray-500 mt-1">High Priority</div>
             </div>
-            <div className="flex items-start p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <div className="flex flex-col items-center justify-center mr-3 bg-primary/10 px-2 py-1 rounded">
-                <span className="text-xs font-bold">JUN</span>
-                <span className="text-lg font-bold">22</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Client Presentation</p>
-                <div className="flex items-center text-xs text-gray-500 mt-1">
-                  <Clock className="h-3 w-3 mr-1" />
-                  <span>2:00 PM - 3:00 PM</span>
-                </div>
-              </div>
+            <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="text-3xl font-bold text-blue-600">{upcomingTasks.length}</div>
+              <div className="text-xs text-gray-500 mt-1">Due This Week</div>
             </div>
-            <div className="flex items-start p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-              <div className="flex flex-col items-center justify-center mr-3 bg-primary/10 px-2 py-1 rounded">
-                <span className="text-xs font-bold">JUL</span>
-                <span className="text-lg font-bold">05</span>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Team Building Event</p>
-                <div className="flex items-center text-xs text-gray-500 mt-1">
-                  <Clock className="h-3 w-3 mr-1" />
-                  <span>All day</span>
-                </div>
-              </div>
+            <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+              <div className="text-3xl font-bold text-purple-600">{inProgressTasks.length}</div>
+              <div className="text-xs text-gray-500 mt-1">In Progress</div>
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="w-full mt-3" asChild>
-            <Link to="/dashboard/calendar">
-              View Calendar
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
-          </Button>
         </BentoCard>
       </BentoGrid>
-    </div>
-  );
-};
-
-// Task Item Component
-interface TaskItemProps {
-  title: string;
-  dueDate: string;
-  project: string;
-  priority: 'low' | 'medium' | 'high';
-  completed: boolean;
-}
-
-const TaskItem: React.FC<TaskItemProps> = ({ title, dueDate, project, priority, completed }) => {
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high':
-        return 'bg-red-500';
-      case 'medium':
-        return 'bg-yellow-500';
-      case 'low':
-        return 'bg-green-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-  
-  return (
-    <div className={`flex items-center p-3 rounded-md border border-gray-200 dark:border-gray-700 ${
-      completed ? 'bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-gray-800'
-    }`}>
-      <input
-        type="checkbox"
-        checked={completed}
-        readOnly
-        className="h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-      />
-      <div className="ml-3 flex-1 min-w-0">
-        <p className={`text-sm font-medium truncate ${
-          completed ? 'text-gray-500 dark:text-gray-400 line-through' : 'text-gray-900 dark:text-gray-100'
-        }`}>
-          {title}
-        </p>
-        <div className="flex items-center mt-1 space-x-3">
-          <div className="flex items-center">
-            <span className={`h-2 w-2 rounded-full ${getPriorityColor(priority)} mr-2`}></span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">{dueDate}</span>
-          </div>
-          <div className="flex items-center">
-            <Tag className="h-3 w-3 mr-1 text-gray-500" />
-            <span className="text-xs text-gray-500 dark:text-gray-400">{project}</span>
-          </div>
-        </div>
-      </div>
-      <div className="flex items-center space-x-2">
-        <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
-          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-        </Button>
-        <ChevronRight className="h-4 w-4 text-gray-400" />
-      </div>
-    </div>
-  );
-};
-
-// Project Item Component
-interface ProjectItemProps {
-  name: string;
-  taskCount: number;
-  completedCount: number;
-  color: 'blue' | 'green' | 'purple' | 'red' | 'yellow';
-}
-
-const ProjectItem: React.FC<ProjectItemProps> = ({ name, taskCount, completedCount, color }) => {
-  const getColorClass = (color: string) => {
-    switch (color) {
-      case 'blue':
-        return 'bg-blue-500';
-      case 'green':
-        return 'bg-green-500';
-      case 'purple':
-        return 'bg-purple-500';
-      case 'red':
-        return 'bg-red-500';
-      case 'yellow':
-        return 'bg-yellow-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-  
-  const progress = Math.round((completedCount / taskCount) * 100);
-  
-  return (
-    <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-      <div className="flex justify-between items-start">
-        <div className="flex items-center">
-          <span className={`h-3 w-3 rounded-full ${getColorClass(color)} mr-2`}></span>
-          <p className="text-sm font-medium">{name}</p>
-        </div>
-        <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
-          <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-        </Button>
-      </div>
-      <div className="mt-2 space-y-1">
-        <div className="flex justify-between items-center text-xs">
-          <span className="text-gray-500">{completedCount} of {taskCount} tasks completed</span>
-          <span className="font-medium">{progress}%</span>
-        </div>
-        <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full">
-          <div 
-            className={`h-full ${getColorClass(color)} rounded-full`} 
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
     </div>
   );
 };

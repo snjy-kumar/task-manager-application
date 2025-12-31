@@ -1,87 +1,159 @@
-import React, { useState } from 'react';
-import { 
-  Calendar, 
-  Clock, 
-  Tag, 
-  X, 
+import React, { useState, useEffect } from 'react';
+import {
+  Calendar,
   ChevronDown,
+  Tag,
+  Repeat,
+  X,
   Plus
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import taskService from '@/services/taskService';
 
 interface TaskFormProps {
   editMode?: boolean;
-  initialTask?: Task;
 }
 
-interface Task {
-  id?: number;
+interface TaskFormData {
   title: string;
   description: string;
   dueDate: string;
-  dueTime?: string;
-  priority: string;
-  status: string;
+  priority: 'Low' | 'Medium' | 'High';
+  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
   category: string;
-  labels: string[];
-  assignees?: string[];
+  tags: string[];
+  isRecurring: boolean;
+  recurringPattern: string;
+  recurringInterval: number;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ 
-  editMode = false, 
-  initialTask = {
+const CATEGORIES = ['Personal', 'Work', 'Shopping', 'Health', 'Finance', 'Learning', 'Other'];
+const RECURRING_PATTERNS = [
+  { value: 'daily', label: 'Daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'biweekly', label: 'Bi-weekly' },
+  { value: 'monthly', label: 'Monthly' },
+  { value: 'yearly', label: 'Yearly' },
+];
+
+const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const [task, setTask] = useState<TaskFormData>({
     title: '',
     description: '',
     dueDate: '',
-    dueTime: '',
-    priority: 'medium',
-    status: 'todo',
-    category: 'work',
-    labels: [],
-    assignees: []
-  }
-}) => {
-  const [task, setTask] = useState<Task>(initialTask);
-  const [newLabel, setNewLabel] = useState('');
-  const [labelInputVisible, setLabelInputVisible] = useState(false);
-  const navigate = useNavigate();
+    priority: 'Medium',
+    status: 'Pending',
+    category: 'Personal',
+    tags: [],
+    isRecurring: false,
+    recurringPattern: 'daily',
+    recurringInterval: 1,
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setTask(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const [tagInput, setTagInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loadingTask, setLoadingTask] = useState(editMode);
+  const [error, setError] = useState<string>('');
 
-  const addLabel = () => {
-    if (newLabel.trim() && !task.labels.includes(newLabel.trim())) {
-      setTask(prev => ({
-        ...prev,
-        labels: [...prev.labels, newLabel.trim()]
-      }));
-      setNewLabel('');
-      setLabelInputVisible(false);
+  // Load task if in edit mode
+  useEffect(() => {
+    if (editMode && id) {
+      loadTask(id);
+    }
+  }, [editMode, id]);
+
+  const loadTask = async (taskId: string) => {
+    try {
+      setLoadingTask(true);
+      const data = await taskService.getTaskById(taskId);
+      setTask({
+        title: data.title,
+        description: data.description,
+        dueDate: data.dueDate.split('T')[0],
+        priority: data.priority,
+        status: data.status,
+        category: data.category || 'Personal',
+        tags: data.tags || [],
+        isRecurring: data.isRecurring || false,
+        recurringPattern: data.recurringPattern || 'daily',
+        recurringInterval: data.recurringInterval || 1,
+      });
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to load task');
+    } finally {
+      setLoadingTask(false);
     }
   };
 
-  const removeLabel = (labelToRemove: string) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
     setTask(prev => ({
       ...prev,
-      labels: prev.labels.filter(label => label !== labelToRemove)
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Here you would typically save the task to your state management or API
-    console.log('Task submitted:', task);
-    
-    // Navigate back to tasks list
-    navigate('/dashboard/tasks');
+  const handleAddTag = () => {
+    const trimmedTag = tagInput.trim().toLowerCase();
+    if (trimmedTag && !task.tags.includes(trimmedTag) && task.tags.length < 5) {
+      setTask(prev => ({ ...prev, tags: [...prev.tags, trimmedTag] }));
+      setTagInput('');
+    }
   };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setTask(prev => ({ ...prev, tags: prev.tags.filter(tag => tag !== tagToRemove) }));
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddTag();
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!task.title || !task.description || !task.dueDate) {
+      setError('Please fill in all required fields');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const taskData = {
+        ...task,
+        recurringPattern: task.isRecurring ? task.recurringPattern : undefined,
+        recurringInterval: task.isRecurring ? task.recurringInterval : undefined,
+      };
+
+      if (editMode && id) {
+        await taskService.updateTask(id, taskData);
+      } else {
+        await taskService.createTask(taskData);
+      }
+      navigate('/dashboard/tasks');
+    } catch (err: any) {
+      setError(err.response?.data?.message || `Failed to ${editMode ? 'update' : 'create'} task`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loadingTask) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -89,10 +161,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
         <div>
           <h1 className="text-2xl font-bold">{editMode ? 'Edit Task' : 'Create New Task'}</h1>
           <p className="text-gray-500 dark:text-gray-400">
-            {editMode 
-              ? 'Update the details of your task' 
-              : 'Add a new task to your list'
-            }
+            {editMode ? 'Update the details of your task' : 'Add a new task to your list'}
           </p>
         </div>
         <div className="flex gap-3">
@@ -103,6 +172,13 @@ const TaskForm: React.FC<TaskFormProps> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+        {/* Error Message */}
+        {error && (
+          <div className="p-3 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+            {error}
+          </div>
+        )}
+
         {/* Title */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -123,12 +199,13 @@ const TaskForm: React.FC<TaskFormProps> = ({
         {/* Description */}
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Description
+            Description <span className="text-red-500">*</span>
           </label>
           <textarea
             id="description"
             name="description"
             rows={4}
+            required
             value={task.description}
             onChange={handleChange}
             placeholder="Describe your task"
@@ -136,11 +213,11 @@ const TaskForm: React.FC<TaskFormProps> = ({
           />
         </div>
 
-        {/* Due Date and Time */}
+        {/* Due Date and Category */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Due Date
+              Due Date <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -150,29 +227,33 @@ const TaskForm: React.FC<TaskFormProps> = ({
                 id="dueDate"
                 name="dueDate"
                 type="date"
+                required
                 value={task.dueDate}
                 onChange={handleChange}
                 className="pl-10 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
           </div>
-          
+
           <div>
-            <label htmlFor="dueTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Due Time
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Category
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Clock className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                id="dueTime"
-                name="dueTime"
-                type="time"
-                value={task.dueTime}
+              <select
+                id="category"
+                name="category"
+                value={task.category}
                 onChange={handleChange}
-                className="pl-10 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-              />
+                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              >
+                {CATEGORIES.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <ChevronDown className="h-5 w-5 text-gray-400" />
+              </div>
             </div>
           </div>
         </div>
@@ -191,16 +272,16 @@ const TaskForm: React.FC<TaskFormProps> = ({
                 onChange={handleChange}
                 className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </select>
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 <ChevronDown className="h-5 w-5 text-gray-400" />
               </div>
             </div>
           </div>
-          
+
           <div>
             <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Status
@@ -213,9 +294,10 @@ const TaskForm: React.FC<TaskFormProps> = ({
                 onChange={handleChange}
                 className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
-                <option value="todo">To Do</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Archived">Archived</option>
               </select>
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 <ChevronDown className="h-5 w-5 text-gray-400" />
@@ -224,105 +306,119 @@ const TaskForm: React.FC<TaskFormProps> = ({
           </div>
         </div>
 
-        {/* Category */}
+        {/* Tags */}
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Category
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Tags <span className="text-gray-400 text-xs">(max 5)</span>
           </label>
-          <div className="relative">
-            <select
-              id="category"
-              name="category"
-              value={task.category}
-              onChange={handleChange}
-              className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          <div className="flex flex-wrap gap-2 mb-2">
+            {task.tags.map(tag => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-sm"
+              >
+                <Tag className="w-3 h-3" />
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveTag(tag)}
+                  className="hover:text-indigo-800 dark:hover:text-indigo-200"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={handleTagKeyDown}
+              placeholder="Add a tag"
+              className="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              disabled={task.tags.length >= 5}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleAddTag}
+              disabled={task.tags.length >= 5}
             >
-              <option value="work">Work</option>
-              <option value="personal">Personal</option>
-              <option value="errands">Errands</option>
-              <option value="health">Health</option>
-              <option value="education">Education</option>
-              <option value="other">Other</option>
-            </select>
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <ChevronDown className="h-5 w-5 text-gray-400" />
-            </div>
+              <Plus className="w-4 h-4" />
+            </Button>
           </div>
         </div>
 
-        {/* Labels */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Labels
-          </label>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {task.labels.map((label, index) => (
-              <div 
-                key={index} 
-                className="flex items-center bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full"
-              >
-                <Tag className="h-3 w-3 mr-2 text-gray-500" />
-                <span className="text-sm">{label}</span>
-                <button 
-                  type="button"
-                  onClick={() => removeLabel(label)}
-                  className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            ))}
-            
-            {labelInputVisible ? (
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  value={newLabel}
-                  onChange={(e) => setNewLabel(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && addLabel()}
-                  placeholder="Add label"
-                  className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
-                  autoFocus
-                />
-                <button 
-                  type="button"
-                  onClick={addLabel}
-                  className="ml-2 text-primary"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setLabelInputVisible(false)}
-                  className="ml-1 text-gray-500"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            ) : (
-              <button 
-                type="button"
-                onClick={() => setLabelInputVisible(true)}
-                className="flex items-center text-sm text-primary hover:text-primary-dark"
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                Add Label
-              </button>
-            )}
+        {/* Recurring Task */}
+        <div className="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3 mb-4">
+            <input
+              type="checkbox"
+              id="isRecurring"
+              name="isRecurring"
+              checked={task.isRecurring}
+              onChange={handleChange}
+              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+            />
+            <label htmlFor="isRecurring" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+              <Repeat className="w-4 h-4" />
+              Recurring Task
+            </label>
           </div>
+
+          {task.isRecurring && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div>
+                <label htmlFor="recurringPattern" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Repeat
+                </label>
+                <select
+                  id="recurringPattern"
+                  name="recurringPattern"
+                  value={task.recurringPattern}
+                  onChange={handleChange}
+                  className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                >
+                  {RECURRING_PATTERNS.map(pattern => (
+                    <option key={pattern.value} value={pattern.value}>{pattern.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="recurringInterval" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Every X {task.recurringPattern === 'daily' ? 'days' : task.recurringPattern === 'weekly' ? 'weeks' : 'times'}
+                </label>
+                <input
+                  type="number"
+                  id="recurringInterval"
+                  name="recurringInterval"
+                  min="1"
+                  max="30"
+                  value={task.recurringInterval}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                />
+              </div>
+            </div>
+          )}
         </div>
-        
+
         {/* Submit Button */}
         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <Button 
-            variant="outline" 
-            type="button" 
-            asChild
-          >
+          <Button variant="outline" type="button" asChild>
             <Link to="/dashboard/tasks">Cancel</Link>
           </Button>
-          <Button type="submit">
-            {editMode ? 'Update Task' : 'Create Task'}
+          <Button type="submit" disabled={loading}>
+            {loading ? (
+              <div className="flex items-center">
+                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                {editMode ? 'Updating...' : 'Creating...'}
+              </div>
+            ) : (
+              editMode ? 'Update Task' : 'Create Task'
+            )}
           </Button>
         </div>
       </form>
@@ -330,4 +426,4 @@ const TaskForm: React.FC<TaskFormProps> = ({
   );
 };
 
-export default TaskForm; 
+export default TaskForm;

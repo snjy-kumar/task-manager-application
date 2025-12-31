@@ -1,94 +1,141 @@
-import { useState, useRef } from 'react';
-import { 
-  BarChart3, 
-  PieChart, 
-  LineChart, 
-  Calendar, 
+import { useState, useEffect } from 'react';
+import {
+  BarChart3,
   Download,
-  Filter,
-  ChevronDown,
   Clock,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  RefreshCw,
+  TrendingUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BentoGrid from '@/components/ui/bento/BentoGrid';
 import BentoCard from '@/components/ui/bento/BentoCard';
+import taskService from '@/services/taskService';
 
-// Sample data for reports
-const taskCompletionData = {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-  data: [8, 5, 12, 7, 10, 3, 6]
-};
+interface Task {
+  _id: string;
+  title: string;
+  status: 'Pending' | 'In Progress' | 'Completed' | 'Archived';
+  priority: 'Low' | 'Medium' | 'High';
+  dueDate: string;
+  createdAt: string;
+}
 
-const taskStatusData = {
-  labels: ['Completed', 'In Progress', 'Not Started', 'Overdue'],
-  data: [45, 30, 15, 10],
-  colors: ['#4ade80', '#60a5fa', '#a78bfa', '#ef4444']
-};
-
-const productivityTrend = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-  data: [65, 72, 68, 75, 82, 87]
-};
+interface Stats {
+  total: number;
+  completed: number;
+  inProgress: number;
+  pending: number;
+  overdue: number;
+  completionRate: number;
+  byPriority: { high: number; medium: number; low: number };
+}
 
 const ReportsPage = () => {
-  const gridRef = useRef(null);
-  const [dateRange, setDateRange] = useState<'week' | 'month' | 'quarter' | 'year'>('month');
-  
+  const [_tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [stats, setStats] = useState<Stats>({
+    total: 0,
+    completed: 0,
+    inProgress: 0,
+    pending: 0,
+    overdue: 0,
+    completionRate: 0,
+    byPriority: { high: 0, medium: 0, low: 0 }
+  });
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const response = await taskService.getAllTasks();
+      const taskList = response.tasks || [];
+      setTasks(taskList);
+      calculateStats(taskList);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to load tasks');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const calculateStats = (taskList: Task[]) => {
+    const now = new Date();
+    const completed = taskList.filter(t => t.status === 'Completed').length;
+    const inProgress = taskList.filter(t => t.status === 'In Progress').length;
+    const pending = taskList.filter(t => t.status === 'Pending').length;
+    const overdue = taskList.filter(t => {
+      const dueDate = new Date(t.dueDate);
+      return dueDate < now && t.status !== 'Completed';
+    }).length;
+
+    const high = taskList.filter(t => t.priority === 'High').length;
+    const medium = taskList.filter(t => t.priority === 'Medium').length;
+    const low = taskList.filter(t => t.priority === 'Low').length;
+
+    const completionRate = taskList.length > 0
+      ? Math.round((completed / taskList.length) * 100)
+      : 0;
+
+    setStats({
+      total: taskList.length,
+      completed,
+      inProgress,
+      pending,
+      overdue,
+      completionRate,
+      byPriority: { high, medium, low }
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-gray-500">Loading reports...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Reports & Analytics</h1>
-          <p className="text-gray-500 dark:text-gray-400">Insights and statistics about your productivity</p>
+          <p className="text-gray-500 dark:text-gray-400">Insights about your task productivity</p>
         </div>
         <div className="mt-4 md:mt-0 flex items-center space-x-2">
-          <div className="relative">
-            <button className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-sm flex items-center text-sm">
-              <Filter className="h-4 w-4 mr-2" />
-              <span>Filter</span>
-              <ChevronDown className="h-4 w-4 ml-2" />
-            </button>
-          </div>
-          <div className="flex bg-gray-100 dark:bg-gray-800 rounded-md p-1">
-            <button 
-              className={`px-3 py-1 rounded-md text-sm ${dateRange === 'week' ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
-              onClick={() => setDateRange('week')}
-            >
-              Week
-            </button>
-            <button 
-              className={`px-3 py-1 rounded-md text-sm ${dateRange === 'month' ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
-              onClick={() => setDateRange('month')}
-            >
-              Month
-            </button>
-            <button 
-              className={`px-3 py-1 rounded-md text-sm ${dateRange === 'quarter' ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
-              onClick={() => setDateRange('quarter')}
-            >
-              Quarter
-            </button>
-            <button 
-              className={`px-3 py-1 rounded-md text-sm ${dateRange === 'year' ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
-              onClick={() => setDateRange('year')}
-            >
-              Year
-            </button>
-          </div>
+          <Button variant="outline" onClick={fetchTasks}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" /> Export
           </Button>
         </div>
       </div>
-      
+
+      {error && (
+        <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center">
+          <AlertCircle className="h-5 w-5 mr-2" />
+          {error}
+        </div>
+      )}
+
       {/* Report Visualizations */}
-      <BentoGrid cols={4} gap="md" ref={gridRef}>
-        {/* Productivity Score */}
+      <BentoGrid cols={4} gap="md">
+        {/* Completion Rate */}
         <BentoCard
-          title="Productivity Score"
+          title="Completion Rate"
           icon={<BarChart3 className="h-5 w-5" />}
           size="md"
           gradient
@@ -98,346 +145,171 @@ const ReportsPage = () => {
           <div className="mt-4 flex flex-col items-center">
             <div className="relative h-32 w-32">
               <div className="absolute inset-0 flex items-center justify-center flex-col">
-                <span className="text-4xl font-bold">87</span>
-                <span className="text-sm text-green-500 flex items-center">
-                  +5% <ChevronUp className="h-3 w-3" />
-                </span>
+                <span className="text-4xl font-bold">{stats.completionRate}</span>
+                <span className="text-sm text-gray-500">%</span>
               </div>
-              <svg className="h-full w-full" viewBox="0 0 100 100">
+              <svg className="h-full w-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
+                  cx="50" cy="50" r="45"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="10"
                   strokeOpacity="0.1"
                 />
                 <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
+                  cx="50" cy="50" r="45"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="10"
                   strokeDasharray="283"
-                  strokeDashoffset="37"
+                  strokeDashoffset={283 - (283 * stats.completionRate) / 100}
                   className="text-primary"
                 />
               </svg>
             </div>
             <div className="grid grid-cols-2 gap-2 w-full mt-4">
               <div className="text-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm">
-                <p className="text-2xl font-bold">24</p>
-                <p className="text-xs text-gray-500">Tasks Completed</p>
+                <p className="text-2xl font-bold">{stats.completed}</p>
+                <p className="text-xs text-gray-500">Completed</p>
               </div>
               <div className="text-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm">
-                <p className="text-2xl font-bold">32</p>
-                <p className="text-xs text-gray-500">Hours Tracked</p>
+                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-xs text-gray-500">Total</p>
               </div>
             </div>
           </div>
         </BentoCard>
-        
-        {/* Task Completion by Day */}
-        <BentoCard
-          title="Task Completion by Day"
-          icon={<BarChart3 className="h-5 w-5" />}
-          size="lg"
-        >
-          <div className="h-64 flex items-end justify-around mt-4">
-            {taskCompletionData.labels.map((day, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <div 
-                  className="bg-primary rounded-t w-10"
-                  style={{ height: `${(taskCompletionData.data[i] / Math.max(...taskCompletionData.data)) * 100}%` }}
-                />
-                <span className="text-xs mt-2">{day}</span>
-                <span className="text-xs font-bold">{taskCompletionData.data[i]}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 bg-gray-50 dark:bg-gray-900 p-3 rounded-lg">
-            <div className="flex justify-between">
-              <div>
-                <p className="text-sm font-medium">Total Tasks</p>
-                <p className="text-2xl font-bold">{taskCompletionData.data.reduce((a, b) => a + b, 0)}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Daily Average</p>
-                <p className="text-2xl font-bold">
-                  {Math.round(taskCompletionData.data.reduce((a, b) => a + b, 0) / taskCompletionData.labels.length)}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Completion Rate</p>
-                <p className="text-2xl font-bold">92%</p>
-              </div>
-            </div>
-          </div>
-        </BentoCard>
-        
+
         {/* Task Status */}
         <BentoCard
           title="Task Status"
-          icon={<PieChart className="h-5 w-5" />}
+          icon={<BarChart3 className="h-5 w-5" />}
           size="md"
         >
-          <div className="flex items-center justify-center mt-4">
-            <div className="relative h-40 w-40">
-              {/* This is a simplified pie chart representation */}
-              <svg viewBox="0 0 100 100" className="transform -rotate-90">
-                {taskStatusData.labels.map((_, i) => {
-                  const previousSum = taskStatusData.data.slice(0, i).reduce((sum, value) => sum + value, 0);
-                  const total = taskStatusData.data.reduce((sum, value) => sum + value, 0);
-                  const startAngle = (previousSum / total) * 360;
-                  const endAngle = (taskStatusData.data[i] / total) * 360 + startAngle;
-                  
-                  const x1 = 50 + 45 * Math.cos((startAngle * Math.PI) / 180);
-                  const y1 = 50 + 45 * Math.sin((startAngle * Math.PI) / 180);
-                  const x2 = 50 + 45 * Math.cos((endAngle * Math.PI) / 180);
-                  const y2 = 50 + 45 * Math.sin((endAngle * Math.PI) / 180);
-                  
-                  const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-                  
-                  return (
-                    <path
-                      key={i}
-                      d={`M 50 50 L ${x1} ${y1} A 45 45 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
-                      fill={taskStatusData.colors[i]}
-                      stroke="white"
-                      strokeWidth="1"
-                    />
-                  );
-                })}
-                <circle cx="50" cy="50" r="25" fill="white" />
-              </svg>
+          <div className="space-y-3 mt-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Completed</span>
+                <span className="text-sm font-medium">{stats.completed}</span>
+              </div>
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-green-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.completed / stats.total) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">In Progress</span>
+                <span className="text-sm font-medium">{stats.inProgress}</span>
+              </div>
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-blue-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.inProgress / stats.total) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Pending</span>
+                <span className="text-sm font-medium">{stats.pending}</span>
+              </div>
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-yellow-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.pending / stats.total) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Overdue</span>
+                <span className="text-sm font-medium">{stats.overdue}</span>
+              </div>
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-red-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.overdue / stats.total) * 100 : 0}%` }}
+                />
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 mt-4">
-            {taskStatusData.labels.map((label, i) => (
-              <div key={i} className="flex items-center">
-                <span 
-                  className="h-3 w-3 rounded-full mr-2"
-                  style={{ backgroundColor: taskStatusData.colors[i] }}
-                />
-                <span className="text-xs">{label}</span>
-                <span className="text-xs font-bold ml-auto">{taskStatusData.data[i]}%</span>
-              </div>
-            ))}
-          </div>
         </BentoCard>
-        
-        {/* Time Tracking */}
+
+        {/* Priority Distribution */}
         <BentoCard
-          title="Time Tracking"
-          icon={<Clock className="h-5 w-5" />}
+          title="Priority Distribution"
+          icon={<TrendingUp className="h-5 w-5" />}
           size="sm"
         >
-          <div className="space-y-3 mt-2">
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-medium">Today</span>
-              <span className="text-lg font-bold">4h 25m</span>
-            </div>
-            <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-              <div className="h-full bg-primary rounded-full" style={{ width: '55%' }} />
-            </div>
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>0h</span>
-              <span>8h</span>
-            </div>
-            <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">This Week</span>
-                <span className="text-lg font-bold">24h 10m</span>
+          <div className="space-y-3 mt-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">High</span>
+                <span className="text-sm font-medium">{stats.byPriority.high}</span>
               </div>
-              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full mt-2">
-                <div className="h-full bg-primary rounded-full" style={{ width: '70%' }} />
-              </div>
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
-                <span>0h</span>
-                <span>40h</span>
-              </div>
-            </div>
-          </div>
-        </BentoCard>
-        
-        {/* Productivity Trend */}
-        <BentoCard
-          title="Productivity Trend"
-          icon={<LineChart className="h-5 w-5" />}
-          size="md"
-          gradient
-          gradientFrom="from-purple-600/20"
-          gradientTo="to-pink-600/20"
-        >
-          <div className="h-40 mt-4 relative">
-            {/* Simplified line chart */}
-            <svg className="w-full h-full">
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#9333ea" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#9333ea" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              
-              {/* Grid lines */}
-              {[0, 1, 2, 3].map((line) => (
-                <line
-                  key={line}
-                  x1="0"
-                  y1={line * 40}
-                  x2="100%"
-                  y2={line * 40}
-                  stroke="#e5e7eb"
-                  strokeWidth="1"
-                  strokeDasharray="4 4"
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-red-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.byPriority.high / stats.total) * 100 : 0}%` }}
                 />
-              ))}
-              
-              {/* Line chart */}
-              <polyline
-                points={productivityTrend.labels.map((_, i) => {
-                  const x = (i / (productivityTrend.labels.length - 1)) * 100;
-                  const y = 160 - (productivityTrend.data[i] / 100) * 160;
-                  return `${x}%,${y}`;
-                }).join(' ')}
-                fill="none"
-                stroke="#9333ea"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              
-              {/* Area under the line */}
-              <path
-                d={`
-                  M 0,160 
-                  ${productivityTrend.labels.map((_, i) => {
-                    const x = (i / (productivityTrend.labels.length - 1)) * 100;
-                    const y = 160 - (productivityTrend.data[i] / 100) * 160;
-                    return `L ${x}%,${y}`;
-                  }).join(' ')} 
-                  L 100%,160 Z
-                `}
-                fill="url(#gradient)"
-              />
-              
-              {/* Data points */}
-              {productivityTrend.labels.map((_, i) => {
-                const x = (i / (productivityTrend.labels.length - 1)) * 100;
-                const y = 160 - (productivityTrend.data[i] / 100) * 160;
-                return (
-                  <circle
-                    key={i}
-                    cx={`${x}%`}
-                    cy={y}
-                    r="4"
-                    fill="#ffffff"
-                    stroke="#9333ea"
-                    strokeWidth="2"
-                  />
-                );
-              })}
-            </svg>
-            
-            {/* X axis labels */}
-            <div className="flex justify-between mt-2">
-              {productivityTrend.labels.map((month, i) => (
-                <div key={i} className="text-xs text-gray-500">{month}</div>
-              ))}
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Medium</span>
+                <span className="text-sm font-medium">{stats.byPriority.medium}</span>
+              </div>
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-yellow-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.byPriority.medium / stats.total) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Low</span>
+                <span className="text-sm font-medium">{stats.byPriority.low}</span>
+              </div>
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div
+                  className="h-full bg-green-500 rounded-full"
+                  style={{ width: `${stats.total > 0 ? (stats.byPriority.low / stats.total) * 100 : 0}%` }}
+                />
+              </div>
             </div>
           </div>
         </BentoCard>
-        
-        {/* Task Categories */}
+
+        {/* Summary Stats */}
         <BentoCard
-          title="Task Categories"
-          icon={<PieChart className="h-5 w-5" />}
+          title="Summary"
+          icon={<CheckCircle className="h-5 w-5" />}
           size="sm"
         >
-          <div className="space-y-3 mt-2">
-            {[
-              { name: 'Work', count: 45, percentage: 45, color: 'bg-blue-500' },
-              { name: 'Personal', count: 30, percentage: 30, color: 'bg-purple-500' },
-              { name: 'Learning', count: 15, percentage: 15, color: 'bg-green-500' },
-              { name: 'Others', count: 10, percentage: 10, color: 'bg-yellow-500' }
-            ].map((category, i) => (
-              <div key={i}>
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm">{category.name}</span>
-                  <span className="text-sm font-medium">{category.count}</span>
-                </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                  <div 
-                    className={`h-full ${category.color} rounded-full`} 
-                    style={{ width: `${category.percentage}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </BentoCard>
-        
-        {/* Monthly Comparison */}
-        <BentoCard
-          title="Monthly Comparison"
-          icon={<Calendar className="h-5 w-5" />}
-          size="full"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-              <div className="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full mb-3">
-                <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="text-lg font-bold">Completed Tasks</h3>
-              <div className="flex items-baseline mt-2 space-x-2">
-                <span className="text-3xl font-bold">87</span>
-                <span className="text-sm text-green-600 flex items-center">
-                  +12% <ChevronUp className="h-3 w-3" />
-                </span>
-              </div>
-              <p className="text-sm text-gray-500 mt-2">vs. 78 last month</p>
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-1" />
+              <div className="text-2xl font-bold">{stats.completed}</div>
+              <div className="text-xs text-gray-500">Completed</div>
             </div>
-            
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
-              <div className="flex items-center justify-center w-12 h-12 bg-yellow-100 dark:bg-yellow-800 rounded-full mb-3">
-                <Clock className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
-              </div>
-              <h3 className="text-lg font-bold">Average Time</h3>
-              <div className="flex items-baseline mt-2 space-x-2">
-                <span className="text-3xl font-bold">2.4h</span>
-                <span className="text-sm text-green-600 flex items-center">
-                  -8% <ChevronDown className="h-3 w-3" />
-                </span>
-              </div>
-              <p className="text-sm text-gray-500 mt-2">vs. 2.6h last month</p>
+            <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <Clock className="h-6 w-6 text-blue-600 mx-auto mb-1" />
+              <div className="text-2xl font-bold">{stats.inProgress}</div>
+              <div className="text-xs text-gray-500">In Progress</div>
             </div>
-            
-            <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
-              <div className="flex items-center justify-center w-12 h-12 bg-red-100 dark:bg-red-800 rounded-full mb-3">
-                <AlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
-              </div>
-              <h3 className="text-lg font-bold">Overdue Tasks</h3>
-              <div className="flex items-baseline mt-2 space-x-2">
-                <span className="text-3xl font-bold">5</span>
-                <span className="text-sm text-green-600 flex items-center">
-                  -28% <ChevronDown className="h-3 w-3" />
-                </span>
-              </div>
-              <p className="text-sm text-gray-500 mt-2">vs. 7 last month</p>
+            <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+              <AlertCircle className="h-6 w-6 text-yellow-600 mx-auto mb-1" />
+              <div className="text-2xl font-bold">{stats.pending}</div>
+              <div className="text-xs text-gray-500">Pending</div>
             </div>
-          </div>
-          
-          <div className="mt-6 bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
-            <h3 className="text-sm font-medium mb-2">Monthly Progress</h3>
-            <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-              <div className="h-full bg-primary rounded-full" style={{ width: '72%' }} />
-            </div>
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>0%</span>
-              <span>72% of monthly goal completed</span>
-              <span>100%</span>
+            <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+              <AlertCircle className="h-6 w-6 text-red-600 mx-auto mb-1" />
+              <div className="text-2xl font-bold">{stats.overdue}</div>
+              <div className="text-xs text-gray-500">Overdue</div>
             </div>
           </div>
         </BentoCard>
@@ -445,20 +317,5 @@ const ReportsPage = () => {
     </div>
   );
 };
-
-const ChevronUp = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <polyline points="18 15 12 9 6 15"></polyline>
-  </svg>
-);
 
 export default ReportsPage;

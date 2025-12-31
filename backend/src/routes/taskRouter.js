@@ -1,15 +1,34 @@
-import express from 'express'
+import express from 'express';
+import { authMiddleware as protect } from '../middleware/authMiddleware.js';
+import {
+    createTask,
+    getTasks,
+    getTask,
+    updateTask,
+    deleteTask,
+    hardDeleteTask,
+    getTaskStats,
+    bulkUpdateTasks
+} from '../controllers/taskController.js';
+import validate from '../middleware/validate.js';
+import { createTaskSchema, updateTaskSchema } from '../validations/taskValidation.js';
 
+const router = express.Router();
 
-import { createTask, getTasks, getTask, updateTask, deleteTask } from '../controllers/taskController.js'
+// All routes are protected with authentication
 
-const router = express.Router()
+// Task statistics (must be before /:id routes)
+router.get("/stats", protect, getTaskStats);
 
-router.post("/tasks", createTask) // Create a new task #DONE
-router.get("/tasks", getTasks) // Get all tasks #DONE
-router.get("/task/:id", getTask) // Get a task #DONE
-router.put("/task/:id", updateTask) // Update a task #DONE
-router.delete("/task/:id", deleteTask) // Delete a task #DONE
+// Bulk operations
+router.patch("/bulk", protect, bulkUpdateTasks);
 
+// CRUD operations
+router.post("/", protect, validate(createTaskSchema), createTask);
+router.get("/", protect, getTasks);
+router.get("/:id", protect, getTask);
+router.put("/:id", protect, validate(updateTaskSchema), updateTask);
+router.delete("/:id", protect, deleteTask); // Soft delete
+router.delete("/:id/permanent", protect, hardDeleteTask); // Hard delete
 
-export default router
+export default router;

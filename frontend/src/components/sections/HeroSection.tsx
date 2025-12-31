@@ -1,166 +1,253 @@
 import { motion } from 'framer-motion';
-import { FaPlayCircle, FaChartLine, FaCheck } from 'react-icons/fa';
+import { Play, ArrowRight, CheckCircle, Star, Users, TrendingUp, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full bg-gradient-to-br from-slate-950 to-slate-900 overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
-      {/* Abstract shapes background */}
-      <div className="absolute inset-0 overflow-hidden opacity-20">
-        <div className="absolute top-0 -left-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-0 -right-10 w-72 h-72 bg-yellow-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-10 left-20 w-72 h-72 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+    <section className="relative w-full min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 overflow-hidden">
+      {/* Animated gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-20 -left-20 w-96 h-96 bg-purple-600/30 rounded-full filter blur-[100px]"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-40 -right-20 w-96 h-96 bg-blue-600/30 rounded-full filter blur-[100px]"
+          animate={{
+            x: [0, -30, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -bottom-20 left-1/3 w-96 h-96 bg-pink-600/20 rounded-full filter blur-[100px]"
+          animate={{
+            x: [0, 40, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.15, 1]
+          }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
 
-      {/* Main content container */}
-      <div className="relative max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div 
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: -20 }}
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
+
+      {/* Main content */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
+        {/* Badge */}
+        <motion.div
+          className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Manage Tasks Smarter with{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500">
-              AI Assistance
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 backdrop-blur-sm">
+            <Sparkles className="w-4 h-4 text-indigo-400" />
+            <span className="text-sm text-indigo-300 font-medium">Now with AI-powered task suggestions</span>
+            <ArrowRight className="w-4 h-4 text-indigo-400" />
+          </div>
+        </motion.div>
+
+        {/* Hero Text */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+        >
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            Manage Tasks with
+            <br />
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Intelligent Precision
             </span>
           </h1>
-          <p className="max-w-2xl mx-auto text-lg text-slate-300">
-            TaskAI helps you organize, prioritize, and complete your tasks with 
-            intelligent suggestions and automated workflows tailored to your habits.
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-400 leading-relaxed">
+            The AI-powered task manager that learns your habits, prioritizes your work,
+            and helps you achieve more with less stress.
           </p>
         </motion.div>
 
-        {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {/* Main App Preview - Spans 2 columns */}
-          <motion.div 
-            className="md:col-span-2 rounded-3xl bg-slate-800/50 backdrop-blur-sm p-8 border border-slate-700/50 shadow-xl overflow-hidden group"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+        {/* CTA Buttons */}
+        <motion.div
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <Link
+            to="/signup"
+            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105"
           >
-            <div className="relative">
-              <img 
-                src="/dashboard.png" 
-                alt="TaskAI Dashboard" 
-                className="w-full h-auto rounded-lg shadow-lg transition-transform duration-500 group-hover:scale-[1.02]"
-              />
-              
-              <motion.div 
-                className="absolute top-6 right-6 bg-white/10 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-white/20 max-w-xs"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center text-white font-bold">
-                    AI
-                  </div>
-                  <h3 className="font-medium text-white">Smart Assistant</h3>
-                </div>
-                <p className="text-slate-200 text-sm">
-                  I've rescheduled your meeting to free up time for the project deadline
-                </p>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute bottom-6 left-6 bg-white/10 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-white/20"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.5 }}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center text-white">
-                    <FaChartLine />
-                  </div>
-                  <h3 className="font-medium text-white">Insights</h3>
-                </div>
-                <p className="text-slate-200 text-sm">
-                  You're 64% more productive on Tuesdays
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
-          
-          {/* CTA Card */}
-          <motion.div 
-            className="rounded-3xl bg-gradient-to-br from-indigo-800/50 to-purple-800/50 backdrop-blur-sm p-8 border border-indigo-700/30 shadow-xl flex flex-col justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-          >
-            <h3 className="text-xl font-bold text-white mb-6">Ready to boost your productivity?</h3>
-            
-            <div className="flex flex-col gap-4 mb-8">
-              <button className="w-full py-3 px-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-lg shadow-lg hover:shadow-indigo-500/25 transition duration-300 flex items-center justify-center gap-2 hover:scale-105">
-                Get Started Free
-              </button>
-              
-              <button className="w-full py-3 px-6 bg-white/10 backdrop-blur-sm text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition duration-300 flex items-center justify-center gap-2">
-                <FaPlayCircle className="text-indigo-300" />
-                Watch Demo
-              </button>
-            </div>
-            
-            <div className="mt-auto">
-              <p className="text-xs text-indigo-200 uppercase tracking-wider font-semibold mb-3">No credit card required</p>
-              <ul className="space-y-2">
-                {["Free 14-day trial", "Cancel anytime", "All features included"].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-slate-200">
-                    <FaCheck className="text-green-400" /> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-          
-          {/* Stats Cards Row */}
-          <motion.div 
-            className="grid grid-cols-3 gap-6 md:col-span-3"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-          >
-            {[
-              { figure: "15,000+", label: "Active Users", color: "from-blue-500 to-cyan-500" },
-              { figure: "4.8/5", label: "User Rating", color: "from-amber-500 to-orange-500" },
-              { figure: "30%", label: "Productivity Boost", color: "from-green-500 to-emerald-500" }
-            ].map((stat, i) => (
-              <div 
-                key={i} 
-                className="rounded-3xl bg-slate-800/50 backdrop-blur-sm p-6 border border-slate-700/50 shadow-lg text-center hover:transform hover:scale-105 transition duration-300"
-              >
-                <div className={`text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-                  {stat.figure}
-                </div>
-                <p className="text-slate-300">{stat.label}</p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
+            <span>Start Free Trial</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 blur-xl opacity-50 group-hover:opacity-75 transition-opacity -z-10" />
+          </Link>
 
-        {/* Company Logos */}
-        <motion.div 
-          className="text-center"
+          <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+            <Play className="w-5 h-5 text-indigo-400" />
+            <span>Watch Demo</span>
+          </button>
+        </motion.div>
+
+        {/* Trust indicators */}
+        <motion.div
+          className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-400 mb-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.7 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <p className="text-slate-400 mb-6">Trusted by teams at</p>
-          <div className="flex flex-wrap justify-center gap-8 items-center opacity-70 hover:opacity-100 transition duration-300">
-            {[1, 2, 3, 4].map((num) => (
-              <img 
-                key={num}
-                src={`/images/logo-${num}.svg`} 
-                alt={`Company ${num}`} 
-                className="h-8 md:h-10 w-auto grayscale hover:grayscale-0 transition duration-300" 
+          {[
+            { icon: CheckCircle, text: "14-day free trial" },
+            { icon: CheckCircle, text: "No credit card required" },
+            { icon: CheckCircle, text: "Cancel anytime" },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <item.icon className="w-4 h-4 text-green-400" />
+              <span>{item.text}</span>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+        >
+          {[
+            { icon: Users, value: "50,000+", label: "Active Users", gradient: "from-blue-500 to-cyan-500" },
+            { icon: Star, value: "4.9/5", label: "User Rating", gradient: "from-amber-500 to-orange-500" },
+            { icon: TrendingUp, value: "40%", label: "Productivity Boost", gradient: "from-green-500 to-emerald-500" },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
+              whileHover={{ y: -5 }}
+            >
+              <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${stat.gradient} mb-4`}>
+                <stat.icon className="w-6 h-6 text-white" />
+              </div>
+              <div className={`text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}>
+                {stat.value}
+              </div>
+              <p className="text-slate-400">{stat.label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* App Preview */}
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-indigo-500/10">
+            {/* Browser bar */}
+            <div className="flex items-center gap-2 px-4 py-3 bg-slate-800/80 border-b border-white/10">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+              </div>
+              <div className="flex-1 mx-4">
+                <div className="w-full max-w-md mx-auto px-4 py-1.5 rounded-lg bg-slate-900/50 text-slate-400 text-sm text-center">
+                  taskmanager.app/dashboard
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard preview */}
+            <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8">
+              <img
+                src="/dashboard.png"
+                alt="TaskManager Dashboard"
+                className="w-full rounded-lg shadow-lg"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://placehold.co/1200x700/1e293b/4f46e5?text=TaskManager+Dashboard';
+                }}
               />
+            </div>
+          </div>
+
+          {/* Floating card - AI Assistant */}
+          <motion.div
+            className="absolute -right-4 top-1/4 max-w-xs p-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl hidden lg:block"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-white">AI Assistant</h4>
+                <p className="text-xs text-slate-400">Just now</p>
+              </div>
+            </div>
+            <p className="text-sm text-slate-300">
+              "I've rescheduled your 3 PM meeting to tomorrow to give you focus time for the project deadline."
+            </p>
+          </motion.div>
+
+          {/* Floating card - Productivity Stats */}
+          <motion.div
+            className="absolute -left-4 bottom-1/4 max-w-xs p-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl hidden lg:block"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 1.4 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-white">Weekly Insight</h4>
+                <p className="text-xs text-slate-400">Productivity report</p>
+              </div>
+            </div>
+            <p className="text-sm text-slate-300">
+              You're <span className="text-green-400 font-semibold">23% more productive</span> this week compared to last!
+            </p>
+          </motion.div>
+        </motion.div>
+
+        {/* Trusted by section */}
+        <motion.div
+          className="mt-20 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.6 }}
+        >
+          <p className="text-slate-500 mb-8">Trusted by teams at leading companies</p>
+          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+            {['Google', 'Microsoft', 'Apple', 'Amazon', 'Netflix'].map((company, i) => (
+              <motion.div
+                key={i}
+                className="text-2xl font-bold text-slate-500"
+                whileHover={{ scale: 1.1, color: '#fff' }}
+              >
+                {company}
+              </motion.div>
             ))}
           </div>
         </motion.div>
       </div>
+
+      {/* Bottom gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent" />
     </section>
   );
 };

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";  
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOffIcon, MailIcon, LockIcon, Rocket } from "lucide-react"; 
-import { useNavigate, Link } from "react-router-dom";
+import { EyeIcon, EyeOffIcon, MailIcon, LockIcon, Rocket } from "lucide-react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 interface LoginFormData {
   email: string;
@@ -11,6 +12,8 @@ interface LoginFormData {
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
@@ -48,6 +51,7 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     const trimmedEmail = formData.email.trim();
     const trimmedPassword = formData.password.trim();
 
@@ -58,28 +62,27 @@ const LoginPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch("/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: trimmedEmail,
-          password: trimmedPassword,
-        }),
-      });
+      await login(trimmedEmail, trimmedPassword);
 
-      const data = await response.json();
+      // Redirect to the page they tried to visit or dashboard
+      const from = (location.state as any)?.from?.pathname || "/dashboard";
+      navigate(from, { replace: true });
 
-      if (response.ok) {
-        navigate("/dashboard");
-        setFormData({ email: "", password: "" });
-        setError("");
-      } else {
-        setError(data.message || "Invalid credentials. Please try again.");
-      }
+      setFormData({ email: "", password: "" });
+      setError("");
     } catch (error: any) {
-      setError("There was an issue connecting to the server.");
+      // Handle different error types
+      if (error.message) {
+        setError(error.message);
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.response?.data?.errors) {
+        // Handle validation errors
+        const errors = error.response.data.errors;
+        setError(errors.map((e: any) => e.message).join(', '));
+      } else {
+        setError("Invalid credentials. Please try again.");
+      }
     }
     setLoading(false);
   };
@@ -97,7 +100,7 @@ const LoginPage: React.FC = () => {
           <div className={`col-span-1 md:col-span-3 rounded-2xl p-6 transition-all duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} shadow-lg transform hover:scale-[1.01]`}>
             <div className="flex justify-between items-center">
               <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Welcome Back</h1>
-              <button 
+              <button
                 onClick={toggleTheme}
                 className={`p-2 rounded-full transition-colors ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-200 hover:bg-gray-300'}`}
               >
@@ -113,7 +116,7 @@ const LoginPage: React.FC = () => {
                 {error}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className={`rounded-xl p-4 transition-all duration-300 ${activeField === 'email' ? (darkMode ? 'bg-gray-800' : 'bg-gray-100') : ''}`}>
                 <label htmlFor="email" className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -161,8 +164,8 @@ const LoginPage: React.FC = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   >
-                    {showPassword ? 
-                      <EyeOffIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} /> : 
+                    {showPassword ?
+                      <EyeOffIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} /> :
                       <EyeIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
                     }
                   </button>
@@ -172,11 +175,10 @@ const LoginPage: React.FC = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-4 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 ${
-                  darkMode 
-                    ? 'bg-white text-black hover:bg-gray-200' 
-                    : 'bg-black text-white hover:bg-gray-800'
-                }`}
+                className={`w-full py-4 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 ${darkMode
+                  ? 'bg-white text-black hover:bg-gray-200'
+                  : 'bg-black text-white hover:bg-gray-800'
+                  }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center space-x-2">
@@ -200,13 +202,12 @@ const LoginPage: React.FC = () => {
             <div className={`rounded-2xl p-6 transition-all duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'} shadow-lg`}>
               <div className="text-center">
                 <p className="mb-2">Trouble signing in?</p>
-                <Link 
-                  to="/forgot-password" 
-                  className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${
-                    darkMode 
-                      ? 'bg-gray-700 hover:bg-gray-600 text-white' 
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                  }`}
+                <Link
+                  to="/forgot-password"
+                  className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${darkMode
+                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                    }`}
                 >
                   Reset Password
                 </Link>
@@ -216,13 +217,12 @@ const LoginPage: React.FC = () => {
             <div className={`rounded-2xl p-6 transition-all duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'} shadow-lg transform hover:scale-[1.02]`}>
               <div className="text-center">
                 <p className="mb-2">New here?</p>
-                <Link 
-                  to="/signup" 
-                  className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${
-                    darkMode 
-                      ? 'bg-gray-700 hover:bg-gray-600 text-white' 
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                  }`}
+                <Link
+                  to="/signup"
+                  className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${darkMode
+                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                    }`}
                 >
                   Create Account
                 </Link>

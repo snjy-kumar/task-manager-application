@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";  
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, LockIcon, Sparkles } from "lucide-react"; 
+import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, LockIcon, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import authService from "@/services/authService";
 
 interface SignupFormData {
   name: string;
@@ -13,6 +15,7 @@ interface SignupFormData {
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [formData, setFormData] = useState<SignupFormData>({
     name: "",
@@ -28,6 +31,7 @@ const SignupPage: React.FC = () => {
 
   // Animation states
   const [animate, setAnimate] = useState(false);
+  const [_passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
   useEffect(() => {
     setAnimate(true);
@@ -42,6 +46,12 @@ const SignupPage: React.FC = () => {
       [name]: value,
     });
     if (error) setError("");
+
+    // Validate password in real-time
+    if (name === 'password') {
+      const validation = authService.validatePassword(value);
+      setPasswordErrors(validation.errors);
+    }
   };
 
   const handleFocus = (field: string) => {
@@ -55,6 +65,7 @@ const SignupPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
     if (
       formData.name.trim() === "" ||
@@ -71,29 +82,29 @@ const SignupPage: React.FC = () => {
       return;
     }
 
+    // Validate password strength
+    const validation = authService.validatePassword(formData.password);
+    if (!validation.valid) {
+      setError(validation.errors.join(', '));
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/v1/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        navigate("/");
+      await register(formData.name, formData.email, formData.password);
+      navigate("/dashboard", { replace: true });
+    } catch (error: any) {
+      // Handle different error types
+      if (error.message) {
+        setError(error.message);
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.response?.data?.errors) {
+        const errors = error.response.data.errors;
+        setError(errors.map((e: any) => e.message).join(', '));
       } else {
-        setError(data.error || "An error occurred. Please try again.");
+        setError("An error occurred. Please try again.");
       }
-    } catch (error:any) {
-      setError("There was an issue connecting to the server.");
     }
 
     setLoading(false);
@@ -113,7 +124,7 @@ const SignupPage: React.FC = () => {
           <div className={`col-span-1 md:col-span-3 rounded-2xl p-6 transition-all duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} shadow-lg transform hover:scale-[1.01]`}>
             <div className="flex justify-between items-center">
               <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Create Account</h1>
-              <button 
+              <button
                 onClick={toggleTheme}
                 className={`p-2 rounded-full transition-colors ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-200 hover:bg-gray-300'}`}
               >
@@ -129,7 +140,7 @@ const SignupPage: React.FC = () => {
                 {error}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className={`rounded-xl p-4 transition-all duration-300 ${activeField === 'name' ? (darkMode ? 'bg-gray-800' : 'bg-gray-100') : ''}`}>
                 <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>Full Name</label>
@@ -191,8 +202,8 @@ const SignupPage: React.FC = () => {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     >
-                      {showPassword ? 
-                        <EyeOffIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} /> : 
+                      {showPassword ?
+                        <EyeOffIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} /> :
                         <EyeIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
                       }
                     </button>
@@ -220,8 +231,8 @@ const SignupPage: React.FC = () => {
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     >
-                      {showConfirmPassword ? 
-                        <EyeOffIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} /> : 
+                      {showConfirmPassword ?
+                        <EyeOffIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} /> :
                         <EyeIcon className={`h-5 w-5 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
                       }
                     </button>
@@ -232,11 +243,10 @@ const SignupPage: React.FC = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-4 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 ${
-                  darkMode 
-                    ? 'bg-white text-black hover:bg-gray-200' 
-                    : 'bg-black text-white hover:bg-gray-800'
-                }`}
+                className={`w-full py-4 rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 ${darkMode
+                  ? 'bg-white text-black hover:bg-gray-200'
+                  : 'bg-black text-white hover:bg-gray-800'
+                  }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center space-x-2">
@@ -259,20 +269,19 @@ const SignupPage: React.FC = () => {
             </div>
 
             {/* Password Match Indicator */}
-            <div className={`rounded-2xl p-6 transition-all duration-300 ${
-              formData.password && formData.confirmPassword 
-                ? (formData.password === formData.confirmPassword 
-                  ? (darkMode ? 'bg-green-900/30 text-green-200' : 'bg-green-100 text-green-800') 
-                  : (darkMode ? 'bg-red-900/30 text-red-200' : 'bg-red-100 text-red-800'))
-                : (darkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500')
-            } shadow-lg`}>
+            <div className={`rounded-2xl p-6 transition-all duration-300 ${formData.password && formData.confirmPassword
+              ? (formData.password === formData.confirmPassword
+                ? (darkMode ? 'bg-green-900/30 text-green-200' : 'bg-green-100 text-green-800')
+                : (darkMode ? 'bg-red-900/30 text-red-200' : 'bg-red-100 text-red-800'))
+              : (darkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500')
+              } shadow-lg`}>
               <div className="text-center">
                 <h3 className="text-lg font-medium">Password Status</h3>
                 <p className="mt-2">
-                  {!formData.password && !formData.confirmPassword 
-                    ? "Enter passwords" 
-                    : (formData.password === formData.confirmPassword 
-                      ? "Passwords match ✓" 
+                  {!formData.password && !formData.confirmPassword
+                    ? "Enter passwords"
+                    : (formData.password === formData.confirmPassword
+                      ? "Passwords match ✓"
                       : "Passwords don't match ✗")}
                 </p>
               </div>
@@ -282,13 +291,12 @@ const SignupPage: React.FC = () => {
             <div className={`rounded-2xl p-6 transition-all duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'} shadow-lg transform hover:scale-[1.02]`}>
               <div className="text-center">
                 <p className="mb-2">Already have an account?</p>
-                <a 
-                  href="/login" 
-                  className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${
-                    darkMode 
-                      ? 'bg-gray-700 hover:bg-gray-600 text-white' 
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                  }`}
+                <a
+                  href="/login"
+                  className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${darkMode
+                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                    }`}
                 >
                   Log In
                 </a>
