@@ -66,8 +66,8 @@ export const BentoShowcase: React.FC<BentoShowcaseProps> = ({
               icon={<Sparkles className="h-5 w-5" />}
               size="lg"
               gradient
-              gradientFrom="from-purple-600/20"
-              gradientTo="to-pink-600/20"
+              gradientFrom="from-gray-600/20"
+              gradientTo="to-gray-600/20"
             >
               <div className="h-full flex flex-col">
                 <div className="flex-1 flex items-center justify-center">
@@ -258,7 +258,7 @@ export const BentoShowcase: React.FC<BentoShowcaseProps> = ({
               icon={<Users className="h-5 w-5" />}
               size="lg"
               gradient
-              gradientFrom="from-orange-600/20"
+              gradientFrom="from-gray-600/20"
               gradientTo="to-red-600/20"
             >
               <div className="mt-4 space-y-3">
@@ -304,7 +304,7 @@ export const BentoShowcase: React.FC<BentoShowcaseProps> = ({
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">AI Engine</span>
-                  <span className="text-xs bg-yellow-500/20 text-yellow-700 dark:text-yellow-500 rounded-full px-2 py-0.5">
+                  <span className="text-xs bg-gray-500/20 text-gray-700 dark:text-gray-300 rounded-full px-2 py-0.5">
                     Degraded
                   </span>
                 </div>

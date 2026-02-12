@@ -16,7 +16,7 @@ const statusColors: Record<string, string> = {
     Pending: 'border-l-gray-400',
     'In Progress': 'border-l-blue-400',
     Completed: 'border-l-green-400',
-    Archived: 'border-l-purple-400',
+    Archived: 'border-l-gray-400',
 };
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -103,36 +103,36 @@ export default function CalendarView() {
     if (loading) {
         return (
             <div className="p-6">
-                <div className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-xl h-[600px]" />
+                <div className="animate-pulse bg-gray-200 dark:bg-gray-900 rounded-2xl h-[600px]" />
             </div>
         );
     }
 
     return (
-        <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-950">
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Calendar</h1>
                     <p className="text-gray-500 dark:text-gray-400">View tasks by due date</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                    <div className="flex bg-gray-100 dark:bg-gray-900 rounded-2xl p-1 shadow-sm">
                         <button
                             onClick={() => setView('month')}
-                            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${view === 'month' ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
+                            className={`px-3 py-1.5 text-sm rounded-xl transition-all duration-300 ${view === 'month' ? 'bg-white dark:bg-gray-800 shadow-lg' : ''}`}
                         >
                             Month
                         </button>
                         <button
                             onClick={() => setView('week')}
-                            className={`px-3 py-1.5 text-sm rounded-md transition-colors ${view === 'week' ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
+                            className={`px-3 py-1.5 text-sm rounded-xl transition-all duration-300 ${view === 'week' ? 'bg-white dark:bg-gray-800 shadow-lg' : ''}`}
                         >
                             Week
                         </button>
                     </div>
                     <Link
                         to="/dashboard/tasks/new"
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 shadow-lg"
                     >
                         <Plus className="w-4 h-4" />
                         Add Task
@@ -140,11 +140,11 @@ export default function CalendarView() {
                 </div>
             </div>
 
-            <div className="flex items-center justify-between mb-6 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-6 bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={prevMonth}
-                        className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
@@ -153,21 +153,21 @@ export default function CalendarView() {
                     </h2>
                     <button
                         onClick={nextMonth}
-                        className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-300"
                     >
                         <ChevronRight className="w-5 h-5" />
                     </button>
                 </div>
                 <button
                     onClick={goToToday}
-                    className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
                 >
                     Today
                 </button>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-                <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden transition-all duration-300">
+                <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-700">
                     {DAYS.map(day => (
                         <div key={day} className="p-3 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
                             {day}
@@ -184,11 +184,11 @@ export default function CalendarView() {
                         return (
                             <div
                                 key={index}
-                                className={`min-h-[120px] border-b border-r border-gray-100 dark:border-gray-700 p-2 ${!date ? 'bg-gray-50 dark:bg-gray-900/50' : ''} ${isPastDay && !isCurrentDay ? 'bg-gray-50/50 dark:bg-gray-900/30' : ''}`}
+                                className={`min-h-[120px] border-b border-r border-gray-100 dark:border-gray-700 p-2 transition-all duration-300 ${!date ? 'bg-gray-50 dark:bg-gray-950/50' : ''} ${isPastDay && !isCurrentDay ? 'bg-gray-50/50 dark:bg-gray-950/30' : ''}`}
                             >
                                 {date && (
                                     <>
-                                        <div className={`text-sm mb-2 ${isCurrentDay ? 'w-7 h-7 bg-indigo-600 text-white rounded-full flex items-center justify-center font-semibold' : 'text-gray-600 dark:text-gray-400'}`}>
+                                        <div className={`text-sm mb-2 ${isCurrentDay ? 'w-7 h-7 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center font-semibold' : 'text-gray-600 dark:text-gray-400'}`}>
                                             {date.getDate()}
                                         </div>
 

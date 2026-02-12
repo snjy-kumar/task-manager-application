@@ -17,7 +17,7 @@ const AboutPage: React.FC = () => {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="w-full py-20 bg-gradient-to-r from-blue-600/90 to-purple-600/90 text-white">
+      <section className="w-full py-20 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center max-w-3xl mx-auto">
             <motion.h1 
@@ -29,7 +29,7 @@ const AboutPage: React.FC = () => {
               About AI Task Manager
             </motion.h1>
             <motion.p 
-              className="text-xl text-blue-100 mb-8"
+              className="text-xl text-gray-100 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -76,8 +76,8 @@ const AboutPage: React.FC = () => {
                   className="w-full h-auto"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-yellow-400 rounded-full blur-2xl opacity-30" />
-              <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-600 rounded-full blur-2xl opacity-30" />
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gray-400 rounded-full blur-2xl opacity-30" />
+              <div className="absolute -top-6 -left-6 w-24 h-24 bg-gray-600 rounded-full blur-2xl opacity-30" />
             </motion.div>
           </div>
         </div>
@@ -119,7 +119,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="w-full py-16 bg-blue-600 text-white">
+      <section className="w-full py-16 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <StatCard number="20K+" label="Happy Users" />
@@ -270,7 +270,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-16 bg-primary text-white">
+      <section className="w-full py-16 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Join Us on Our Mission</h2>
@@ -296,13 +296,13 @@ interface ValueCardProps {
 const ValueCard: React.FC<ValueCardProps> = ({ icon, title, description }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
+      className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="p-3 bg-primary/10 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+      <div className="p-3 bg-gray-200 dark:bg-gray-800/10 rounded-full w-16 h-16 flex items-center justify-center mb-4">
         {icon}
       </div>
       <h3 className="text-xl font-bold mb-2">{title}</h3>
@@ -325,7 +325,7 @@ const StatCard: React.FC<StatCardProps> = ({ number, label }) => {
       transition={{ duration: 0.5 }}
     >
       <p className="text-4xl font-bold mb-2">{number}</p>
-      <p className="text-lg text-blue-100">{label}</p>
+      <p className="text-lg text-gray-100">{label}</p>
     </motion.div>
   );
 };
@@ -345,7 +345,7 @@ interface TeamMemberCardProps {
 const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ name, role, bio, image, social }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
+      className="bg-white dark:bg-gray-900 rounded-2xl shadow-md overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -364,19 +364,19 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ name, role, bio, image,
         <p className="text-gray-500 dark:text-gray-400 mb-4">{bio}</p>
         <div className="flex space-x-3">
           {social.twitter && (
-            <a href={social.twitter} className="text-gray-400 hover:text-primary transition-colors">
+            <a href={social.twitter} className="text-gray-400 hover:text-primary transition-all duration-300">
               <Twitter className="h-5 w-5" />
               <span className="sr-only">Twitter</span>
             </a>
           )}
           {social.linkedin && (
-            <a href={social.linkedin} className="text-gray-400 hover:text-primary transition-colors">
+            <a href={social.linkedin} className="text-gray-400 hover:text-primary transition-all duration-300">
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
             </a>
           )}
           {social.website && (
-            <a href={social.website} className="text-gray-400 hover:text-primary transition-colors">
+            <a href={social.website} className="text-gray-400 hover:text-primary transition-all duration-300">
               <Globe className="h-5 w-5" />
               <span className="sr-only">Website</span>
             </a>
@@ -400,7 +400,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ year, title, description, i
       <div className={`flex items-center justify-between ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
         <div className="w-5/12">
           <motion.div 
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
+            className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md"
             initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -412,7 +412,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ year, title, description, i
           </motion.div>
         </div>
         <div className="z-10 flex items-center justify-center">
-          <div className="w-4 h-4 rounded-full bg-primary" />
+          <div className="w-4 h-4 rounded-full bg-gray-700 dark:bg-gray-300" />
         </div>
         <div className="w-5/12" /> {/* Empty space for alignment */}
       </div>

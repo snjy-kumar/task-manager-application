@@ -11,7 +11,7 @@ export default function HowItWorksSection() {
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]" />
         <motion.div 
-          className="absolute -top-48 -left-48 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full blur-3xl"
+          className="absolute -top-48 -left-48 w-96 h-96 bg-gradient-to-r from-gray-600/10 to-gray-700/10 rounded-full blur-3xl"
           animate={{ 
             y: [0, 50, 0],
             scale: [1, 1.1, 1],
@@ -24,7 +24,7 @@ export default function HowItWorksSection() {
           }}
         />
         <motion.div 
-          className="absolute top-1/3 -right-48 w-96 h-96 bg-gradient-to-r from-cyan-600/10 to-blue-600/10 rounded-full blur-3xl"
+          className="absolute top-1/3 -right-48 w-96 h-96 bg-gray-600/10 rounded-full blur-3xl"
           animate={{ 
             y: [0, -30, 0],
             scale: [1, 1.05, 1],
@@ -37,7 +37,7 @@ export default function HowItWorksSection() {
           }}
         />
         <motion.div 
-          className="absolute -bottom-32 left-1/4 w-96 h-96 bg-gradient-to-r from-emerald-600/10 to-teal-600/10 rounded-full blur-3xl"
+          className="absolute -bottom-32 left-1/4 w-96 h-96 bg-gray-600/10 rounded-full blur-3xl"
           animate={{ 
             x: [0, 30, 0],
             scale: [0.9, 1, 0.9],
@@ -55,7 +55,7 @@ export default function HowItWorksSection() {
         {/* Enhanced header section with pulsing accent */}
         <div className="relative">
           <motion.div 
-            className="absolute inset-0 -z-10 mx-auto w-40 h-40 bg-gradient-to-r from-primary/20 to-blue-600/20 rounded-full blur-3xl opacity-70"
+            className="absolute inset-0 -z-10 mx-auto w-40 h-40 bg-gray-600/20 rounded-full blur-3xl opacity-70"
             animate={{ 
               scale: [1, 1.1, 1],
               opacity: [0.4, 0.7, 0.4],
@@ -105,7 +105,7 @@ export default function HowItWorksSection() {
             </motion.h2>
             
             <motion.div
-              className="h-1 w-20 bg-gradient-to-r from-primary to-blue-600 mx-auto my-6 rounded-full"
+              className="h-1 w-20 bg-gray-600 dark:bg-gray-400 mx-auto my-6 rounded-full"
               initial={{ width: 0, opacity: 0 }}
               whileInView={{ width: 80, opacity: 1 }}
               viewport={{ once: true }}
@@ -131,7 +131,7 @@ export default function HowItWorksSection() {
           
           {/* Animated progress tracker that follows scroll */}
           {/* <motion.div 
-            className="hidden md:block absolute top-32 left-0 h-1 bg-gradient-to-r from-primary via-blue-600 to-primary"
+            className="hidden md:block absolute top-32 left-0 h-1 bg-gray-600 dark:bg-gray-400"
             style={{ width: '100%' }}
             initial={{ width: '0%' }}
             whileInView={{ width: '100%' }}
@@ -152,8 +152,8 @@ export default function HowItWorksSection() {
                 "Email-to-task conversion",
                 "Smart capture"
               ]}
-              color="from-blue-600/80 to-indigo-600/80"
-              bgColor="from-blue-50 to-blue-100/30 dark:from-blue-900/30 dark:to-blue-900/10"
+              color="from-gray-600/80 to-gray-800/80"
+              bgColor="from-gray-50 to-gray-100/30 dark:from-gray-900/30 dark:to-gray-900/10"
               onHover={() => setHoveredStep(1)}
               onLeave={() => setHoveredStep(null)}
             />
@@ -168,8 +168,8 @@ export default function HowItWorksSection() {
                 "Deadline prediction",
                 "Context analysis"
               ]}
-              color="from-purple-600/80 to-violet-600/80"
-              bgColor="from-purple-50 to-purple-100/30 dark:from-purple-900/30 dark:to-purple-900/10"
+              color="from-gray-600/80 to-gray-800/80"
+              bgColor="from-gray-50 to-gray-100/30 dark:from-gray-900/30 dark:to-gray-900/10"
               onHover={() => setHoveredStep(2)}
               onLeave={() => setHoveredStep(null)}
             />
@@ -184,8 +184,8 @@ export default function HowItWorksSection() {
                 "Adaptive rescheduling",
                 "Growth insights"
               ]}
-              color="from-emerald-600/80 to-green-600/80"
-              bgColor="from-green-50 to-green-100/30 dark:from-green-900/30 dark:to-green-900/10"
+              color="from-gray-600/80 to-gray-700/80"
+              bgColor="from-gray-50 to-gray-100/30 dark:from-gray-800/30 dark:to-gray-800/10"
               onHover={() => setHoveredStep(3)}
               onLeave={() => setHoveredStep(null)}
             />
@@ -204,28 +204,28 @@ export default function HowItWorksSection() {
             icon={<Zap className="w-7 h-7" />}
             value="95%"
             label="Productivity Boost"
-            color="from-blue-500 to-indigo-600"
+            color="from-gray-500 to-gray-700"
             duration={1.5}
           />
           <StatCard 
             icon={<BarChart className="w-7 h-7" />}
             value="10M+"
             label="Tasks Optimized"
-            color="from-purple-500 to-violet-600"
+            color="from-gray-500 to-gray-700"
             duration={2}
           />
           <StatCard 
             icon={<Clock className="w-7 h-7" />}
             value="2.5x"
             label="Faster Execution"
-            color="from-emerald-500 to-green-600"
+            color="from-gray-600 to-gray-700"
             duration={2.5}
           />
           <StatCard 
             icon={<ThumbsUp className="w-7 h-7" />}
             value="4.9/5"
             label="User Satisfaction"
-            color="from-amber-500 to-orange-600"
+            color="from-gray-500 to-gray-700"
             duration={3}
           />
         </motion.div>
@@ -238,9 +238,9 @@ export default function HowItWorksSection() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="bg-gradient-to-b from-white/80 to-white/40 dark:from-gray-800/80 dark:to-gray-800/40 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/30">
+          <div className="bg-gradient-to-b from-white/80 to-white/40 dark:from-gray-900/80 dark:to-gray-900/40 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/30">
             <motion.h3
-              className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"
+              className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -266,7 +266,7 @@ export default function HowItWorksSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <motion.button 
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-xl bg-gradient-to-r from-primary to-blue-600 text-white shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-xl bg-black dark:bg-white text-white dark:text-black shadow-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -335,13 +335,13 @@ function StepCard({
     >
       {/* Step number - now visible on all screen sizes and properly centered */}
       <div className="absolute -top-6 left-1/2 -translate-x-1/2 z-20">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center text-lg font-bold text-white shadow-lg border-2 border-white dark:border-gray-800">
+        <div className="w-12 h-12 rounded-full bg-gray-700 dark:bg-gray-300 flex items-center justify-center text-lg font-bold text-white dark:text-black shadow-lg border-2 border-white dark:border-gray-800">
           {number}
         </div>
       </div>
       
       {/* Top light effect to connect with the flow line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-6 bg-gradient-to-b from-primary/50 to-transparent"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-6 bg-gradient-to-b from-gray-500/50 to-transparent"></div>
       
       <div className="flex flex-col items-center text-center">
         <motion.div 
@@ -401,7 +401,7 @@ interface StatCardProps {
 function StatCard({ icon, value, label, color, duration = 2 }: StatCardProps) {
   return (
     <motion.div 
-      className="relative overflow-hidden p-6 bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-xl shadow-lg border border-white/50 dark:border-gray-700/50 group hover:shadow-xl transition-all duration-300"
+      className="relative overflow-hidden p-6 bg-white dark:bg-gray-900/60 backdrop-blur-sm rounded-xl shadow-lg border border-white/50 dark:border-gray-700/50 group hover:shadow-xl transition-all duration-300"
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: "-100px" }}

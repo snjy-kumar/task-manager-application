@@ -89,7 +89,7 @@ const ReportsPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
           <p className="text-gray-500">Loading reports...</p>
         </div>
       </div>
@@ -105,11 +105,11 @@ const ReportsPage = () => {
           <p className="text-gray-500 dark:text-gray-400">Insights about your task productivity</p>
         </div>
         <div className="mt-4 md:mt-0 flex items-center space-x-2">
-          <Button variant="outline" onClick={fetchTasks}>
+          <Button variant="outline" onClick={fetchTasks} className="transition-all duration-300">
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" className="transition-all duration-300">
             <Download className="h-4 w-4 mr-2" /> Export
           </Button>
         </div>
@@ -130,7 +130,7 @@ const ReportsPage = () => {
           icon={<BarChart3 className="h-5 w-5" />}
           size="md"
           gradient
-          gradientFrom="from-blue-600/20"
+          gradientFrom="from-gray-600/20"
           gradientTo="to-emerald-600/20"
         >
           <div className="mt-4 flex flex-col items-center">
@@ -154,16 +154,16 @@ const ReportsPage = () => {
                   strokeWidth="10"
                   strokeDasharray="283"
                   strokeDashoffset={283 - (283 * stats.completionRate) / 100}
-                  className="text-primary"
+                  className="text-gray-600 dark:text-gray-400"
                 />
               </svg>
             </div>
             <div className="grid grid-cols-2 gap-2 w-full mt-4">
-              <div className="text-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm">
+              <div className="text-center bg-white dark:bg-gray-900 p-2 rounded-lg shadow-sm">
                 <p className="text-2xl font-bold">{stats.completed}</p>
                 <p className="text-xs text-gray-500">Completed</p>
               </div>
-              <div className="text-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm">
+              <div className="text-center bg-white dark:bg-gray-900 p-2 rounded-lg shadow-sm">
                 <p className="text-2xl font-bold">{stats.total}</p>
                 <p className="text-xs text-gray-500">Total</p>
               </div>
@@ -197,7 +197,7 @@ const ReportsPage = () => {
               </div>
               <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
                 <div
-                  className="h-full bg-blue-500 rounded-full"
+                  className="h-full bg-gray-500 rounded-full"
                   style={{ width: `${stats.total > 0 ? (stats.inProgress / stats.total) * 100 : 0}%` }}
                 />
               </div>
@@ -287,13 +287,13 @@ const ReportsPage = () => {
               <div className="text-2xl font-bold">{stats.completed}</div>
               <div className="text-xs text-gray-500">Completed</div>
             </div>
-            <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <Clock className="h-6 w-6 text-blue-600 mx-auto mb-1" />
+            <div className="text-center p-3 bg-gray-100 dark:bg-gray-800/20 rounded-lg">
+              <Clock className="h-6 w-6 text-gray-600 dark:text-gray-400 mx-auto mb-1" />
               <div className="text-2xl font-bold">{stats.inProgress}</div>
               <div className="text-xs text-gray-500">In Progress</div>
             </div>
-            <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-              <AlertCircle className="h-6 w-6 text-yellow-600 mx-auto mb-1" />
+            <div className="text-center p-3 bg-gray-100 dark:bg-gray-800/20 rounded-lg">
+              <AlertCircle className="h-6 w-6 text-gray-600 dark:text-gray-400 mx-auto mb-1" />
               <div className="text-2xl font-bold">{stats.pending}</div>
               <div className="text-xs text-gray-500">Pending</div>
             </div>

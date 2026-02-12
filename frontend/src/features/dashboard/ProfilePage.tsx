@@ -68,8 +68,8 @@ const ProfilePage = () => {
   return (
     <div className="space-y-6">
       {/* Profile Header */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-        <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
+        <div className="h-32 bg-gray-700 dark:bg-gray-800"></div>
         <div className="px-6 pb-6">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between -mt-16">
             <div className="flex flex-col md:flex-row md:items-center">
@@ -86,10 +86,10 @@ const ProfilePage = () => {
               </div>
             </div>
             <div className="mt-6 md:mt-0 flex flex-wrap gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="transition-all duration-300">
                 <Edit className="h-4 w-4 mr-2" /> Edit Profile
               </Button>
-              <Button size="sm">
+              <Button size="sm" className="transition-all duration-300">
                 Message
               </Button>
             </div>
@@ -100,7 +100,7 @@ const ProfilePage = () => {
         <div className="px-6 border-t border-gray-200 dark:border-gray-700">
           <div className="flex space-x-6 overflow-x-auto">
             <button
-              className={`py-4 px-1 text-sm font-medium border-b-2 ${
+              className={`py-4 px-1 text-sm font-medium border-b-2 transition-all duration-300 ${
                 activeTab === 'overview' 
                   ? 'border-primary text-primary' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
@@ -110,7 +110,7 @@ const ProfilePage = () => {
               Overview
             </button>
             <button
-              className={`py-4 px-1 text-sm font-medium border-b-2 ${
+              className={`py-4 px-1 text-sm font-medium border-b-2 transition-all duration-300 ${
                 activeTab === 'activity' 
                   ? 'border-primary text-primary' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
@@ -120,7 +120,7 @@ const ProfilePage = () => {
               Activity
             </button>
             <button
-              className={`py-4 px-1 text-sm font-medium border-b-2 ${
+              className={`py-4 px-1 text-sm font-medium border-b-2 transition-all duration-300 ${
                 activeTab === 'settings' 
                   ? 'border-primary text-primary' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
@@ -225,14 +225,14 @@ const ProfilePage = () => {
             icon={<Award className="h-5 w-5" />}
             size="md"
             gradient
-            gradientFrom="from-blue-600/20"
-            gradientTo="to-blue-400/20"
+            gradientFrom="from-gray-600/20"
+            gradientTo="to-gray-400/20"
           >
             <div className="flex flex-wrap gap-2 mt-2">
               {userData.skills.map((skill, index) => (
                 <span 
                   key={index} 
-                  className="text-xs font-medium bg-white dark:bg-gray-800 px-2 py-1 rounded-full shadow-sm"
+                  className="text-xs font-medium bg-white dark:bg-gray-900 px-2 py-1 rounded-full shadow-sm"
                 >
                   {skill}
                 </span>
@@ -268,7 +268,7 @@ const ProfilePage = () => {
           >
             <div className="space-y-3 mt-2">
               {userData.achievements.map((achievement, index) => (
-                <div key={index} className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                <div key={index} className="p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm transition-all duration-300">
                   <div className="flex justify-between">
                     <h4 className="text-sm font-medium">{achievement.title}</h4>
                     <span className="text-xs text-gray-500">{achievement.date}</span>
@@ -284,7 +284,7 @@ const ProfilePage = () => {
       {/* Activity Tab */}
       {activeTab === 'activity' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-bold mb-4">Recent Activity</h2>
             <div className="relative">
               <div className="absolute top-0 bottom-0 left-3 border-l-2 border-gray-200 dark:border-gray-700"></div>
@@ -308,7 +308,7 @@ const ProfilePage = () => {
               </div>
             </div>
             
-            <Button variant="outline" size="sm" className="mt-6">
+            <Button variant="outline" size="sm" className="mt-6 transition-all duration-300">
               View All Activity
             </Button>
           </div>
@@ -369,7 +369,7 @@ const ProfilePage = () => {
       {/* Settings Tab */}
       {activeTab === 'settings' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
             <div className="p-6">
               <h2 className="text-lg font-bold mb-4">Account Settings</h2>
               
@@ -386,7 +386,7 @@ const ProfilePage = () => {
                       </label>
                       <input 
                         type="text" 
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
                         defaultValue={userData.name}
                       />
                     </div>
@@ -396,7 +396,7 @@ const ProfilePage = () => {
                       </label>
                       <input 
                         type="email" 
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
                         defaultValue={userData.email}
                       />
                     </div>
@@ -406,7 +406,7 @@ const ProfilePage = () => {
                       </label>
                       <input 
                         type="tel" 
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
                         defaultValue={userData.phone}
                       />
                     </div>
@@ -416,7 +416,7 @@ const ProfilePage = () => {
                       </label>
                       <input 
                         type="text" 
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
                         defaultValue={userData.location}
                       />
                     </div>
@@ -476,7 +476,7 @@ const ProfilePage = () => {
                         <p className="text-xs text-gray-500">Control who can view your profile</p>
                       </div>
                       <select 
-                        className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                        className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm transition-all duration-300"
                         defaultValue={userData.preferences.privacy.profileVisibility}
                       >
                         <option>Everyone</option>
@@ -520,8 +520,8 @@ const ProfilePage = () => {
               </div>
               
               <div className="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-3">
-                <Button variant="outline">Cancel</Button>
-                <Button>Save Changes</Button>
+                <Button variant="outline" className="transition-all duration-300">Cancel</Button>
+                <Button className="transition-all duration-300">Save Changes</Button>
               </div>
             </div>
           </div>
@@ -539,7 +539,7 @@ interface ToggleSwitchProps {
 const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked }) => {
   return (
     <button 
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 focus:outline-none ${
         checked ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
       }`}
     >

@@ -19,8 +19,8 @@ export default function PricingSection() {
     <section id="pricing" className="w-full py-20 md:py-32 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-2/3 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-gray-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-2/3 right-1/4 w-96 h-96 bg-gray-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
       <div className="container px-4 md:px-6 max-w-6xl mx-auto relative z-10">
@@ -160,8 +160,8 @@ function PricingCard({
     <motion.div
       className={`group relative flex flex-col p-8 rounded-2xl transition-all duration-300 ${
         highlighted 
-          ? "bg-gradient-to-b from-primary to-blue-600 dark:to-blue-700 shadow-2xl border-0" 
-          : "bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl border border-gray-100 dark:border-gray-700"
+          ? "bg-black dark:bg-white shadow-2xl border-0" 
+          : "bg-white dark:bg-gray-900 shadow-lg hover:shadow-xl border border-gray-100 dark:border-gray-700"
       } ${highlighted ? "lg:scale-110 z-10" : ""}`}
       variants={{
         hidden: { opacity: 0, y: 40 },

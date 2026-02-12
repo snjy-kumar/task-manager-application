@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, LockIcon, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { EyeIcon, EyeOffIcon, UserIcon, MailIcon, LockIcon, Sparkles, Moon, Sun } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "@/theme/ThemeProvider";
 import authService from "@/services/authService";
 
 interface SignupFormData {
@@ -16,7 +17,7 @@ interface SignupFormData {
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const { theme, toggleTheme } = useTheme();
   const [formData, setFormData] = useState<SignupFormData>({
     name: "",
     email: "",
@@ -28,16 +29,7 @@ const SignupPage: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeField, setActiveField] = useState<string | null>(null);
-
-  // Animation states
-  const [animate, setAnimate] = useState(false);
   const [_passwordErrors, setPasswordErrors] = useState<string[]>([]);
-
-  useEffect(() => {
-    setAnimate(true);
-    const timer = setTimeout(() => setAnimate(false), 1000);
-    return () => clearTimeout(timer);
-  }, [darkMode]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -110,14 +102,11 @@ const SignupPage: React.FC = () => {
     setLoading(false);
   };
 
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-    setAnimate(true);
-  };
+  const darkMode = theme === 'dark';
 
   return (
-    <div className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${darkMode ? 'bg-gray-950' : 'bg-gray-100'}`}>
-      <div className={`w-full max-w-4xl ${animate ? 'animate-pulse' : ''}`}>
+    <div className="min-h-screen flex items-center justify-center p-4 transition-colors duration-300 bg-gray-100 dark:bg-gray-950">
+      <div className="w-full max-w-4xl">
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Header Cell - Spans 3 columns */}
@@ -126,9 +115,9 @@ const SignupPage: React.FC = () => {
               <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Create Account</h1>
               <button
                 onClick={toggleTheme}
-                className={`p-2 rounded-full transition-colors ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-200 hover:bg-gray-300'}`}
+                className={`p-2 rounded-full transition-colors ${darkMode ? 'bg-gray-800 hover:bg-gray-700 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-900'}`}
               >
-                {darkMode ? '🌙' : '☀️'}
+                {darkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </button>
             </div>
           </div>
@@ -156,7 +145,7 @@ const SignupPage: React.FC = () => {
                     onFocus={() => handleFocus('name')}
                     onBlur={handleBlur}
                     placeholder="John Doe"
-                    className={`pl-10 w-full p-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
+                    className={`pl-10 w-full py-3 pr-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
                   />
                 </div>
               </div>
@@ -175,7 +164,7 @@ const SignupPage: React.FC = () => {
                     onFocus={() => handleFocus('email')}
                     onBlur={handleBlur}
                     placeholder="your@email.com"
-                    className={`pl-10 w-full p-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
+                    className={`pl-10 w-full py-3 pr-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
                   />
                 </div>
               </div>
@@ -195,7 +184,7 @@ const SignupPage: React.FC = () => {
                       onFocus={() => handleFocus('password')}
                       onBlur={handleBlur}
                       placeholder="••••••••"
-                      className={`pl-10 w-full p-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
+                      className={`pl-10 w-full py-3 pr-10 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
                     />
                     <button
                       type="button"
@@ -224,7 +213,7 @@ const SignupPage: React.FC = () => {
                       onFocus={() => handleFocus('confirmPassword')}
                       onBlur={handleBlur}
                       placeholder="••••••••"
-                      className={`pl-10 w-full p-3 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
+                      className={`pl-10 w-full py-3 pr-10 rounded-lg transition-all duration-300 ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
                     />
                     <button
                       type="button"
@@ -291,15 +280,15 @@ const SignupPage: React.FC = () => {
             <div className={`rounded-2xl p-6 transition-all duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'} shadow-lg transform hover:scale-[1.02]`}>
               <div className="text-center">
                 <p className="mb-2">Already have an account?</p>
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   className={`inline-block px-6 py-2 rounded-lg font-medium transition-colors ${darkMode
                     ? 'bg-gray-700 hover:bg-gray-600 text-white'
                     : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
                     }`}
                 >
                   Log In
-                </a>
+                </Link>
               </div>
             </div>
           </div>

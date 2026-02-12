@@ -98,7 +98,7 @@ const SettingsPage = () => {
       {/* Settings Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Settings Navigation */}
-        <div className="md:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+        <div className="md:col-span-1 bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
           <nav className="flex flex-col">
             <SettingsNavItem
               icon={<Palette className="h-5 w-5" />}
@@ -149,7 +149,7 @@ const SettingsPage = () => {
               onClick={() => setActiveSetting('help')}
             />
             <div className="p-3 mt-auto">
-              <Button variant="destructive" className="w-full justify-start" size="sm">
+              <Button variant="destructive" className="w-full justify-start transition-all duration-300" size="sm">
                 <LogOut className="h-4 w-4 mr-2" /> Sign Out
               </Button>
             </div>
@@ -157,7 +157,7 @@ const SettingsPage = () => {
         </div>
         
         {/* Settings Content */}
-        <div className="md:col-span-3 bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+        <div className="md:col-span-3 bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-6">
           {renderSettingsSection()}
         </div>
       </div>
@@ -176,10 +176,10 @@ interface SettingsNavItemProps {
 const SettingsNavItem = ({ icon, label, active, onClick }: SettingsNavItemProps) => {
   return (
     <button
-      className={`flex items-center w-full px-4 py-3 text-left ${
+      className={`flex items-center w-full px-4 py-3 text-left transition-all duration-300 ${
         active 
-          ? 'bg-primary/10 text-primary' 
-          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+          ? 'bg-gray-200 dark:bg-gray-800/10 text-gray-900 dark:text-white' 
+          : 'hover:bg-gray-100 dark:hover:bg-gray-800'
       }`}
       onClick={onClick}
     >
@@ -208,7 +208,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange, label, d
         </div>
       )}
       <button 
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 focus:outline-none ${
           checked ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
         }`}
         onClick={onChange}
@@ -430,7 +430,7 @@ const PrivacySettings: React.FC<PrivacySettingsProps> = ({ data }) => {
           <div>
             <label className="block text-sm font-medium mb-2">Profile Visibility</label>
             <select 
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
               defaultValue={data.profileVisibility}
             >
               <option value="public">Public - Anyone can view your profile</option>
@@ -462,10 +462,10 @@ const PrivacySettings: React.FC<PrivacySettingsProps> = ({ data }) => {
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
             <h3 className="text-base font-medium mb-3">Data Controls</h3>
             <div className="space-y-3">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="transition-all duration-300">
                 Download Personal Data
               </Button>
-              <Button variant="destructive" size="sm">
+              <Button variant="destructive" size="sm" className="transition-all duration-300">
                 Delete Account
               </Button>
             </div>
@@ -505,7 +505,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = ({ data }) => {
               <h3 className="text-base font-medium">Password</h3>
               <span className="text-xs text-gray-500">Last updated: {data.passwordUpdated}</span>
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="transition-all duration-300">
               Change Password
             </Button>
           </div>
@@ -520,7 +520,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = ({ data }) => {
               <ToggleSwitch checked={data.twoFactorAuth} />
             </div>
             {!data.twoFactorAuth && (
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="transition-all duration-300">
                 Set Up 2FA
               </Button>
             )}
@@ -533,7 +533,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = ({ data }) => {
               <div>
                 <label className="block text-sm font-medium mb-2">Session Timeout (minutes)</label>
                 <select 
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
                   defaultValue={data.sessionTimeout}
                 >
                   <option value="15">15 minutes</option>
@@ -543,7 +543,7 @@ const SecuritySettings: React.FC<SecuritySettingsProps> = ({ data }) => {
                   <option value="480">8 hours</option>
                 </select>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="transition-all duration-300">
                 Sign Out All Other Sessions
               </Button>
             </div>
@@ -606,7 +606,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ data }) => {
                 </label>
                 <input 
                   type="text" 
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
                   defaultValue={data.name}
                 />
               </div>
@@ -616,7 +616,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ data }) => {
                 </label>
                 <input 
                   type="email" 
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
                   defaultValue={data.email}
                 />
               </div>
@@ -626,7 +626,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ data }) => {
                 </label>
                 <input 
                   type="text" 
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
                   defaultValue={data.role}
                   readOnly
                 />
@@ -637,7 +637,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ data }) => {
                 </label>
                 <input 
                   type="text" 
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
                   defaultValue={data.memberSince}
                   readOnly
                 />
@@ -654,7 +654,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ data }) => {
                   <p className="text-lg font-bold">{data.plan} Plan</p>
                   <p className="text-sm text-gray-500">$15/month • Billed monthly</p>
                 </div>
-                <Button>
+                <Button className="transition-all duration-300">
                   Upgrade Plan
                 </Button>
               </div>
@@ -682,10 +682,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ data }) => {
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
             <h3 className="text-base font-medium mb-3 text-red-500">Danger Zone</h3>
             <div className="space-y-3">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="transition-all duration-300">
                 Export All Data
               </Button>
-              <Button variant="destructive" size="sm">
+              <Button variant="destructive" size="sm" className="transition-all duration-300">
                 Delete Account
               </Button>
             </div>
@@ -706,7 +706,7 @@ interface ThemeOptionProps {
 const ThemeOption: React.FC<ThemeOptionProps> = ({ icon, label, selected }) => {
   return (
     <button
-      className={`flex flex-col items-center justify-center p-3 rounded-lg border ${
+      className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all duration-300 ${
         selected 
           ? 'border-primary bg-primary/10' 
           : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
@@ -728,7 +728,7 @@ interface SizeOptionProps {
 const SizeOption: React.FC<SizeOptionProps> = ({ label, className, selected }) => {
   return (
     <button
-      className={`flex items-center justify-center px-4 py-2 rounded-lg border ${
+      className={`flex items-center justify-center px-4 py-2 rounded-lg border transition-all duration-300 ${
         selected 
           ? 'border-primary bg-primary/10' 
           : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'

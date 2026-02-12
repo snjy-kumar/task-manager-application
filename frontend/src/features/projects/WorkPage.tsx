@@ -107,10 +107,10 @@ const WorkPage: React.FC = () => {
           <p className="text-gray-500 dark:text-gray-400">Manage your work projects and tasks</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="transition-all duration-300">
             <Filter className="h-4 w-4 mr-2" /> Filter
           </Button>
-          <Button size="sm" asChild>
+          <Button size="sm" asChild className="transition-all duration-300">
             <Link to="/dashboard/tasks/new">
               <Plus className="h-4 w-4 mr-2" /> Add Task
             </Link>
@@ -134,7 +134,7 @@ const WorkPage: React.FC = () => {
               <span className="text-xl font-bold">{workTasks.filter(t => t.completed).length}</span>
               <p className="text-xs text-gray-500">Completed</p>
             </div>
-            <div className="bg-yellow-500/10 p-2 rounded-lg text-center">
+            <div className="bg-gray-100 dark:bg-gray-800/10 p-2 rounded-lg text-center">
               <span className="text-xl font-bold">{workTasks.filter(t => !t.completed).length}</span>
               <p className="text-xs text-gray-500">Pending</p>
             </div>
@@ -176,7 +176,7 @@ const WorkPage: React.FC = () => {
                 <span className="text-xs">{project.count} tasks</span>
               </div>
             ))}
-            <Button variant="ghost" size="sm" className="w-full mt-1 text-xs">
+              <Button variant="ghost" size="sm" className="w-full mt-1 text-xs transition-all duration-300">
               View All Projects
             </Button>
           </div>
@@ -186,7 +186,7 @@ const WorkPage: React.FC = () => {
       {/* Filter Tabs */}
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('all')}
@@ -194,7 +194,7 @@ const WorkPage: React.FC = () => {
           All Tasks
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'mine' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('mine')}
@@ -202,7 +202,7 @@ const WorkPage: React.FC = () => {
           My Tasks
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'team' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('team')}
@@ -215,7 +215,7 @@ const WorkPage: React.FC = () => {
       <div className="flex items-center space-x-4 text-sm">
         <span className="text-gray-500">Sort by:</span>
         <button 
-          className={`flex items-center ${sortBy === 'priority' ? 'text-primary font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('priority')}
         >
           Priority
@@ -224,7 +224,7 @@ const WorkPage: React.FC = () => {
           )}
         </button>
         <button 
-          className={`flex items-center ${sortBy === 'dueDate' ? 'text-primary font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('dueDate')}
         >
           Due Date
@@ -233,7 +233,7 @@ const WorkPage: React.FC = () => {
           )}
         </button>
         <button 
-          className={`flex items-center ${sortBy === 'project' ? 'text-primary font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'project' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('project')}
         >
           Project
@@ -261,7 +261,7 @@ const WorkPage: React.FC = () => {
           ))}
           
           {sortedTasks.length === 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
               <div className="flex justify-center mb-4">
                 <CheckCircle className="h-12 w-12 text-gray-300 dark:text-gray-600" />
               </div>
@@ -273,7 +273,7 @@ const WorkPage: React.FC = () => {
                   ? "There are no tasks assigned to team members."
                   : "There are no tasks in this workspace yet."}
               </p>
-              <Button asChild>
+              <Button asChild className="transition-all duration-300">
                 <Link to="/dashboard/tasks/new">
                   <Plus className="h-4 w-4 mr-2" /> Add New Task
                 </Link>
@@ -285,7 +285,7 @@ const WorkPage: React.FC = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Team Members */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Team</h3>
             <div className="space-y-3">
               {teamMembers.map((member) => (
@@ -308,7 +308,7 @@ const WorkPage: React.FC = () => {
           </div>
           
           {/* Project Breakdown */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Projects</h3>
             <div className="space-y-2">
               {projects.map((project) => (
@@ -323,25 +323,25 @@ const WorkPage: React.FC = () => {
                 </div>
               ))}
             </div>
-            <Button variant="ghost" size="sm" className="w-full mt-3">
+            <Button variant="ghost" size="sm" className="w-full mt-3 transition-all duration-300">
               Manage Projects
             </Button>
           </div>
           
           {/* Quick Links */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Quick Links</h3>
             <div className="space-y-2">
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <Calendar className="h-4 w-4 mr-2" /> Work Calendar
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <Presentation className="h-4 w-4 mr-2" /> Team Dashboard
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <BarChart3 className="h-4 w-4 mr-2" /> Performance Report
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <FileText className="h-4 w-4 mr-2" /> Project Documentation
               </Button>
             </div>
@@ -369,7 +369,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, proje
       case 'high':
         return 'bg-red-500';
       case 'medium':
-        return 'bg-yellow-500';
+        return 'bg-gray-500';
       case 'low':
         return 'bg-green-500';
       default:
@@ -385,7 +385,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, proje
       "HR": 'bg-purple-100 text-purple-800',
       "Product Development": 'bg-yellow-100 text-yellow-800',
       "Analytics": 'bg-orange-100 text-orange-800',
-      "Customer Success": 'bg-teal-100 text-teal-800',
+      "Customer Success": 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
       "Sales": 'bg-indigo-100 text-indigo-800',
       "Operations": 'bg-gray-100 text-gray-800',
       "Management": 'bg-pink-100 text-pink-800'
@@ -394,17 +394,17 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, proje
   };
   
   return (
-    <div className={`flex items-center justify-between p-4 rounded-lg border ${
+    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
       completed 
         ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700' 
-        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+        : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
     }`}>
       <div className="flex items-center min-w-0">
         <input
           type="checkbox"
           checked={completed}
           readOnly
-          className="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary mr-3"
+          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3"
         />
         <div className="min-w-0">
           <h3 className={`text-sm font-medium truncate ${
@@ -431,7 +431,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, proje
       <div className="flex items-center ml-4">
         <Link 
           to={`/dashboard/tasks/${id}`}
-          className="text-gray-400 hover:text-primary"
+          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-300"
         >
           <ChevronRight className="h-5 w-5" />
         </Link>

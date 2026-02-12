@@ -36,9 +36,9 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
         case 'error':
             return <AlertCircle className={`${iconClass} text-red-500`} />;
         case 'warning':
-            return <AlertTriangle className={`${iconClass} text-yellow-500`} />;
+            return <AlertTriangle className={`${iconClass} text-gray-500`} />;
         case 'info':
-            return <Info className={`${iconClass} text-blue-500`} />;
+            return <Info className={`${iconClass} text-gray-500`} />;
     }
 };
 
@@ -46,8 +46,8 @@ const ToastIcon = ({ type }: { type: ToastType }) => {
 const toastStyles: Record<ToastType, string> = {
     success: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800',
     error: 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800',
-    info: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
+    warning: 'bg-gray-100 border-gray-200 dark:bg-gray-800/20 dark:border-gray-700',
+    info: 'bg-gray-100 border-gray-200 dark:bg-gray-800/20 dark:border-gray-700',
 };
 
 // Individual Toast Component
@@ -79,7 +79,7 @@ const ToastItem: React.FC<{ toast: Toast; onRemove: () => void }> = ({ toast, on
             </div>
             <button
                 onClick={onRemove}
-                className="flex-shrink-0 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="flex-shrink-0 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-300"
             >
                 <X className="w-4 h-4 text-gray-500" />
             </button>

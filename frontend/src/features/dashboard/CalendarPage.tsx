@@ -102,7 +102,7 @@ function CalendarPage() {
   const getPriorityColor = (priority: string) => {
     switch (priority.toLowerCase()) {
       case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
+      case 'medium': return 'bg-gray-500';
       case 'low': return 'bg-green-500';
       default: return 'bg-gray-500';
     }
@@ -111,8 +111,8 @@ function CalendarPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Completed': return 'text-green-600';
-      case 'In Progress': return 'text-blue-600';
-      case 'Pending': return 'text-yellow-600';
+      case 'In Progress': return 'text-gray-600 dark:text-gray-400';
+      case 'Pending': return 'text-gray-600 dark:text-gray-400';
       default: return 'text-gray-600';
     }
   };
@@ -126,11 +126,11 @@ function CalendarPage() {
           <p className="text-gray-500 dark:text-gray-400">View tasks organized by due date</p>
         </div>
         <div className="mt-4 md:mt-0 flex items-center space-x-2">
-          <Button variant="outline" onClick={fetchTasks} disabled={loading}>
+          <Button variant="outline" onClick={fetchTasks} disabled={loading} className="transition-all duration-300">
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button asChild>
+          <Button asChild className="transition-all duration-300">
             <Link to="/dashboard/tasks/new">
               <Plus className="h-4 w-4 mr-1" /> New Task
             </Link>
@@ -148,13 +148,13 @@ function CalendarPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar Grid */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
           {/* Calendar Header */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
                 onClick={goToPreviousMonth}
-                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -163,14 +163,14 @@ function CalendarPage() {
               </h2>
               <button
                 onClick={goToNextMonth}
-                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
             </div>
             <button
               onClick={() => setCurrentDate(today)}
-              className="text-sm bg-primary/10 text-primary px-3 py-1.5 rounded-md hover:bg-primary/20"
+              className="text-sm bg-gray-200 dark:bg-gray-800/10 text-gray-900 dark:text-white px-3 py-1.5 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-300"
             >
               Today
             </button>
@@ -195,7 +195,7 @@ function CalendarPage() {
               return (
                 <div
                   key={index}
-                  className={`border border-gray-100 dark:border-gray-700 p-2 min-h-[80px] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 ${isToday ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                  className={`border border-gray-100 dark:border-gray-700 p-2 min-h-[80px] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 ${isToday ? 'bg-gray-100 dark:bg-gray-800/20' : ''
                     } ${isSelected ? 'ring-2 ring-primary' : ''}`}
                   onClick={() => day && setSelectedDay(day)}
                 >
@@ -217,7 +217,7 @@ function CalendarPage() {
                         {dayTasks.slice(0, 2).map((task) => (
                           <div
                             key={task._id}
-                            className="text-xs p-1 rounded bg-primary/10 text-primary truncate"
+                            className="text-xs p-1 rounded bg-gray-200 dark:bg-gray-800/10 text-gray-900 dark:text-white truncate"
                             title={task.title}
                           >
                             {task.title}
@@ -238,7 +238,7 @@ function CalendarPage() {
         </div>
 
         {/* Selected Day Tasks */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
           <h3 className="text-lg font-bold mb-4">
             {selectedDay
               ? `Tasks for ${MONTHS[currentMonth]} ${selectedDay}`
@@ -254,7 +254,7 @@ function CalendarPage() {
                     to={`/dashboard/tasks/${task._id}/edit`}
                     className="block"
                   >
-                    <div className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary transition-colors">
+                    <div className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary transition-all duration-300">
                       <div className="flex items-start justify-between">
                         <p className="text-sm font-medium">{task.title}</p>
                         <span className={`h-2 w-2 rounded-full ${getPriorityColor(task.priority)} mt-1.5`}></span>
@@ -284,7 +284,7 @@ function CalendarPage() {
           </div>
 
           {selectedDay && getSelectedDayTasks().length > 0 && (
-            <Button variant="outline" className="w-full mt-4" asChild>
+            <Button variant="outline" className="w-full mt-4 transition-all duration-300" asChild>
               <Link to="/dashboard/tasks">
                 View All Tasks
               </Link>

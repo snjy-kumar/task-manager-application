@@ -98,10 +98,10 @@ const PersonalTasksPage: React.FC = () => {
           <p className="text-gray-500 dark:text-gray-400">Manage your personal to-dos and errands</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="transition-all duration-300">
             <Filter className="h-4 w-4 mr-2" /> Filter
           </Button>
-          <Button size="sm" asChild>
+          <Button size="sm" asChild className="transition-all duration-300">
             <Link to="/dashboard/tasks/new">
               <Plus className="h-4 w-4 mr-2" /> Add Task
             </Link>
@@ -112,7 +112,7 @@ const PersonalTasksPage: React.FC = () => {
       {/* Filter Tabs */}
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('all')}
@@ -120,7 +120,7 @@ const PersonalTasksPage: React.FC = () => {
           All
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'active' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('active')}
@@ -128,7 +128,7 @@ const PersonalTasksPage: React.FC = () => {
           Active
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'completed' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('completed')}
@@ -141,7 +141,7 @@ const PersonalTasksPage: React.FC = () => {
       <div className="flex items-center space-x-4 text-sm">
         <span className="text-gray-500">Sort by:</span>
         <button 
-          className={`flex items-center ${sortBy === 'priority' ? 'text-primary font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('priority')}
         >
           Priority
@@ -150,7 +150,7 @@ const PersonalTasksPage: React.FC = () => {
           )}
         </button>
         <button 
-          className={`flex items-center ${sortBy === 'dueDate' ? 'text-primary font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('dueDate')}
         >
           Due Date
@@ -159,7 +159,7 @@ const PersonalTasksPage: React.FC = () => {
           )}
         </button>
         <button 
-          className={`flex items-center ${sortBy === 'category' ? 'text-primary font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'category' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('category')}
         >
           Category
@@ -186,7 +186,7 @@ const PersonalTasksPage: React.FC = () => {
           ))}
           
           {sortedTasks.length === 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
               <div className="flex justify-center mb-4">
                 <CheckCircle className="h-12 w-12 text-gray-300 dark:text-gray-600" />
               </div>
@@ -196,7 +196,7 @@ const PersonalTasksPage: React.FC = () => {
                   ? "You haven't completed any personal tasks yet." 
                   : "You don't have any personal tasks. Create one to get started."}
               </p>
-              <Button asChild>
+              <Button asChild className="transition-all duration-300">
                 <Link to="/dashboard/tasks/new">
                   <Plus className="h-4 w-4 mr-2" /> Add New Task
                 </Link>
@@ -208,7 +208,7 @@ const PersonalTasksPage: React.FC = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Categories */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Categories</h3>
             <div className="space-y-2">
               {categories.map((category) => (
@@ -226,7 +226,7 @@ const PersonalTasksPage: React.FC = () => {
           </div>
           
           {/* Upcoming Dates */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Upcoming</h3>
             <div className="space-y-3">
               {upcomingDates.map((date) => (
@@ -244,16 +244,16 @@ const PersonalTasksPage: React.FC = () => {
           </div>
           
           {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Quick Actions</h3>
             <div className="space-y-2">
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <Calendar className="h-4 w-4 mr-2" /> View in Calendar
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <ListFilter className="h-4 w-4 mr-2" /> Group by Category
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <User className="h-4 w-4 mr-2" /> Assign to Someone
               </Button>
             </div>
@@ -280,7 +280,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, categ
       case 'high':
         return 'bg-red-500';
       case 'medium':
-        return 'bg-yellow-500';
+        return 'bg-gray-500';
       case 'low':
         return 'bg-green-500';
       default:
@@ -292,29 +292,29 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, categ
     const colors: Record<string, string> = {
       Health: 'bg-green-100 text-green-800',
       Admin: 'bg-gray-100 text-gray-800',
-      Travel: 'bg-blue-100 text-blue-800',
+      Travel: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
       Bills: 'bg-red-100 text-red-800',
-      Home: 'bg-purple-100 text-purple-800',
-      Shopping: 'bg-yellow-100 text-yellow-800',
-      Auto: 'bg-orange-100 text-orange-800',
-      Events: 'bg-pink-100 text-pink-800',
+      Home: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
+      Shopping: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
+      Auto: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
+      Events: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
       Finance: 'bg-teal-100 text-teal-800'
     };
     return colors[category] || 'bg-gray-100 text-gray-800';
   };
   
   return (
-    <div className={`flex items-center justify-between p-4 rounded-lg border ${
+    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
       completed 
         ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700' 
-        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+        : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
     }`}>
       <div className="flex items-center min-w-0">
         <input
           type="checkbox"
           checked={completed}
           readOnly
-          className="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary mr-3"
+          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3"
         />
         <div className="min-w-0">
           <h3 className={`text-sm font-medium truncate ${
@@ -337,7 +337,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, categ
       <div className="flex items-center ml-4">
         <Link 
           to={`/dashboard/tasks/${id}`}
-          className="text-gray-400 hover:text-primary"
+          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-300"
         >
           <ChevronRight className="h-5 w-5" />
         </Link>

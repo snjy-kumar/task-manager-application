@@ -83,7 +83,7 @@ const RecentlyViewedPage = () => {
   const getPriorityColor = (priority: string) => {
     switch (priority.toLowerCase()) {
       case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
+      case 'medium': return 'bg-gray-500';
       case 'low': return 'bg-green-500';
       default: return 'bg-gray-500';
     }
@@ -92,8 +92,8 @@ const RecentlyViewedPage = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Completed': return 'text-green-600';
-      case 'In Progress': return 'text-blue-600';
-      case 'Pending': return 'text-yellow-600';
+      case 'In Progress': return 'text-gray-600 dark:text-gray-400';
+      case 'Pending': return 'text-gray-600 dark:text-gray-400';
       default: return 'text-gray-600';
     }
   };
@@ -102,7 +102,7 @@ const RecentlyViewedPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
           <p className="text-gray-500">Loading recent activity...</p>
         </div>
       </div>
@@ -118,11 +118,11 @@ const RecentlyViewedPage = () => {
           <p className="text-gray-500 dark:text-gray-400">Your recently created and modified tasks</p>
         </div>
         <div className="mt-4 md:mt-0 flex gap-2">
-          <Button variant="outline" onClick={fetchTasks} size="sm">
+          <Button variant="outline" onClick={fetchTasks} size="sm" className="transition-all duration-300">
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-          <Button asChild>
+          <Button asChild className="transition-all duration-300">
             <Link to="/dashboard/tasks/new">Create Task</Link>
           </Button>
         </div>
@@ -144,7 +144,7 @@ const RecentlyViewedPage = () => {
             to={`/dashboard/tasks/${task._id}/edit`}
             className="block"
           >
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-300">
               <div className="p-4">
                 <div className="flex justify-between items-start">
                   <div className="flex-1 min-w-0">
@@ -175,7 +175,7 @@ const RecentlyViewedPage = () => {
         <div className="text-center py-12">
           <Clock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
           <p className="text-gray-500">No recent activity</p>
-          <Button className="mt-4" asChild>
+          <Button className="mt-4 transition-all duration-300" asChild>
             <Link to="/dashboard/tasks/new">Create Your First Task</Link>
           </Button>
         </div>
@@ -198,7 +198,7 @@ const RecentlyViewedPage = () => {
                 <Link
                   key={task._id}
                   to={`/dashboard/tasks/${task._id}/edit`}
-                  className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                  className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-300"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -229,7 +229,7 @@ const RecentlyViewedPage = () => {
                 <Link
                   key={task._id}
                   to={`/dashboard/tasks/${task._id}/edit`}
-                  className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                  className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-300"
                 >
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
@@ -255,17 +255,17 @@ const RecentlyViewedPage = () => {
           size="md"
         >
           <div className="space-y-3 mt-3">
-            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
               <span className="text-sm font-medium">Total Tasks</span>
-              <span className="text-lg font-bold text-primary">{tasks.length}</span>
+              <span className="text-lg font-bold text-gray-900 dark:text-white">{tasks.length}</span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
               <span className="text-sm font-medium">Created This Week</span>
               <span className="text-lg font-bold text-green-600">{recentlyCreated.length}</span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
               <span className="text-sm font-medium">Recently Completed</span>
-              <span className="text-lg font-bold text-blue-600">{recentlyCompleted.length}</span>
+              <span className="text-lg font-bold text-gray-600 dark:text-gray-400">{recentlyCompleted.length}</span>
             </div>
           </div>
         </BentoCard>

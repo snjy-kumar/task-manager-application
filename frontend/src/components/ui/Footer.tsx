@@ -52,8 +52,8 @@ const Footer = () => {
     <footer className="relative bg-gradient-to-b from-gray-900 to-gray-950 text-white overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gray-600/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gray-600/10 rounded-full blur-[120px]" />
       </div>
 
       {/* Newsletter Section */}
@@ -83,13 +83,13 @@ const Footer = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-colors"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
+                  className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 flex items-center gap-2 whitespace-nowrap"
                 >
                   Subscribe
                   <ArrowRight className="w-4 h-4" />
@@ -106,7 +106,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-black dark:bg-white flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <span className="text-xl font-bold">TaskManager</span>
@@ -121,7 +121,7 @@ const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors group"
+                  className="w-10 h-10 rounded-lg bg-gray-900 hover:bg-gray-800 flex items-center justify-center transition-all duration-300 group"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />

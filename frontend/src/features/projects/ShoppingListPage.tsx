@@ -123,10 +123,10 @@ const ShoppingListPage: React.FC = () => {
           <p className="text-gray-500 dark:text-gray-400">Manage your shopping needs efficiently</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="transition-all duration-300">
             <Share2 className="h-4 w-4 mr-2" /> Share List
           </Button>
-          <Button size="sm" asChild>
+          <Button size="sm" asChild className="transition-all duration-300">
             <Link to="/dashboard/tasks/new">
               <Plus className="h-4 w-4 mr-2" /> Add Item
             </Link>
@@ -150,7 +150,7 @@ const ShoppingListPage: React.FC = () => {
               <span className="text-xl font-bold">{purchasedItems}</span>
               <p className="text-xs text-gray-500">Purchased</p>
             </div>
-            <div className="bg-yellow-500/10 p-2 rounded-lg text-center">
+            <div className="bg-gray-100 dark:bg-gray-800/10 p-2 rounded-lg text-center">
               <span className="text-xl font-bold">{totalItems - purchasedItems}</span>
               <p className="text-xs text-gray-500">Pending</p>
             </div>
@@ -195,7 +195,7 @@ const ShoppingListPage: React.FC = () => {
               </div>
             ))}
             <button 
-              className="text-xs text-primary hover:underline"
+              className="text-xs text-gray-600 dark:text-gray-400 hover:underline"
               onClick={() => setCategoryFilter('all')}
             >
               View All Categories
@@ -205,16 +205,16 @@ const ShoppingListPage: React.FC = () => {
       </BentoGrid>
       
       {/* Quick Add Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
         <form onSubmit={handleNewItemSubmit} className="flex gap-2">
           <input
             type="text"
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
             placeholder="Add item to shopping list..."
-            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
           />
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" className="transition-all duration-300">
             <Plus className="h-4 w-4 mr-2" /> Add
           </Button>
         </form>
@@ -223,7 +223,7 @@ const ShoppingListPage: React.FC = () => {
       {/* Filter Tabs */}
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('all')}
@@ -231,7 +231,7 @@ const ShoppingListPage: React.FC = () => {
           All Items
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'pending' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('pending')}
@@ -239,7 +239,7 @@ const ShoppingListPage: React.FC = () => {
           To Buy
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
             filter === 'purchased' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
           }`}
           onClick={() => setFilter('purchased')}
@@ -253,21 +253,21 @@ const ShoppingListPage: React.FC = () => {
         <div className="flex items-center space-x-4 text-sm">
           <span className="text-gray-500">Sort by:</span>
           <button 
-            className={`flex items-center ${sortBy === 'name' ? 'text-primary font-medium' : ''}`}
+            className={`flex items-center transition-all duration-300 ${sortBy === 'name' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
             onClick={() => handleSortChange('name')}
           >
             Name
             {sortBy === 'name' && <ArrowUpDown className="h-3 w-3 ml-1" />}
           </button>
           <button 
-            className={`flex items-center ${sortBy === 'price' ? 'text-primary font-medium' : ''}`}
+            className={`flex items-center transition-all duration-300 ${sortBy === 'price' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
             onClick={() => handleSortChange('price')}
           >
             Price
             {sortBy === 'price' && <ArrowUpDown className="h-3 w-3 ml-1" />}
           </button>
           <button 
-            className={`flex items-center ${sortBy === 'priority' ? 'text-primary font-medium' : ''}`}
+            className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
             onClick={() => handleSortChange('priority')}
           >
             Priority
@@ -281,7 +281,7 @@ const ShoppingListPage: React.FC = () => {
             id="category-filter"
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-1 px-2"
+            className="text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 py-1 px-2 transition-all duration-300"
           >
             <option value="all">All Categories</option>
             {categories.map(category => (
@@ -303,7 +303,7 @@ const ShoppingListPage: React.FC = () => {
           ))}
           
           {sortedItems.length === 0 && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
               <div className="flex justify-center mb-4">
                 <ShoppingCart className="h-12 w-12 text-gray-300 dark:text-gray-600" />
               </div>
@@ -315,7 +315,7 @@ const ShoppingListPage: React.FC = () => {
                   ? "No items left to buy. Your shopping is complete!"
                   : "Your shopping list is empty. Add some items to get started."}
               </p>
-              <Button>
+              <Button className="transition-all duration-300">
                 <Plus className="h-4 w-4 mr-2" /> Add New Item
               </Button>
             </div>
@@ -325,13 +325,13 @@ const ShoppingListPage: React.FC = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Categories */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Categories</h3>
             <div className="space-y-2">
               {categories.map((category) => (
                 <div 
                   key={category.name} 
-                  className={`flex items-center justify-between py-1 px-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                  className={`flex items-center justify-between py-1 px-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 ${
                     categoryFilter === category.name ? 'bg-gray-100 dark:bg-gray-700' : ''
                   }`}
                   onClick={() => setCategoryFilter(category.name === categoryFilter ? 'all' : category.name)}
@@ -349,7 +349,7 @@ const ShoppingListPage: React.FC = () => {
           </div>
           
           {/* Stores */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Stores</h3>
             <div className="space-y-2">
               {stores.map((store) => (
@@ -367,16 +367,16 @@ const ShoppingListPage: React.FC = () => {
           </div>
           
           {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
             <h3 className="text-lg font-medium mb-3">Quick Actions</h3>
             <div className="space-y-2">
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <CheckCircle className="h-4 w-4 mr-2" /> Mark All as Purchased
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <ListChecks className="h-4 w-4 mr-2" /> Clear Purchased Items
               </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
+              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
                 <ExternalLink className="h-4 w-4 mr-2" /> Export List
               </Button>
             </div>
@@ -432,17 +432,17 @@ const ShoppingItem: React.FC<ShoppingItemProps> = ({ item }) => {
   };
   
   return (
-    <div className={`flex items-center justify-between p-4 rounded-lg border ${
+    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
       item.purchased 
         ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700' 
-        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+        : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
     }`}>
       <div className="flex items-center min-w-0 flex-1">
         <input
           type="checkbox"
           checked={item.purchased}
           readOnly
-          className="h-5 w-5 text-primary rounded border-gray-300 focus:ring-primary mr-3"
+          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3"
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between">
@@ -468,10 +468,10 @@ const ShoppingItem: React.FC<ShoppingItemProps> = ({ item }) => {
         </div>
       </div>
       <div className="flex items-center ml-4 space-x-1">
-        <button className="text-gray-400 hover:text-primary p-1">
+        <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 transition-all duration-300">
           <Edit className="h-4 w-4" />
         </button>
-        <button className="text-gray-400 hover:text-red-500 p-1">
+        <button className="text-gray-400 hover:text-red-500 p-1 transition-all duration-300">
           <Trash2 className="h-4 w-4" />
         </button>
       </div>

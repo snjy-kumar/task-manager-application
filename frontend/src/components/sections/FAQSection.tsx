@@ -11,7 +11,7 @@ export default function FAQSection() {
         <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]" />
         
         <motion.div 
-          className="absolute top-1/4 left-5 w-72 h-72 bg-gradient-to-r from-purple-600/10 to-blue-600/10 rounded-full blur-3xl"
+          className="absolute top-1/4 left-5 w-72 h-72 bg-gray-600/10 rounded-full blur-3xl"
           animate={{ 
             y: [0, 30, 0],
             scale: [1, 1.1, 1],
@@ -25,7 +25,7 @@ export default function FAQSection() {
         />
         
         <motion.div 
-          className="absolute top-2/3 right-5 w-80 h-80 bg-gradient-to-r from-cyan-600/10 to-sky-600/10 rounded-full blur-3xl"
+          className="absolute top-2/3 right-5 w-80 h-80 bg-gray-600/10 rounded-full blur-3xl"
           animate={{ 
             y: [0, -20, 0],
             scale: [1, 1.05, 1],
@@ -43,7 +43,7 @@ export default function FAQSection() {
           {Array(8).fill(0).map((_, i) => (
             <motion.div
               key={i}
-              className="absolute rounded-full bg-primary/30 dark:bg-primary/20"
+              className="absolute rounded-full bg-gray-600/30 dark:bg-gray-600/20"
               style={{
                 width: Math.random() * 8 + 2 + "px",
                 height: Math.random() * 8 + 2 + "px",
@@ -105,7 +105,7 @@ export default function FAQSection() {
           </motion.h2>
           
           <motion.div
-            className="h-1 w-20 bg-gradient-to-r from-primary to-blue-600 mx-auto my-6 rounded-full"
+            className="h-1 w-20 bg-gray-600 dark:bg-gray-400 mx-auto my-6 rounded-full"
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 80, opacity: 1 }}
             viewport={{ once: true }}
@@ -190,7 +190,7 @@ export default function FAQSection() {
           viewport={{ once: true }}
         >
           <div className="p-px bg-gradient-to-r from-transparent via-primary/30 to-transparent rounded-2xl inline-block">
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl px-8 py-6 shadow-lg border border-white/20 dark:border-gray-700/30">
+            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl px-8 py-6 shadow-lg border border-white/20 dark:border-gray-700/30">
               <h3 className="text-xl md:text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
                 Still have questions?
               </h3>
@@ -199,7 +199,7 @@ export default function FAQSection() {
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-xl bg-gradient-to-r from-primary to-blue-600 text-white shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-xl bg-black dark:bg-white text-white dark:text-black shadow-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 group"
               >
                 <span className="mr-3">Contact Support</span>
                 <ChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -224,21 +224,21 @@ function AdvancedFAQItem({ question, answer, icon, index }: AdvancedFAQItemProps
   
   return (
     <motion.div
-      className="rounded-xl overflow-hidden bg-white dark:bg-gray-800/80 shadow-lg border border-gray-100 dark:border-gray-700/50 backdrop-blur-sm"
+      className="rounded-xl overflow-hidden bg-white dark:bg-gray-900/80 shadow-lg border border-gray-100 dark:border-gray-700/50 backdrop-blur-sm"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
       whileHover={{ boxShadow: "0 8px 30px rgba(0, 0, 0, 0.08)" }}
     >
       <motion.button
-        className="w-full flex items-center justify-between p-5 text-left bg-white dark:bg-gray-800/80 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+        className="w-full flex items-center justify-between p-5 text-left bg-white dark:bg-gray-900/80 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all duration-300"
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.98 }}
       >
         <div className="flex items-center gap-3">
           <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
             isOpen 
-              ? "bg-gradient-to-r from-primary to-blue-600 text-white" 
+              ? "bg-black dark:bg-white text-white dark:text-black" 
               : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
           } transition-all duration-300`}>
             {icon}

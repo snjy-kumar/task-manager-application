@@ -83,7 +83,7 @@ const StarredPage = () => {
   const getPriorityColor = (priority: string) => {
     switch (priority.toLowerCase()) {
       case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
+      case 'medium': return 'bg-gray-500';
       case 'low': return 'bg-green-500';
       default: return 'bg-gray-500';
     }
@@ -93,7 +93,7 @@ const StarredPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
           <p className="text-gray-500">Loading important tasks...</p>
         </div>
       </div>
@@ -109,11 +109,11 @@ const StarredPage = () => {
           <p className="text-gray-500 dark:text-gray-400">Your high-priority and upcoming tasks</p>
         </div>
         <div className="mt-4 md:mt-0 flex gap-2">
-          <Button variant="outline" onClick={fetchTasks} size="sm">
+          <Button variant="outline" onClick={fetchTasks} size="sm" className="transition-all duration-300">
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-          <Button asChild>
+          <Button asChild className="transition-all duration-300">
             <Link to="/dashboard/tasks/new">Create Task</Link>
           </Button>
         </div>
@@ -146,7 +146,7 @@ const StarredPage = () => {
                   to={`/dashboard/tasks/${task._id}/edit`}
                   className="block"
                 >
-                  <div className="flex items-center p-3 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-red-500 transition-colors">
+                  <div className="flex items-center p-3 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-red-500 transition-all duration-300">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{task.title}</p>
                       <div className="flex items-center mt-1 space-x-2">
@@ -168,7 +168,7 @@ const StarredPage = () => {
             )}
           </div>
           {highPriorityTasks.length > 0 && (
-            <Button variant="outline" className="w-full mt-4" asChild>
+            <Button variant="outline" className="w-full mt-4 transition-all duration-300" asChild>
               <Link to="/dashboard/tasks">
                 View All Tasks
                 <ChevronRight className="h-4 w-4 ml-2" />
@@ -183,8 +183,8 @@ const StarredPage = () => {
           icon={<Calendar className="h-5 w-5" />}
           size="md"
           gradient
-          gradientFrom="from-blue-600/20"
-          gradientTo="to-purple-600/20"
+          gradientFrom="from-gray-600/20"
+          gradientTo="to-gray-600/20"
         >
           <div className="space-y-2 mt-3">
             {upcomingTasks.length > 0 ? (
@@ -194,7 +194,7 @@ const StarredPage = () => {
                   to={`/dashboard/tasks/${task._id}/edit`}
                   className="block"
                 >
-                  <div className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="p-2 rounded-lg bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-300">
                     <p className="text-sm font-medium truncate">{task.title}</p>
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
@@ -226,7 +226,7 @@ const StarredPage = () => {
                   to={`/dashboard/tasks/${task._id}/edit`}
                   className="block"
                 >
-                  <div className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="p-2 rounded-lg bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-300">
                     <p className="text-sm font-medium truncate">{task.title}</p>
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
@@ -255,12 +255,12 @@ const StarredPage = () => {
               <div className="text-3xl font-bold text-red-600">{highPriorityTasks.length}</div>
               <div className="text-xs text-gray-500 mt-1">High Priority</div>
             </div>
-            <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <div className="text-3xl font-bold text-blue-600">{upcomingTasks.length}</div>
+            <div className="text-center p-4 bg-gray-100 dark:bg-gray-800/20 rounded-lg">
+              <div className="text-3xl font-bold text-gray-600 dark:text-gray-400">{upcomingTasks.length}</div>
               <div className="text-xs text-gray-500 mt-1">Due This Week</div>
             </div>
-            <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-              <div className="text-3xl font-bold text-purple-600">{inProgressTasks.length}</div>
+            <div className="text-center p-4 bg-gray-100 dark:bg-gray-800/20 rounded-lg">
+              <div className="text-3xl font-bold text-gray-600 dark:text-gray-400">{inProgressTasks.length}</div>
               <div className="text-xs text-gray-500 mt-1">In Progress</div>
             </div>
           </div>

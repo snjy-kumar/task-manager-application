@@ -31,7 +31,7 @@ const BlogPage: React.FC = () => {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="w-full py-20 bg-gradient-to-r from-blue-600/90 to-purple-600/90 text-white">
+      <section className="w-full py-20 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center max-w-3xl mx-auto">
             <motion.h1 
@@ -43,7 +43,7 @@ const BlogPage: React.FC = () => {
               AI Task Manager Blog
             </motion.h1>
             <motion.p 
-              className="text-xl text-blue-100 mb-8"
+              className="text-xl text-gray-100 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -61,13 +61,13 @@ const BlogPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search articles..."
-                className="bg-transparent border-none flex-1 p-2 text-white placeholder-blue-100 focus:outline-none"
+                className="bg-transparent border-none flex-1 p-2 text-white placeholder-gray-100 focus:outline-none"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
                 <button 
-                  className="mr-3 text-blue-100 hover:text-white"
+                  className="mr-3 text-gray-100 hover:text-white"
                   onClick={() => setSearchQuery('')}
                 >
                   Clear
@@ -88,7 +88,7 @@ const BlogPage: React.FC = () => {
             <div className="lg:col-span-2">
               {featuredPost && (
                 <motion.div
-                  className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg h-full"
+                  className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg h-full"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
@@ -115,7 +115,7 @@ const BlogPage: React.FC = () => {
                       {featuredPost.categories.map((category, index) => (
                         <span 
                           key={index} 
-                          className="text-xs font-medium bg-blue-100 text-blue-600 px-2 py-1 rounded-full cursor-pointer hover:bg-blue-200"
+                          className="text-xs font-medium bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
                           onClick={() => setActiveCategory(category)}
                         >
                           {getCategoryName(category)}
@@ -138,7 +138,7 @@ const BlogPage: React.FC = () => {
               {secondaryFeaturedPosts.map((post, index) => (
                 <motion.div
                   key={post.id}
-                  className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm flex flex-col sm:flex-row h-full"
+                  className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-sm flex flex-col sm:flex-row h-full"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -160,7 +160,7 @@ const BlogPage: React.FC = () => {
                       {post.categories.slice(0, 2).map((category, index) => (
                         <span 
                           key={index} 
-                          className="text-xs font-medium bg-blue-100 text-blue-600 px-2 py-1 rounded-full cursor-pointer hover:bg-blue-200"
+                          className="text-xs font-medium bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
                           onClick={() => setActiveCategory(category)}
                         >
                           {getCategoryName(category)}
@@ -184,7 +184,7 @@ const BlogPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Categories Sidebar */}
             <div className="w-full lg:w-1/4 lg:order-2">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 sticky top-24">
                 <h2 className="text-xl font-bold mb-4">Categories</h2>
                 <ul className="space-y-2">
                   <li>
@@ -234,7 +234,7 @@ const BlogPage: React.FC = () => {
                   ))}
                 </div>
                 
-                <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800/30 rounded-lg">
                   <h3 className="font-bold mb-2">Subscribe to our newsletter</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Get the latest articles and resources straight to your inbox.</p>
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -266,7 +266,7 @@ const BlogPage: React.FC = () => {
               </div>
               
               {filteredPosts.length === 0 ? (
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 text-center shadow-lg transition-all duration-300">
                   <p className="text-gray-500 dark:text-gray-400 mb-4">No articles found matching your criteria.</p>
                   <Button onClick={() => {setSearchQuery(''); setActiveCategory('all');}}>
                     Reset Filters
@@ -295,7 +295,7 @@ const BlogPage: React.FC = () => {
       </section>
       
       {/* Newsletter Section */}
-      <section className="w-full py-16 bg-primary text-white">
+      <section className="w-full py-16 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Join Our Newsletter</h2>
@@ -345,7 +345,7 @@ interface BlogPostCardProps {
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, delay = 0 }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md flex flex-col h-full border border-gray-200 dark:border-gray-700"
+      className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md flex flex-col h-full border border-gray-200 dark:border-gray-700"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -376,7 +376,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, delay = 0 }) => {
           {post.categories.slice(0, 2).map((category, index) => (
             <span 
               key={index} 
-              className="text-xs font-medium bg-blue-100 text-blue-600 px-2 py-1 rounded-full"
+              className="text-xs font-medium bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full"
             >
               {getCategoryName(category)}
             </span>

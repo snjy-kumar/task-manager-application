@@ -15,7 +15,7 @@ const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
     height,
     count = 1
 }) => {
-    const baseClass = 'animate-pulse bg-gray-200 dark:bg-gray-700';
+    const baseClass = 'animate-pulse bg-gray-200 dark:bg-gray-800';
 
     const variantClasses = {
         text: 'h-4 rounded',

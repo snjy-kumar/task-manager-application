@@ -118,7 +118,7 @@ const DashboardHome = () => {
       case 'high':
         return 'bg-red-500';
       case 'medium':
-        return 'bg-yellow-500';
+        return 'bg-gray-500';
       case 'low':
         return 'bg-green-500';
       default:
@@ -145,7 +145,7 @@ const DashboardHome = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
           <p className="text-gray-500">Loading dashboard...</p>
         </div>
       </div>
@@ -198,19 +198,19 @@ const DashboardHome = () => {
           gradientTo="to-emerald-600/20"
         >
           <div className="mt-4 grid grid-cols-2 gap-4">
-            <div className="rounded-xl bg-white dark:bg-gray-800 p-4 text-center shadow-sm">
+            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
               <span className="text-3xl font-bold text-green-600">{stats.completed}</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">Completed</p>
             </div>
-            <div className="rounded-xl bg-white dark:bg-gray-800 p-4 text-center shadow-sm">
-              <span className="text-3xl font-bold text-blue-600">{stats.inProgress}</span>
+            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
+              <span className="text-3xl font-bold text-gray-600 dark:text-gray-400">{stats.inProgress}</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">In Progress</p>
             </div>
-            <div className="rounded-xl bg-white dark:bg-gray-800 p-4 text-center shadow-sm">
-              <span className="text-3xl font-bold text-yellow-600">{stats.pending}</span>
+            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
+              <span className="text-3xl font-bold text-gray-600 dark:text-gray-400">{stats.pending}</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">Pending</p>
             </div>
-            <div className="rounded-xl bg-white dark:bg-gray-800 p-4 text-center shadow-sm">
+            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
               <span className="text-3xl font-bold text-red-600">{stats.overdue}</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">Overdue</p>
             </div>
@@ -247,7 +247,7 @@ const DashboardHome = () => {
                   strokeWidth="8"
                   strokeDasharray="283"
                   strokeDashoffset={283 - (283 * stats.completionRate) / 100}
-                  className="text-primary transition-all duration-500"
+                  className="text-gray-600 dark:text-gray-400 transition-all duration-500"
                 />
               </svg>
             </div>
@@ -290,7 +290,7 @@ const DashboardHome = () => {
           size="sm"
         >
           <div className="mt-4 text-center">
-            <div className="text-5xl font-bold text-primary">{stats.total}</div>
+            <div className="text-5xl font-bold text-gray-900 dark:text-white">{stats.total}</div>
             <p className="text-sm text-gray-500 mt-2">All time</p>
           </div>
           <div className="mt-4 flex items-center justify-center text-sm">
@@ -351,8 +351,8 @@ const DashboardHome = () => {
           icon={<Clock className="h-5 w-5" />}
           size="md"
           gradient
-          gradientFrom="from-purple-600/20"
-          gradientTo="to-pink-600/20"
+          gradientFrom="from-gray-600/20"
+          gradientTo="to-gray-600/20"
         >
           <div className="space-y-2 mt-3">
             {upcomingTasks.length > 0 ? (
@@ -379,8 +379,8 @@ const DashboardHome = () => {
           icon={<Sparkles className="h-5 w-5" />}
           size="md"
           gradient
-          gradientFrom="from-blue-600/20"
-          gradientTo="to-blue-400/20"
+          gradientFrom="from-gray-600/20"
+          gradientTo="to-gray-400/20"
         >
           <div className="space-y-3 mt-3">
             {stats.overdue > 0 && (
@@ -393,9 +393,9 @@ const DashboardHome = () => {
             )}
 
             {stats.inProgress > 5 && (
-              <div className="flex items-start gap-2 p-2 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-                <Zap className="h-5 w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-yellow-700 dark:text-yellow-300">
+              <div className="flex items-start gap-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800/20 border border-gray-200 dark:border-gray-700">
+                <Zap className="h-5 w-5 text-gray-500 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   You have {stats.inProgress} tasks in progress. Focus on completing a few before starting new ones.
                 </p>
               </div>
@@ -411,9 +411,9 @@ const DashboardHome = () => {
             )}
 
             {stats.total === 0 && (
-              <div className="flex items-start gap-2 p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-                <Sparkles className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-blue-700 dark:text-blue-300">
+              <div className="flex items-start gap-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800/20 border border-gray-200 dark:border-gray-700">
+                <Sparkles className="h-5 w-5 text-gray-500 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   Start organizing your day by creating your first task!
                 </p>
               </div>

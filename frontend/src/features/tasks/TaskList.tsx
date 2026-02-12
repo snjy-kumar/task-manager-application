@@ -130,7 +130,7 @@ const TaskList: React.FC = () => {
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border border-gray-200 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-4 border border-gray-200 dark:border-gray-700 transition-all duration-300">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search Input */}
           <div className="relative flex-grow">
@@ -140,7 +140,7 @@ const TaskList: React.FC = () => {
             <input
               type="text"
               placeholder="Search tasks..."
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="pl-10 pr-4 py-2 w-full border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -160,7 +160,7 @@ const TaskList: React.FC = () => {
           {/* Sort Dropdown */}
           <div className="relative">
             <select
-              className="appearance-none pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="appearance-none pl-4 pr-8 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -282,10 +282,11 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, active, onClick }) =
   return (
     <button
       onClick={onClick}
-      className={`px - 3 py - 1 text - sm rounded - full ${active
-        ? 'bg-primary text-white'
-        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
-        } `}
+      className={`px-3 py-1 text-sm rounded-full transition-all duration-300 ${
+        active
+          ? 'bg-primary text-white'
+          : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
+      }`}
     >
       {label}
     </button>
@@ -338,7 +339,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
   const statusInfo = getStatusInfo(task.status);
 
   return (
-    <div className="relative p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+    <div className="relative p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
       <div className="flex items-start">
         {/* Checkbox Button */}
         <button className="mt-1 mr-3 text-gray-400 hover:text-green-500">
@@ -348,7 +349,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center">
             <h3 className="text-base font-medium truncate">{task.title}</h3>
-            <span className={`ml - 3 h - 2 w - 2 rounded - full ${getPriorityColor(task.priority)} `}></span>
+            <span className={`ml-3 h-2 w-2 rounded-full ${getPriorityColor(task.priority)}`}></span>
           </div>
 
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{task.description}</p>
@@ -376,11 +377,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
           </button>
 
           {actionsOpen && (
-            <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-10">
+            <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-10 transition-all duration-300">
               <div className="py-1">
                 <Link
-                  to={`/ dashboard / tasks / ${task._id}/edit`}
-                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  to={`/dashboard/tasks/${task._id}/edit`}
+                  className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
                 >
                   <div className="flex items-center">
                     <Edit className="h-4 w-4 mr-2" />
@@ -389,7 +390,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
                 </Link >
                 <button
                   onClick={() => onDelete(task._id)}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
                 >
                   <div className="flex items-center">
                     <Trash className="h-4 w-4 mr-2" />

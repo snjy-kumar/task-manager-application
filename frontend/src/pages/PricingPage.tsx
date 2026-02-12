@@ -22,7 +22,7 @@ const PricingPage: React.FC = () => {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="w-full py-16 md:py-24 bg-gradient-to-r from-blue-600/90 to-purple-600/90 text-white">
+      <section className="w-full py-16 md:py-24 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center max-w-3xl mx-auto">
             <motion.h1 
@@ -34,7 +34,7 @@ const PricingPage: React.FC = () => {
               Simple, Transparent Pricing
             </motion.h1>
             <motion.p 
-              className="text-xl text-blue-100 mb-8"
+              className="text-xl text-gray-100 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -49,13 +49,13 @@ const PricingPage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <button 
-                className={`px-4 py-2 rounded-full text-sm font-medium ${billingCycle === 'monthly' ? 'bg-white text-blue-600' : 'text-white'}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium ${billingCycle === 'monthly' ? 'bg-white text-black' : 'text-white'}`}
                 onClick={() => setBillingCycle('monthly')}
               >
                 Monthly
               </button>
               <button 
-                className={`px-4 py-2 rounded-full text-sm font-medium ${billingCycle === 'annual' ? 'bg-white text-blue-600' : 'text-white'}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium ${billingCycle === 'annual' ? 'bg-white text-black' : 'text-white'}`}
                 onClick={() => setBillingCycle('annual')}
               >
                 Annual (20% off)
@@ -167,7 +167,7 @@ const PricingPage: React.FC = () => {
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <th className="py-4 px-6 text-left">Features</th>
                   <th className="py-4 px-6 text-center">Free</th>
-                  <th className="py-4 px-6 text-center bg-blue-50 dark:bg-blue-900/20">Pro</th>
+                  <th className="py-4 px-6 text-center bg-gray-200 dark:bg-gray-800/20">Pro</th>
                   <th className="py-4 px-6 text-center">Enterprise</th>
                 </tr>
               </thead>
@@ -288,7 +288,7 @@ const PricingPage: React.FC = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="w-full py-16 bg-primary text-white">
+      <section className="w-full py-16 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
@@ -331,14 +331,14 @@ const PricingCard: React.FC<PricingCardProps> = ({
 }) => {
   return (
     <motion.div
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden ${popular ? 'border-2 border-primary ring-4 ring-primary/10 relative z-10 md:-my-4 md:py-2' : 'border border-gray-200 dark:border-gray-700'}`}
+      className={`bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden ${popular ? 'border-2 border-primary ring-4 ring-primary/10 relative z-10 md:-my-4 md:py-2' : 'border border-gray-200 dark:border-gray-700'}`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
       {popular && (
-        <div className="bg-primary text-white text-xs font-bold px-3 py-1 absolute top-4 right-4 rounded-full">
+        <div className="bg-black dark:bg-white text-white dark:text-black text-xs font-bold px-3 py-1 absolute top-4 right-4 rounded-full">
           Most Popular
         </div>
       )}
@@ -352,7 +352,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
           <span className="text-gray-500 dark:text-gray-400">{period}</span>
         </div>
         
-        <Button asChild className={`w-full ${popular ? 'bg-primary hover:bg-primary/90' : ''}`}>
+        <Button asChild className={`w-full ${popular ? 'bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200' : ''}`}>
           <Link to={buttonLink}>
             {buttonText}
           </Link>
@@ -400,7 +400,7 @@ const FeatureRow: React.FC<FeatureRowProps> = ({ name, free, pro, enterprise, ic
           free
         )}
       </td>
-      <td className="py-4 px-6 text-center bg-blue-50 dark:bg-blue-900/20">
+      <td className="py-4 px-6 text-center bg-gray-200 dark:bg-gray-800/20">
         {typeof pro === 'boolean' ? (
           pro ? <CheckCircle className="h-5 w-5 text-green-500 mx-auto" /> : <X className="h-5 w-5 text-gray-300 dark:text-gray-600 mx-auto" />
         ) : (
@@ -426,7 +426,7 @@ interface FAQItemProps {
 const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
   return (
     <motion.div 
-      className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
+      className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

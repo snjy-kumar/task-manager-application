@@ -59,11 +59,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-900">
+    <div className="h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-950">
       {/* Sidebar */}
       <div
         className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } fixed inset-y-0 left-0 z-30 w-64 transition duration-300 transform bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0 lg:static lg:inset-0`}
+          } fixed inset-y-0 left-0 z-30 w-64 transition-all duration-300 transform bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0 lg:static lg:inset-0`}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
           <Link to="/dashboard" className="flex items-center">
@@ -138,7 +138,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           <div className="mt-2">
             <Link
               to="/dashboard/tasks/new"
-              className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+              className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-300"
             >
               <Plus className="h-5 w-5 mr-2 text-gray-500" />
               Create New Task
@@ -150,7 +150,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
+        <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 transition-all duration-300">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
@@ -186,7 +186,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
               </button>
 
               {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-20">
+                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-20 transition-all duration-300">
                   <div className="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 className="text-sm font-semibold">Notifications</h3>
                   </div>
@@ -203,7 +203,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center space-x-2 focus:outline-none"
               >
-                <div className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-medium text-sm">
+                <div className="h-8 w-8 rounded-full bg-gray-700 dark:bg-gray-300 text-white dark:text-black flex items-center justify-center font-medium text-sm">
                   {getUserInitials()}
                 </div>
                 <span className="hidden md:inline-block font-medium">{user?.name || 'User'}</span>
@@ -211,7 +211,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
               </button>
 
               {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-20">
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-20 transition-all duration-300">
                   <div className="py-1">
                     <Link
                       to="/dashboard/profile"
@@ -251,7 +251,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6">
+        <main className="flex-1 overflow-y-auto bg-gray-100 dark:bg-gray-950 p-6">
           {children}
         </main>
       </div>
@@ -272,8 +272,8 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({ to, icon, label, active }) =>
     <Link
       to={to}
       className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${active
-        ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400'
-        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+        ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
         }`}
     >
       <span className={`mr-3 h-5 w-5 ${active ? 'text-primary-500' : 'text-gray-500 dark:text-gray-400'}`}>

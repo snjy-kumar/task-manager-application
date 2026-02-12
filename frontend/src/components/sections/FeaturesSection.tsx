@@ -10,14 +10,14 @@ const features = [
     icon: Brain,
     title: "AI Task Suggestions",
     description: "Get intelligent recommendations based on your work patterns, priorities, and deadlines.",
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-gray-600 to-gray-800",
     delay: 0
   },
   {
     icon: Calendar,
     title: "Smart Scheduling",
     description: "Automatically organize your day with optimal task placement based on energy levels.",
-    gradient: "from-blue-500 to-cyan-600",
+    gradient: "from-gray-600 to-gray-800",
     delay: 0.1
   },
   {
@@ -31,21 +31,21 @@ const features = [
     icon: Target,
     title: "Goal Tracking",
     description: "Set ambitious goals and track your progress with milestone celebrations.",
-    gradient: "from-orange-500 to-amber-600",
+    gradient: "from-gray-600 to-gray-800",
     delay: 0.3
   },
   {
     icon: Users,
     title: "Team Collaboration",
     description: "Share tasks, assign responsibilities, and collaborate in real-time.",
-    gradient: "from-pink-500 to-rose-600",
+    gradient: "from-gray-600 to-gray-800",
     delay: 0.4
   },
   {
     icon: Bell,
     title: "Smart Reminders",
     description: "Never miss a deadline with intelligent notifications at the right moment.",
-    gradient: "from-indigo-500 to-blue-600",
+    gradient: "from-gray-600 to-gray-800",
     delay: 0.5
   }
 ];
@@ -54,8 +54,8 @@ export default function FeaturesSection() {
   return (
     <section id="features" className="relative py-24 lg:py-32 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-200 dark:bg-purple-900/20 rounded-full blur-[120px] opacity-50" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-200 dark:bg-blue-900/20 rounded-full blur-[120px] opacity-50" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gray-200 dark:bg-gray-800/20 rounded-full blur-[120px] opacity-50" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gray-200 dark:bg-gray-800/20 rounded-full blur-[120px] opacity-50" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -66,7 +66,7 @@ export default function FeaturesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-sm font-medium mb-4">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-800/30 text-gray-900 dark:text-gray-100 text-sm font-medium mb-4">
               <Zap className="w-4 h-4" />
               Powerful Features
             </span>
@@ -81,7 +81,7 @@ export default function FeaturesSection() {
           >
             Everything You Need to
             <br />
-            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-gray-900 dark:text-white">
               Stay Productive
             </span>
           </motion.h2>
@@ -110,8 +110,8 @@ export default function FeaturesSection() {
               whileHover={{ y: -5 }}
             >
               {/* Gradient border on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm" />
-              <div className="absolute inset-[1px] rounded-2xl bg-white dark:bg-gray-800 -z-10" />
+              <div className="absolute inset-0 rounded-2xl bg-gray-400 dark:bg-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm" />
+              <div className="absolute inset-[1px] rounded-2xl bg-white dark:bg-gray-900 -z-10" />
 
               {/* Icon */}
               <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${feature.gradient} mb-5`}>
@@ -127,7 +127,7 @@ export default function FeaturesSection() {
               </p>
 
               {/* Learn more link */}
-              <div className="mt-4 flex items-center text-indigo-600 dark:text-indigo-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="mt-4 flex items-center text-gray-900 dark:text-gray-100 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 Learn more <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>
             </motion.div>
@@ -144,7 +144,7 @@ export default function FeaturesSection() {
         >
           <Link
             to="/features"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-xl shadow-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 hover:scale-105"
           >
             Explore All Features
             <ArrowRight className="w-5 h-5" />

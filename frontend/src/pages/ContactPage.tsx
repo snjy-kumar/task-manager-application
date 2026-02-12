@@ -16,7 +16,7 @@ const ContactPage: React.FC = () => {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="w-full py-20 md:py-28 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <section className="w-full py-20 md:py-28 bg-gray-50 dark:bg-gray-900">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="max-w-3xl mx-auto text-center">
             <motion.h1 
@@ -44,22 +44,22 @@ const ContactPage: React.FC = () => {
         <div className="container px-4 md:px-6 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
             <ContactCard
-              icon={<MapPin className="h-8 w-8 text-primary" />}
+              icon={<MapPin className="h-8 w-8 text-gray-900 dark:text-gray-100" />}
               title="Visit Us"
               description="123 AI Boulevard, San Francisco, CA 94107, USA"
             />
             <ContactCard
-              icon={<Phone className="h-8 w-8 text-primary" />}
+              icon={<Phone className="h-8 w-8 text-gray-900 dark:text-gray-100" />}
               title="Call Us"
               description="+1 (555) 123-4567"
             />
             <ContactCard
-              icon={<Mail className="h-8 w-8 text-primary" />}
+              icon={<Mail className="h-8 w-8 text-gray-900 dark:text-gray-100" />}
               title="Email Us"
               description="support@aitaskmanager.com"
             />
             <ContactCard
-              icon={<Clock className="h-8 w-8 text-primary" />}
+              icon={<Clock className="h-8 w-8 text-gray-900 dark:text-gray-100" />}
               title="Working Hours"
               description="Mon-Fri: 9AM - 6PM (EST)"
             />
@@ -68,7 +68,7 @@ const ContactPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <motion.div 
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+              className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
@@ -81,7 +81,7 @@ const ContactPage: React.FC = () => {
                     <input
                       id="name"
                       type="text"
-                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700"
+                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 transition-all duration-300"
                       placeholder="Your name"
                       required
                     />
@@ -91,7 +91,7 @@ const ContactPage: React.FC = () => {
                     <input
                       id="email"
                       type="email"
-                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700"
+                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 transition-all duration-300"
                       placeholder="you@example.com"
                       required
                     />
@@ -102,7 +102,7 @@ const ContactPage: React.FC = () => {
                   <input
                     id="subject"
                     type="text"
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700"
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 transition-all duration-300"
                     placeholder="How can we help you?"
                     required
                   />
@@ -111,7 +111,7 @@ const ContactPage: React.FC = () => {
                   <label className="block text-sm font-medium mb-2" htmlFor="message">Message</label>
                   <textarea
                     id="message"
-                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700"
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-800 transition-all duration-300"
                     rows={6}
                     placeholder="Your message..."
                     required
@@ -211,7 +211,7 @@ const ContactPage: React.FC = () => {
             <p className="text-xl mb-8 text-white/80">
               Join thousands of satisfied users who are already boosting their productivity with our platform.
             </p>
-            <Button size="lg" asChild className="bg-white/10 text-primary    hover:bg-black">
+            <Button size="lg" asChild className="bg-white text-black hover:bg-gray-200">
               <a href="/signup">Start Your Free Trial</a>
             </Button>
           </div>
@@ -230,13 +230,13 @@ interface ContactCardProps {
 const ContactCard: React.FC<ContactCardProps> = ({ icon, title, description }) => {
   return (
     <motion.div 
-      className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md"
+      className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="mb-4 p-3 bg-primary/10 rounded-full">
+      <div className="mb-4 p-3 bg-gray-200 dark:bg-gray-800/10 rounded-full">
         {icon}
       </div>
       <h3 className="text-xl font-bold mb-2">{title}</h3>
@@ -254,7 +254,7 @@ interface SupportOptionProps {
 
 const SupportOption: React.FC<SupportOptionProps> = ({ icon, title, description, action }) => {
   return (
-    <div className="flex p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+    <div className="flex p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md">
       <div className="mr-6">
         <div className="p-3 bg-primary/10 rounded-full">
           {icon}
@@ -277,7 +277,7 @@ interface FAQItemProps {
 const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
   return (
     <motion.div 
-      className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
+      className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

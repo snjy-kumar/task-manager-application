@@ -24,7 +24,7 @@ const FeaturesPage: React.FC = () => {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="w-full py-24 md:py-32 lg:py-40 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+      <section className="w-full py-24 md:py-32 lg:py-40 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
         <div className="container px-4 md:px-6 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <motion.h1 
@@ -33,7 +33,7 @@ const FeaturesPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Powerful Features for <span className="text-primary">Maximum Productivity</span>
+              Powerful Features for <span className="text-gray-900 dark:text-white">Maximum Productivity</span>
             </motion.h1>
             <motion.p 
               className="text-xl text-gray-500 dark:text-gray-400 mb-8"
@@ -77,47 +77,47 @@ const FeaturesPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard 
-              icon={<Zap className="h-10 w-10 text-primary" />}
+              icon={<Zap className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="AI Task Suggestions"
               description="Get intelligent task recommendations based on your work patterns and priorities."
             />
             <FeatureCard 
-              icon={<Calendar className="h-10 w-10 text-primary" />}
+              icon={<Calendar className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Smart Scheduling"
               description="Automatically schedule tasks based on your availability and task urgency."
             />
             <FeatureCard 
-              icon={<BarChart className="h-10 w-10 text-primary" />}
+              icon={<BarChart className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Productivity Analytics"
               description="Gain insights into your productivity trends and task completion rates."
             />
             <FeatureCard 
-              icon={<Shield className="h-10 w-10 text-primary" />}
+              icon={<Shield className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Secure Cloud Sync"
               description="Your tasks are securely stored and synced across all your devices."
             />
             <FeatureCard 
-              icon={<Award className="h-10 w-10 text-primary" />}
+              icon={<Award className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Productivity Gamification"
               description="Earn points and achievements as you complete tasks and build productivity streaks."
             />
             <FeatureCard 
-              icon={<Briefcase className="h-10 w-10 text-primary" />}
+              icon={<Briefcase className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Team Collaboration"
               description="Share tasks and projects with your team for seamless collaboration."
             />
             <FeatureCard 
-              icon={<Clock className="h-10 w-10 text-primary" />}
+              icon={<Clock className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Time Tracking"
               description="Track time spent on tasks to improve your time management skills."
             />
             <FeatureCard 
-              icon={<UserPlus className="h-10 w-10 text-primary" />}
+              icon={<UserPlus className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Task Delegation"
               description="Easily assign tasks to team members and track their progress."
             />
             <FeatureCard 
-              icon={<Bell className="h-10 w-10 text-primary" />}
+              icon={<Bell className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Smart Notifications"
               description="Get reminders and alerts for important tasks and deadlines."
             />
@@ -137,32 +137,32 @@ const FeaturesPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard 
-              icon={<Smartphone className="h-10 w-10 text-primary" />}
+              icon={<Smartphone className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Mobile Apps"
               description="Access your tasks on the go with our iOS and Android mobile applications."
             />
             <FeatureCard 
-              icon={<Repeat className="h-10 w-10 text-primary" />}
+              icon={<Repeat className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Recurring Tasks"
               description="Set up recurring tasks for regular activities and never miss a beat."
             />
             <FeatureCard 
-              icon={<Sliders className="h-10 w-10 text-primary" />}
+              icon={<Sliders className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Custom Workflows"
               description="Create custom workflows to match your unique process and requirements."
             />
             <FeatureCard 
-              icon={<Cloud className="h-10 w-10 text-primary" />}
+              icon={<Cloud className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="API Integration"
               description="Connect with your favorite tools through our robust API integration."
             />
             <FeatureCard 
-              icon={<Lightbulb className="h-10 w-10 text-primary" />}
+              icon={<Lightbulb className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="AI Learning"
               description="Our system learns from your behavior to provide increasingly personalized experiences."
             />
             <FeatureCard 
-              icon={<UserPlus className="h-10 w-10 text-primary" />}
+              icon={<UserPlus className="h-10 w-10 text-gray-900 dark:text-gray-100" />}
               title="Team Analytics"
               description="Get insights into team performance and identify opportunities for improvement."
             />
@@ -171,7 +171,7 @@ const FeaturesPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-16 md:py-24 bg-primary text-white">
+      <section className="w-full py-16 md:py-24 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
@@ -179,7 +179,7 @@ const FeaturesPage: React.FC = () => {
               Join thousands of satisfied users who are already boosting their productivity with our platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild className="bg-white text-primary hover:bg-gray-100 rounded-full px-8">
+              <Button size="lg" asChild className="bg-white text-gray-900 dark:text-gray-100 hover:bg-gray-100 rounded-full px-8">
                 <Link to="/signup">
                   Start Your Free Trial
                 </Link>
@@ -206,13 +206,13 @@ interface FeatureCardProps {
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
   return (
     <motion.div 
-      className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+      className="flex flex-col items-center text-center p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="mb-4 p-3 bg-primary/10 rounded-full">
+      <div className="mb-4 p-3 bg-gray-200 dark:bg-gray-800/10 rounded-full">
         {icon}
       </div>
       <h3 className="text-xl font-bold mb-2">{title}</h3>

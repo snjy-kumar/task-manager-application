@@ -10,33 +10,33 @@ export default function TestimonialsSection() {
       quote: "This AI task manager has revolutionized the way I work. I've seen a 40% increase in my daily productivity!",
       author: "Jane Doe",
       title: "Freelance Designer",
-      image: "https://placehold.co/100x100/2563eb/FFFFFF/png?text=JD",
+      image: "https://placehold.co/100x100/6b7280/FFFFFF/png?text=JD",
       rating: 5,
-      color: "from-blue-600 to-indigo-600"
+      color: "from-gray-600 to-gray-700"
     },
     {
       quote: "The AI suggestions are spot-on. It's like having a personal assistant that really understands my work style and priorities.",
       author: "John Smith",
       title: "Project Manager",
-      image: "https://placehold.co/100x100/2563eb/FFFFFF/png?text=JS",
+      image: "https://placehold.co/100x100/6b7280/FFFFFF/png?text=JS",
       rating: 5,
-      color: "from-purple-600 to-violet-600"
+      color: "from-gray-700 to-gray-800"
     },
     {
       quote: "I've tried many task management tools, but this is by far the most intelligent and user-friendly system I've used.",
       author: "Emily Johnson",
       title: "Entrepreneur",
-      image: "https://placehold.co/100x100/2563eb/FFFFFF/png?text=EJ",
+      image: "https://placehold.co/100x100/6b7280/FFFFFF/png?text=EJ",
       rating: 4,
-      color: "from-rose-600 to-pink-600"
+      color: "from-gray-500 to-gray-600"
     },
     {
       quote: "The smart scheduling feature saves me hours of planning each week. It's like having a personal assistant.",
       author: "Michael Brown",
       title: "Marketing Director",
-      image: "https://placehold.co/100x100/2563eb/FFFFFF/png?text=MB",
+      image: "https://placehold.co/100x100/6b7280/FFFFFF/png?text=MB",
       rating: 5,
-      color: "from-amber-600 to-orange-600"
+      color: "from-gray-600 to-gray-700"
     },
     {
       quote: "Team collaboration has never been easier. We can now coordinate tasks seamlessly across departments.",
@@ -44,15 +44,15 @@ export default function TestimonialsSection() {
       title: "HR Manager",
       image: "https://placehold.co/100x100/2563eb/FFFFFF/png?text=SW",
       rating: 5,
-      color: "from-emerald-600 to-teal-600"
+      color: "from-gray-600 to-gray-800"
     },
     {
       quote: "The productivity analytics helped me identify where I was wasting time and improve my workflow.",
       author: "David Chen",
       title: "Software Engineer",
-      image: "https://placehold.co/100x100/2563eb/FFFFFF/png?text=DC",
+      image: "https://placehold.co/100x100/6b7280/FFFFFF/png?text=DC",
       rating: 4,
-      color: "from-cyan-600 to-sky-600"
+      color: "from-gray-700 to-gray-800"
     }
   ];
 
@@ -69,16 +69,16 @@ export default function TestimonialsSection() {
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]" />
-        <div className="absolute -top-48 -left-48 w-96 h-96 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-full blur-3xl animate-blob" />
-        <div className="absolute top-1/2 -right-48 w-96 h-96 bg-gradient-to-r from-cyan-600/20 to-teal-600/20 rounded-full blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-48 left-1/3 w-96 h-96 bg-gradient-to-r from-pink-600/20 to-rose-600/20 rounded-full blur-3xl animate-blob animation-delay-4000" />
+        <div className="absolute -top-48 -left-48 w-96 h-96 bg-gray-600/20 rounded-full blur-3xl animate-blob" />
+        <div className="absolute -bottom-48 right-1/4 w-96 h-96 bg-gray-600/20 rounded-full blur-3xl animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-48 left-1/3 w-96 h-96 bg-gray-600/20 rounded-full blur-3xl animate-blob animation-delay-4000" />
       </div>
 
       <div className="container px-4 md:px-6 mx-auto max-w-7xl relative z-10">
         {/* Header with glowing accent */}
         <div className="relative">
           <motion.div 
-            className="absolute inset-0 -z-10 mx-auto w-48 h-48 bg-gradient-to-r from-primary/30 to-blue-600/30 rounded-full blur-3xl opacity-70"
+            className="absolute inset-0 -z-10 mx-auto w-48 h-48 bg-gray-600/30 rounded-full blur-3xl opacity-70"
             animate={{ 
               scale: [1, 1.1, 1],
               opacity: [0.5, 0.8, 0.5],
@@ -128,7 +128,7 @@ export default function TestimonialsSection() {
             </motion.h2>
             
             <motion.div
-              className="h-1 w-20 bg-gradient-to-r from-primary to-blue-600 mx-auto my-6 rounded-full"
+              className="h-1 w-20 bg-gray-600 dark:bg-gray-400 mx-auto my-6 rounded-full"
               initial={{ width: 0, opacity: 0 }}
               whileInView={{ width: 80, opacity: 1 }}
               viewport={{ once: true }}
@@ -150,7 +150,7 @@ export default function TestimonialsSection() {
         {/* Featured testimonial carousel */}
         <div className="mb-20 relative">
           <motion.div
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/5 to-blue-600/5 dark:from-primary/10 dark:to-blue-600/10 rounded-3xl"
+            className="absolute inset-0 -z-10 bg-gray-100 dark:bg-gray-800/10 rounded-3xl"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -233,7 +233,7 @@ export default function TestimonialsSection() {
             {/* Navigation controls */}
             <div className="flex justify-center mt-8 gap-4">
               <motion.button
-                className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors"
+                className="w-12 h-12 rounded-full bg-white dark:bg-gray-900 shadow-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={prevTestimonial}
@@ -242,7 +242,7 @@ export default function TestimonialsSection() {
               </motion.button>
               
               <motion.button
-                className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors"
+                className="w-12 h-12 rounded-full bg-white dark:bg-gray-900 shadow-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={nextTestimonial}
@@ -316,7 +316,7 @@ export default function TestimonialsSection() {
           viewport={{ once: true }}
         >
           <div className="relative">
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-blue-600/20 rounded-full blur-xl opacity-70" />
+            <div className="absolute -inset-4 bg-gray-600/20 rounded-full blur-xl opacity-70" />
             <div className="relative flex -space-x-3 hover:-space-x-1 transition-all duration-300">
               {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <motion.div 
@@ -336,7 +336,7 @@ export default function TestimonialsSection() {
                 </motion.div>
               ))}
               <motion.div 
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center text-xs font-bold text-white border-2 border-white dark:border-gray-800 shadow-lg z-10 hover:z-20"
+                className="w-10 h-10 rounded-full bg-gray-700 dark:bg-gray-300 flex items-center justify-center text-xs font-bold text-white dark:text-black border-2 border-white dark:border-gray-800 shadow-lg z-10 hover:z-20"
                 initial={{ x: 40, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.4 }}
@@ -350,7 +350,7 @@ export default function TestimonialsSection() {
           
           <div className="text-center">
             <div className="text-sm font-medium mb-2">
-              <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent font-bold">
+              <span className="text-gray-900 dark:text-white font-bold">
                 Join our growing community
               </span>
             </div>
@@ -376,7 +376,7 @@ interface TestimonialCardProps {
 function TestimonialCard({ quote, author, title, image, rating = 5, className = "" }: TestimonialCardProps) {
   return (
     <motion.div
-      className={`group relative p-6 rounded-xl hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-white to-gray-50/80 dark:from-gray-800 dark:to-gray-900/80 backdrop-blur-sm border border-white/50 dark:border-gray-700/50 hover:border-primary/30 dark:hover:border-primary/30 ${className}`}
+      className={`group relative p-6 rounded-xl hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-white to-gray-50/80 dark:from-gray-900 dark:to-gray-900/80 backdrop-blur-sm border border-white/50 dark:border-gray-700/50 hover:border-primary/30 dark:hover:border-primary/30 ${className}`}
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -413,7 +413,7 @@ function TestimonialCard({ quote, author, title, image, rating = 5, className = 
             className="w-8 h-8 rounded-full border-2 border-white dark:border-gray-800 shadow-md"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-blue-600 flex items-center justify-center text-xs font-bold text-white">
+          <div className="w-8 h-8 rounded-full bg-gray-700 dark:bg-gray-300 flex items-center justify-center text-xs font-bold text-white dark:text-black">
             {author.split(' ').map(n => n[0]).join('')}
           </div>
         )}

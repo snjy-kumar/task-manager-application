@@ -113,7 +113,7 @@ const TaskManagement: React.FC = () => {
         </div>
         <button
           type="submit"
-          className="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="flex items-center justify-center bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           <AiOutlinePlus className="mr-2" />
           Add Task

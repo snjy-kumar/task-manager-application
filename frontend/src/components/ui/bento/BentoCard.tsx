@@ -48,14 +48,14 @@ const BentoCard = React.forwardRef<HTMLDivElement, BentoCardProps>(
       : '';
 
     const gradientClasses = gradient 
-      ? `bg-gradient-to-br ${gradientFrom || 'from-blue-600/20'} ${gradientTo || 'to-purple-600/20'}`
+      ? `bg-gradient-to-br ${gradientFrom || 'from-gray-600/20'} ${gradientTo || 'to-gray-600/20'}`
       : '';
     
     return (
       <div
         ref={ref}
         className={cn(
-          'relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-md p-6',
+          'relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg p-6 transition-all duration-300',
           sizeClasses[size],
           hoverClasses,
           gradientClasses,

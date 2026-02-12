@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 overflow-hidden">
+    <section className="relative w-full min-h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
       {/* Animated gradient orbs */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute top-20 -left-20 w-96 h-96 bg-purple-600/30 rounded-full filter blur-[100px]"
+          className="absolute top-20 -left-20 w-96 h-96 bg-gray-700/30 rounded-full filter blur-[100px]"
           animate={{
             x: [0, 50, 0],
             y: [0, 30, 0],
@@ -17,7 +17,7 @@ const HeroSection = () => {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute top-40 -right-20 w-96 h-96 bg-blue-600/30 rounded-full filter blur-[100px]"
+          className="absolute top-40 -right-20 w-96 h-96 bg-gray-600/30 rounded-full filter blur-[100px]"
           animate={{
             x: [0, -30, 0],
             y: [0, 50, 0],
@@ -26,7 +26,7 @@ const HeroSection = () => {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute -bottom-20 left-1/3 w-96 h-96 bg-pink-600/20 rounded-full filter blur-[100px]"
+          className="absolute -bottom-20 left-1/3 w-96 h-96 bg-gray-500/20 rounded-full filter blur-[100px]"
           animate={{
             x: [0, 40, 0],
             y: [0, -30, 0],
@@ -48,10 +48,10 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 backdrop-blur-sm">
-            <Sparkles className="w-4 h-4 text-indigo-400" />
-            <span className="text-sm text-indigo-300 font-medium">Now with AI-powered task suggestions</span>
-            <ArrowRight className="w-4 h-4 text-indigo-400" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200/50 dark:bg-gray-800/10 border border-gray-300 dark:border-gray-700/20 backdrop-blur-sm">
+            <Sparkles className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+            <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">Now with AI-powered task suggestions</span>
+            <ArrowRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
           </div>
         </motion.div>
 
@@ -62,14 +62,14 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
             Manage Tasks with
             <br />
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="text-gray-900 dark:text-white">
               Intelligent Precision
             </span>
           </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-400 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
             The AI-powered task manager that learns your habits, prioritizes your work,
             and helps you achieve more with less stress.
           </p>
@@ -84,22 +84,22 @@ const HeroSection = () => {
         >
           <Link
             to="/signup"
-            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105"
+            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black dark:bg-white dark:text-black font-semibold rounded-xl shadow-lg hover:bg-gray-200 dark:hover:bg-gray-200 transition-all duration-300 hover:scale-105"
           >
             <span>Start Free Trial</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 blur-xl opacity-50 group-hover:opacity-75 transition-opacity -z-10" />
+            <div className="absolute inset-0 rounded-xl bg-white blur-xl opacity-50 group-hover:opacity-75 transition-opacity -z-10" />
           </Link>
 
-          <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-            <Play className="w-5 h-5 text-indigo-400" />
+          <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-200 dark:bg-white/5 backdrop-blur-sm text-gray-900 dark:text-white font-semibold rounded-xl border border-gray-300 dark:border-white/10 hover:bg-gray-300 dark:hover:bg-white/10 hover:border-gray-400 dark:hover:border-white/20 transition-all duration-300">
+            <Play className="w-5 h-5 text-gray-700 dark:text-gray-400" />
             <span>Watch Demo</span>
           </button>
         </motion.div>
 
         {/* Trust indicators */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-400 mb-20"
+          className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
@@ -124,13 +124,13 @@ const HeroSection = () => {
           transition={{ duration: 0.7, delay: 0.6 }}
         >
           {[
-            { icon: Users, value: "50,000+", label: "Active Users", gradient: "from-blue-500 to-cyan-500" },
-            { icon: Star, value: "4.9/5", label: "User Rating", gradient: "from-amber-500 to-orange-500" },
+            { icon: Users, value: "50,000+", label: "Active Users", gradient: "from-gray-500 to-gray-700" },
+            { icon: Star, value: "4.9/5", label: "User Rating", gradient: "from-gray-500 to-gray-700" },
             { icon: TrendingUp, value: "40%", label: "Productivity Boost", gradient: "from-green-500 to-emerald-500" },
           ].map((stat, i) => (
             <motion.div
               key={i}
-              className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
+              className="group relative p-6 rounded-2xl bg-gray-100 dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300"
               whileHover={{ y: -5 }}
             >
               <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${stat.gradient} mb-4`}>
@@ -139,7 +139,7 @@ const HeroSection = () => {
               <div className={`text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}>
                 {stat.value}
               </div>
-              <p className="text-slate-400">{stat.label}</p>
+              <p className="text-gray-600 dark:text-gray-400">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -151,23 +151,23 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-indigo-500/10">
+            <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl">
             {/* Browser bar */}
-            <div className="flex items-center gap-2 px-4 py-3 bg-slate-800/80 border-b border-white/10">
+            <div className="flex items-center gap-2 px-4 py-3 bg-gray-200 dark:bg-slate-800/80 border-b border-gray-300 dark:border-white/10">
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-gray-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
               <div className="flex-1 mx-4">
-                <div className="w-full max-w-md mx-auto px-4 py-1.5 rounded-lg bg-slate-900/50 text-slate-400 text-sm text-center">
+                <div className="w-full max-w-md mx-auto px-4 py-1.5 rounded-lg bg-gray-700/50 dark:bg-slate-900/50 text-gray-300 dark:text-slate-400 text-sm text-center">
                   taskmanager.app/dashboard
                 </div>
               </div>
             </div>
 
             {/* Dashboard preview */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8">
+            <div className="bg-gradient-to-br from-gray-200 to-gray-300 dark:from-slate-900 dark:to-slate-800 p-8">
               <img
                 src="/dashboard.png"
                 alt="TaskManager Dashboard"
@@ -181,29 +181,29 @@ const HeroSection = () => {
 
           {/* Floating card - AI Assistant */}
           <motion.div
-            className="absolute -right-4 top-1/4 max-w-xs p-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl hidden lg:block"
+            className="absolute -right-4 top-1/4 max-w-xs p-4 rounded-xl bg-gray-200/80 dark:bg-white/10 backdrop-blur-lg border border-gray-300 dark:border-white/20 shadow-xl hidden lg:block"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.2 }}
             whileHover={{ scale: 1.05 }}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gray-700 dark:bg-gray-300 flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h4 className="font-semibold text-white">AI Assistant</h4>
-                <p className="text-xs text-slate-400">Just now</p>
+                <h4 className="font-semibold text-gray-900 dark:text-white">AI Assistant</h4>
+                <p className="text-xs text-gray-600 dark:text-slate-400">Just now</p>
               </div>
             </div>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-gray-700 dark:text-slate-300">
               "I've rescheduled your 3 PM meeting to tomorrow to give you focus time for the project deadline."
             </p>
           </motion.div>
 
           {/* Floating card - Productivity Stats */}
           <motion.div
-            className="absolute -left-4 bottom-1/4 max-w-xs p-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl hidden lg:block"
+            className="absolute -left-4 bottom-1/4 max-w-xs p-4 rounded-xl bg-gray-200/80 dark:bg-white/10 backdrop-blur-lg border border-gray-300 dark:border-white/20 shadow-xl hidden lg:block"
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.4 }}
@@ -214,11 +214,11 @@ const HeroSection = () => {
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h4 className="font-semibold text-white">Weekly Insight</h4>
-                <p className="text-xs text-slate-400">Productivity report</p>
+                <h4 className="font-semibold text-gray-900 dark:text-white">Weekly Insight</h4>
+                <p className="text-xs text-gray-600 dark:text-slate-400">Productivity report</p>
               </div>
             </div>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-gray-700 dark:text-slate-300">
               You're <span className="text-green-400 font-semibold">23% more productive</span> this week compared to last!
             </p>
           </motion.div>
@@ -231,13 +231,13 @@ const HeroSection = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.6 }}
         >
-          <p className="text-slate-500 mb-8">Trusted by teams at leading companies</p>
+          <p className="text-gray-600 dark:text-slate-500 mb-8">Trusted by teams at leading companies</p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
             {['Google', 'Microsoft', 'Apple', 'Amazon', 'Netflix'].map((company, i) => (
               <motion.div
                 key={i}
-                className="text-2xl font-bold text-slate-500"
-                whileHover={{ scale: 1.1, color: '#fff' }}
+                className="text-2xl font-bold text-gray-600 dark:text-slate-500"
+                whileHover={{ scale: 1.1 }}
               >
                 {company}
               </motion.div>
@@ -247,7 +247,7 @@ const HeroSection = () => {
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-100 dark:from-slate-900 to-transparent" />
     </section>
   );
 };

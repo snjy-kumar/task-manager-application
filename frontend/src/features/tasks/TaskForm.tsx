@@ -171,7 +171,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300">
         {/* Error Message */}
         {error && (
           <div className="p-3 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
@@ -192,7 +192,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
             value={task.title}
             onChange={handleChange}
             placeholder="Task title"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
           />
         </div>
 
@@ -209,7 +209,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
             value={task.description}
             onChange={handleChange}
             placeholder="Describe your task"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
           />
         </div>
 
@@ -230,7 +230,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 required
                 value={task.dueDate}
                 onChange={handleChange}
-                className="pl-10 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="pl-10 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
               />
             </div>
           </div>
@@ -270,7 +270,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 name="priority"
                 value={task.priority}
                 onChange={handleChange}
-                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -292,7 +292,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 name="status"
                 value={task.status}
                 onChange={handleChange}
-                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
               >
                 <option value="Pending">Pending</option>
                 <option value="In Progress">In Progress</option>
@@ -315,14 +315,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
             {task.tags.map(tag => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-sm"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-gray-200 dark:bg-gray-800/30 text-gray-900 dark:text-gray-100 rounded-full text-sm"
               >
                 <Tag className="w-3 h-3" />
                 {tag}
                 <button
                   type="button"
                   onClick={() => handleRemoveTag(tag)}
-                  className="hover:text-indigo-800 dark:hover:text-indigo-200"
+                  className="hover:text-gray-800 dark:hover:text-gray-200"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -336,7 +336,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleTagKeyDown}
               placeholder="Add a tag"
-              className="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+              className="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
               disabled={task.tags.length >= 5}
             />
             <Button
@@ -351,7 +351,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         </div>
 
         {/* Recurring Task */}
-        <div className="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-4 bg-gray-50 dark:bg-gray-950/50 rounded-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300">
           <div className="flex items-center gap-3 mb-4">
             <input
               type="checkbox"
@@ -359,7 +359,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
               name="isRecurring"
               checked={task.isRecurring}
               onChange={handleChange}
-              className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              className="w-4 h-4 text-gray-600 dark:text-gray-400 border-gray-300 rounded focus:ring-gray-500"
             />
             <label htmlFor="isRecurring" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
               <Repeat className="w-4 h-4" />
@@ -378,7 +378,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                   name="recurringPattern"
                   value={task.recurringPattern}
                   onChange={handleChange}
-                  className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
                 >
                   {RECURRING_PATTERNS.map(pattern => (
                     <option key={pattern.value} value={pattern.value}>{pattern.label}</option>
@@ -398,7 +398,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                   max="30"
                   value={task.recurringInterval}
                   onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
                 />
               </div>
             </div>

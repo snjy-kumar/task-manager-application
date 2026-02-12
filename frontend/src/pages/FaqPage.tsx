@@ -34,7 +34,7 @@ const FaqPage: React.FC = () => {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="w-full py-20 bg-gradient-to-r from-blue-600/90 to-purple-600/90 text-white">
+      <section className="w-full py-20 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center max-w-3xl mx-auto">
             <motion.h1 
@@ -46,7 +46,7 @@ const FaqPage: React.FC = () => {
               Frequently Asked Questions
             </motion.h1>
             <motion.p 
-              className="text-xl text-blue-100 mb-8"
+              className="text-xl text-gray-100 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -64,13 +64,13 @@ const FaqPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search for questions..."
-                className="bg-transparent border-none flex-1 p-2 text-white placeholder-blue-100 focus:outline-none"
+                className="bg-transparent border-none flex-1 p-2 text-white placeholder-gray-100 focus:outline-none"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
                 <button 
-                  className="mr-3 text-blue-100 hover:text-white"
+                  className="mr-3 text-gray-100 hover:text-white"
                   onClick={() => setSearchQuery('')}
                 >
                   Clear
@@ -87,7 +87,7 @@ const FaqPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Categories Sidebar */}
             <div className="w-full lg:w-1/4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 sticky top-24">
                 <h2 className="text-xl font-bold mb-4">Categories</h2>
                 <ul className="space-y-2">
                   <li>
@@ -209,7 +209,7 @@ const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {
   
   return (
     <motion.div 
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden"
+      className="bg-white dark:bg-gray-900 rounded-2xl shadow-md overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
