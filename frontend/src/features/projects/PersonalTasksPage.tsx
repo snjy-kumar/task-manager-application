@@ -1,85 +1,142 @@
-import React from 'react';
-import { 
-  Clock, 
-  Calendar, 
-  ChevronRight, 
-  CheckCircle, 
-  Filter, 
+import React, { useEffect, useState } from 'react';
+import {
+  Clock,
+  Calendar,
+  ChevronRight,
+  CheckCircle,
+  Filter,
   Plus,
   User,
   ArrowUp,
   ArrowDown,
-  ListFilter
+  ListFilter,
+  Loader2
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-
-// Sample data for personal tasks
-const personalTasks = [
-  { id: 1, title: "Call dentist to schedule appointment", priority: "high", dueDate: "Today, 3:00 PM", category: "Health", completed: false },
-  { id: 2, title: "Renew driver's license", priority: "medium", dueDate: "Tomorrow", category: "Admin", completed: false },
-  { id: 3, title: "Book flight tickets for vacation", priority: "high", dueDate: "Friday", category: "Travel", completed: false },
-  { id: 4, title: "Pay electricity bill", priority: "medium", dueDate: "Next Monday", category: "Bills", completed: false },
-  { id: 5, title: "Organize home office", priority: "low", dueDate: "This weekend", category: "Home", completed: false },
-  { id: 6, title: "Buy groceries", priority: "medium", dueDate: "Tomorrow", category: "Shopping", completed: false },
-  { id: 7, title: "Schedule car maintenance", priority: "low", dueDate: "Next week", category: "Auto", completed: false },
-  { id: 8, title: "Plan birthday party", priority: "medium", dueDate: "July 10", category: "Events", completed: false },
-  { id: 9, title: "Research gym memberships", priority: "low", dueDate: "No due date", category: "Health", completed: true },
-  { id: 10, title: "Update personal budget", priority: "medium", dueDate: "Last Sunday", category: "Finance", completed: true },
-];
-
-const categories = [
-  { name: "Health", count: 2, color: "green" },
-  { name: "Admin", count: 1, color: "gray" },
-  { name: "Travel", count: 1, color: "blue" },
-  { name: "Bills", count: 1, color: "red" },
-  { name: "Home", count: 1, color: "purple" },
-  { name: "Shopping", count: 1, color: "yellow" },
-  { name: "Auto", count: 1, color: "orange" },
-  { name: "Events", count: 1, color: "pink" },
-  { name: "Finance", count: 1, color: "teal" },
-];
-
-const upcomingDates = [
-  { date: "Today", day: new Date().getDate(), tasks: 2 },
-  { date: "Tomorrow", day: new Date().getDate() + 1, tasks: 2 },
-  { date: "Friday", day: new Date().getDate() + 3, tasks: 1 },
-  { date: "This weekend", day: new Date().getDate() + 5, tasks: 1 },
-  { date: "Next week", day: new Date().getDate() + 7, tasks: 2 },
-];
+import taskService, { Task } from '@/services/taskService';
+import { useToast } from '@/components/ui/Toast';
+import { getPriorityColor, getStatusColor, getPriorityOrder } from '@/lib/taskUtils';
+import { formatDueDate, getDaysUntilDue, isToday, isTomorrow } from '@/lib/dateUtils';
 
 const PersonalTasksPage: React.FC = () => {
-  const [filter, setFilter] = React.useState<'all' | 'active' | 'completed'>('all');
-  const [sortBy, setSortBy] = React.useState<'priority' | 'dueDate' | 'category'>('dueDate');
-  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>('asc');
-  
-  const filteredTasks = personalTasks.filter(task => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [sortBy, setSortBy] = useState<'priority' | 'dueDate' | 'category'>('dueDate');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    fetchPersonalTasks();
+  }, []);
+
+  const fetchPersonalTasks = async () => {
+    try {
+      setLoading(true);
+      const response = await taskService.getAllTasks({ limit: 100 });
+      // Filter for personal tasks (tasks with 'Personal' category or 'personal' tag)
+      const personalTasks = response.tasks.filter(
+        task => task.category === 'Personal' || task.tags?.some(tag => tag.toLowerCase() === 'personal')
+      );
+      setTasks(personalTasks);
+    } catch (error) {
+      console.error('Failed to fetch personal tasks:', error);
+      showToast('Failed to load personal tasks', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTaskToggle = async (taskId: string, currentStatus: string) => {
+    try {
+      const newStatus = currentStatus === 'Completed' ? 'Pending' : 'Completed';
+      await taskService.updateTask(taskId, { status: newStatus });
+      setTasks(tasks.map(task =>
+        task._id === taskId ? { ...task, status: newStatus as Task['status'] } : task
+      ));
+      showToast(`Task ${newStatus === 'Completed' ? 'completed' : 'reopened'}`, 'success');
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      showToast('Failed to update task', 'error');
+    }
+  };
+
+  const filteredTasks = tasks.filter(task => {
     if (filter === 'all') return true;
-    if (filter === 'active') return !task.completed;
-    if (filter === 'completed') return task.completed;
+    if (filter === 'active') return task.status !== 'Completed';
+    if (filter === 'completed') return task.status === 'Completed';
     return true;
   });
-  
+
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     if (sortBy === 'priority') {
-      const priorityOrder = { high: 3, medium: 2, low: 1 };
-      const aValue = priorityOrder[a.priority as keyof typeof priorityOrder];
-      const bValue = priorityOrder[b.priority as keyof typeof priorityOrder];
+      const aValue = getPriorityOrder(a.priority);
+      const bValue = getPriorityOrder(b.priority);
       return sortDirection === 'desc' ? bValue - aValue : aValue - bValue;
     }
     if (sortBy === 'dueDate') {
-      return sortDirection === 'desc' 
-        ? b.dueDate.localeCompare(a.dueDate) 
-        : a.dueDate.localeCompare(b.dueDate);
+      const aDate = new Date(a.dueDate).getTime();
+      const bDate = new Date(b.dueDate).getTime();
+      return sortDirection === 'desc' ? bDate - aDate : aDate - bDate;
     }
     if (sortBy === 'category') {
-      return sortDirection === 'desc' 
-        ? b.category.localeCompare(a.category) 
-        : a.category.localeCompare(b.category);
+      const aCategory = a.category || '';
+      const bCategory = b.category || '';
+      return sortDirection === 'desc'
+        ? bCategory.localeCompare(aCategory)
+        : aCategory.localeCompare(bCategory);
     }
     return 0;
   });
-  
+
+  // Generate category stats from actual tasks
+  const categoryStats = React.useMemo(() => {
+    const stats: Record<string, number> = {};
+    tasks.forEach(task => {
+      if (task.category) {
+        stats[task.category] = (stats[task.category] || 0) + 1;
+      }
+      // Also count from tags
+      task.tags?.forEach(tag => {
+        if (tag !== 'personal' && tag !== 'Personal') {
+          const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
+          stats[capitalizedTag] = (stats[capitalizedTag] || 0) + 1;
+        }
+      });
+    });
+    return Object.entries(stats).map(([name, count]) => ({ name, count }));
+  }, [tasks]);
+
+  // Generate upcoming date stats
+  const upcomingStats = React.useMemo(() => {
+    const today = new Date();
+    const stats = {
+      today: 0,
+      tomorrow: 0,
+      thisWeek: 0,
+      later: 0
+    };
+
+    tasks.forEach(task => {
+      if (task.status === 'Completed') return;
+      const dueDate = new Date(task.dueDate);
+      const daysUntil = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+      if (daysUntil === 0) stats.today++;
+      else if (daysUntil === 1) stats.tomorrow++;
+      else if (daysUntil > 1 && daysUntil <= 7) stats.thisWeek++;
+      else if (daysUntil > 7) stats.later++;
+    });
+
+    return [
+      { label: 'Today', count: stats.today, day: today.getDate() },
+      { label: 'Tomorrow', count: stats.tomorrow, day: today.getDate() + 1 },
+      { label: 'This Week', count: stats.thisWeek, day: today.getDate() + 3 },
+      { label: 'Later', count: stats.later, day: today.getDate() + 7 },
+    ].filter(item => item.count > 0);
+  }, [tasks]);
+
   const handleSortChange = (newSortBy: 'priority' | 'dueDate' | 'category') => {
     if (sortBy === newSortBy) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -88,7 +145,7 @@ const PersonalTasksPage: React.FC = () => {
       setSortDirection('asc');
     }
   };
-  
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -108,39 +165,36 @@ const PersonalTasksPage: React.FC = () => {
           </Button>
         </div>
       </div>
-      
+
       {/* Filter Tabs */}
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
-            filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
-          }`}
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+            }`}
           onClick={() => setFilter('all')}
         >
           All
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
-            filter === 'active' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
-          }`}
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'active' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+            }`}
           onClick={() => setFilter('active')}
         >
           Active
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
-            filter === 'completed' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
-          }`}
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'completed' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+            }`}
           onClick={() => setFilter('completed')}
         >
           Completed
         </button>
       </div>
-      
+
       {/* Sort Controls */}
       <div className="flex items-center space-x-4 text-sm">
         <span className="text-gray-500">Sort by:</span>
-        <button 
+        <button
           className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('priority')}
         >
@@ -149,7 +203,7 @@ const PersonalTasksPage: React.FC = () => {
             sortDirection === 'asc' ? <ArrowUp className="h-3 w-3 ml-1" /> : <ArrowDown className="h-3 w-3 ml-1" />
           )}
         </button>
-        <button 
+        <button
           className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('dueDate')}
         >
@@ -158,7 +212,7 @@ const PersonalTasksPage: React.FC = () => {
             sortDirection === 'asc' ? <ArrowUp className="h-3 w-3 ml-1" /> : <ArrowDown className="h-3 w-3 ml-1" />
           )}
         </button>
-        <button 
+        <button
           className={`flex items-center transition-all duration-300 ${sortBy === 'category' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
           onClick={() => handleSortChange('category')}
         >
@@ -168,175 +222,161 @@ const PersonalTasksPage: React.FC = () => {
           )}
         </button>
       </div>
-      
+
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Tasks List */}
-        <div className="lg:col-span-3 space-y-4">
-          {sortedTasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              id={task.id}
-              title={task.title}
-              priority={task.priority as 'low' | 'medium' | 'high'}
-              dueDate={task.dueDate}
-              category={task.category}
-              completed={task.completed}
-            />
-          ))}
-          
-          {sortedTasks.length === 0 && (
-            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
-              <div className="flex justify-center mb-4">
-                <CheckCircle className="h-12 w-12 text-gray-300 dark:text-gray-600" />
+      {!loading && (
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Tasks List */}
+          <div className="lg:col-span-3 space-y-4">
+            {sortedTasks.map((task) => (
+              <TaskItem
+                key={task._id}
+                task={task}
+                onToggle={handleTaskToggle}
+              />
+            ))}
+
+            {sortedTasks.length === 0 && (
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
+                <div className="flex justify-center mb-4">
+                  <CheckCircle className="h-12 w-12 text-gray-300 dark:text-gray-600" />
+                </div>
+                <h3 className="text-lg font-medium mb-2">No tasks found</h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  {filter === 'completed'
+                    ? "You haven't completed any personal tasks yet."
+                    : "You don't have any personal tasks. Create one to get started."}
+                </p>
+                <Button asChild className="transition-all duration-300">
+                  <Link to="/dashboard/tasks/new">
+                    <Plus className="h-4 w-4 mr-2" /> Add New Task
+                  </Link>
+                </Button>
               </div>
-              <h3 className="text-lg font-medium mb-2">No tasks found</h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
-                {filter === 'completed' 
-                  ? "You haven't completed any personal tasks yet." 
-                  : "You don't have any personal tasks. Create one to get started."}
-              </p>
-              <Button asChild className="transition-all duration-300">
-                <Link to="/dashboard/tasks/new">
-                  <Plus className="h-4 w-4 mr-2" /> Add New Task
-                </Link>
-              </Button>
-            </div>
-          )}
-        </div>
-        
-        {/* Sidebar */}
-        <div className="space-y-6">
-          {/* Categories */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
-            <h3 className="text-lg font-medium mb-3">Categories</h3>
-            <div className="space-y-2">
-              {categories.map((category) => (
-                <div key={category.name} className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <span className={`h-3 w-3 rounded-full bg-${category.color}-500 mr-2`}></span>
-                    <span className="text-sm">{category.name}</span>
-                  </div>
-                  <span className="text-xs bg-gray-100 dark:bg-gray-700 rounded-full px-2 py-0.5">
-                    {category.count}
-                  </span>
-                </div>
-              ))}
-            </div>
+            )}
           </div>
-          
-          {/* Upcoming Dates */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
-            <h3 className="text-lg font-medium mb-3">Upcoming</h3>
-            <div className="space-y-3">
-              {upcomingDates.map((date) => (
-                <div key={date.date} className="flex items-center">
-                  <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-                    <span className="font-medium">{date.day}</span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{date.date}</p>
-                    <p className="text-xs text-gray-500">{date.tasks} task{date.tasks !== 1 ? 's' : ''}</p>
-                  </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Categories */}
+            {categoryStats.length > 0 && (
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+                <h3 className="text-lg font-medium mb-3">Categories</h3>
+                <div className="space-y-2">
+                  {categoryStats.map((category) => (
+                    <div key={category.name} className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <span className="h-3 w-3 rounded-full bg-gray-400 dark:bg-gray-600 mr-2"></span>
+                        <span className="text-sm">{category.name}</span>
+                      </div>
+                      <span className="text-xs bg-gray-100 dark:bg-gray-700 rounded-full px-2 py-0.5">
+                        {category.count}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
-            <h3 className="text-lg font-medium mb-3">Quick Actions</h3>
-            <div className="space-y-2">
-              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
-                <Calendar className="h-4 w-4 mr-2" /> View in Calendar
-              </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
-                <ListFilter className="h-4 w-4 mr-2" /> Group by Category
-              </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
-                <User className="h-4 w-4 mr-2" /> Assign to Someone
-              </Button>
+              </div>
+            )}
+
+            {/* Upcoming Dates */}
+            {upcomingStats.length > 0 && (
+              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+                <h3 className="text-lg font-medium mb-3">Upcoming</h3>
+                <div className="space-y-3">
+                  {upcomingStats.map((item) => (
+                    <div key={item.label} className="flex items-center">
+                      <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                        <span className="font-medium">{item.day}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{item.label}</p>
+                        <p className="text-xs text-gray-500">{item.count} task{item.count !== 1 ? 's' : ''}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Quick Actions */}
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+              <h3 className="text-lg font-medium mb-3">Quick Actions</h3>
+              <div className="space-y-2">
+                <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
+                  <Calendar className="h-4 w-4 mr-2" /> View in Calendar
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
+                  <ListFilter className="h-4 w-4 mr-2" /> Group by Category
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
+                  <User className="h-4 w-4 mr-2" /> Assign to Someone
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
 // Task Item Component
 interface TaskItemProps {
-  id: number;
-  title: string;
-  priority: 'low' | 'medium' | 'high';
-  dueDate: string;
-  category: string;
-  completed: boolean;
+  task: Task;
+  onToggle: (taskId: string, currentStatus: string) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ id, title, priority, dueDate, category, completed }) => {
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high':
-        return 'bg-red-500';
-      case 'medium':
-        return 'bg-gray-500';
-      case 'low':
-        return 'bg-green-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-  
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      Health: 'bg-green-100 text-green-800',
-      Admin: 'bg-gray-100 text-gray-800',
-      Travel: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
-      Bills: 'bg-red-100 text-red-800',
-      Home: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
-      Shopping: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
-      Auto: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
-      Events: 'bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-100',
-      Finance: 'bg-teal-100 text-teal-800'
-    };
-    return colors[category] || 'bg-gray-100 text-gray-800';
-  };
-  
+const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle }) => {
+  const isCompleted = task.status === 'Completed';
+  const priorityColorClass = getPriorityColor(task.priority);
+  const statusColorClass = getStatusColor(task.status);
+
   return (
-    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${
-      completed 
-        ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700' 
-        : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
-    }`}>
+    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isCompleted
+      ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
+      : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+      }`}>
       <div className="flex items-center min-w-0">
         <input
           type="checkbox"
-          checked={completed}
-          readOnly
-          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3"
+          checked={isCompleted}
+          onChange={() => onToggle(task._id, task.status)}
+          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
         />
         <div className="min-w-0">
-          <h3 className={`text-sm font-medium truncate ${
-            completed ? 'text-gray-500 dark:text-gray-400 line-through' : ''
-          }`}>
-            {title}
+          <h3 className={`text-sm font-medium truncate ${isCompleted ? 'text-gray-500 dark:text-gray-400 line-through' : ''
+            }`}>
+            {task.title}
           </h3>
           <div className="flex items-center mt-1 space-x-2 text-xs text-gray-500">
-            <span className={`h-2 w-2 rounded-full ${getPriorityColor(priority)}`}></span>
+            <span className={`h-2 w-2 rounded-full ${priorityColorClass}`}></span>
             <span className="flex items-center">
               <Clock className="h-3 w-3 mr-1" />
-              {dueDate}
+              {formatDueDate(task.dueDate)}
             </span>
-            <span className={`px-1.5 py-0.5 rounded ${getCategoryColor(category)}`}>
-              {category}
-            </span>
+            {task.category && (
+              <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                {task.category}
+              </span>
+            )}
+            {task.isOverdue && !isCompleted && (
+              <span className="px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+                Overdue
+              </span>
+            )}
           </div>
         </div>
       </div>
       <div className="flex items-center ml-4">
-        <Link 
-          to={`/dashboard/tasks/${id}`}
+        <Link
+          to={`/dashboard/tasks/${task._id}`}
           className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-all duration-300"
         >
           <ChevronRight className="h-5 w-5" />

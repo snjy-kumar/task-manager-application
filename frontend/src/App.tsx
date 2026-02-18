@@ -21,7 +21,6 @@ import DashboardHome from './features/dashboard/DashboardHome'
 import TaskList from './features/tasks/TaskList'
 import TaskForm from './features/tasks/TaskForm'
 import KanbanBoard from './features/tasks/KanbanBoard'
-import CalendarView from './features/tasks/CalendarView'
 import CalendarPage from './features/dashboard/CalendarPage'
 import ReportsPage from './features/dashboard/ReportsPage'
 import StarredPage from './features/dashboard/StarredPage'
@@ -31,6 +30,20 @@ import SettingsPage from './features/dashboard/SettingsPage'
 import PersonalTasksPage from './features/projects/PersonalTasksPage'
 import WorkPage from './features/projects/WorkPage'
 import ShoppingListPage from './features/projects/ShoppingListPage'
+import TaskDetailsPage from './features/tasks/TaskDetailsPage'
+import TemplatesPage from './pages/TemplatesPage'
+import AnalyticsDashboard from './pages/AnalyticsDashboard'
+import AdvancedSearchPage from './pages/AdvancedSearchPage'
+import NotificationsCenterPage from './pages/NotificationsCenterPage'
+import ImportExportPage from './pages/ImportExportPage'
+import GanttChartPage from './pages/GanttChartPage'
+import RemindersManagementPage from './pages/RemindersManagementPage'
+import FileManagerPage from './pages/FileManagerPage'
+import WorkspaceSettingsPage from './pages/WorkspaceSettingsPage'
+import AuditLogPage from './pages/AuditLogPage'
+import HelpCenterPage from './pages/HelpCenterPage'
+import TeamManagementPage from './pages/TeamManagementPage'
+import IntegrationsPage from './pages/IntegrationsPage'
 
 function App() {
   return (
@@ -57,11 +70,24 @@ function App() {
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><DashboardHome /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/tasks" element={<ProtectedRoute><DashboardLayout><TaskList /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/tasks/new" element={<ProtectedRoute><DashboardLayout><TaskForm /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/tasks/:id" element={<ProtectedRoute><DashboardLayout><TaskDetailsPage /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/tasks/:id/edit" element={<ProtectedRoute><DashboardLayout><TaskForm editMode={true} /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/kanban" element={<ProtectedRoute><DashboardLayout><KanbanBoard /></DashboardLayout></ProtectedRoute>} />
-                <Route path="/dashboard/calendar-view" element={<ProtectedRoute><DashboardLayout><CalendarView /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/calendar" element={<ProtectedRoute><DashboardLayout><CalendarPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/gantt" element={<ProtectedRoute><DashboardLayout><GanttChartPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/analytics" element={<ProtectedRoute><DashboardLayout><AnalyticsDashboard /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/templates" element={<ProtectedRoute><DashboardLayout><TemplatesPage /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/reports" element={<ProtectedRoute><DashboardLayout><ReportsPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/search" element={<ProtectedRoute><DashboardLayout><AdvancedSearchPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/notifications" element={<ProtectedRoute><DashboardLayout><NotificationsCenterPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/import-export" element={<ProtectedRoute><DashboardLayout><ImportExportPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/reminders" element={<ProtectedRoute><DashboardLayout><RemindersManagementPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/files" element={<ProtectedRoute><DashboardLayout><FileManagerPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/workspace-settings" element={<ProtectedRoute><DashboardLayout><WorkspaceSettingsPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/audit-log" element={<ProtectedRoute><DashboardLayout><AuditLogPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/help" element={<ProtectedRoute><DashboardLayout><HelpCenterPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/teams" element={<ProtectedRoute><DashboardLayout><TeamManagementPage /></DashboardLayout></ProtectedRoute>} />
+                <Route path="/dashboard/integrations" element={<ProtectedRoute><DashboardLayout><IntegrationsPage /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/starred" element={<ProtectedRoute><DashboardLayout><StarredPage /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/recent" element={<ProtectedRoute><DashboardLayout><RecentlyViewedPage /></DashboardLayout></ProtectedRoute>} />
                 <Route path="/dashboard/profile" element={<ProtectedRoute><DashboardLayout><ProfilePage /></DashboardLayout></ProtectedRoute>} />

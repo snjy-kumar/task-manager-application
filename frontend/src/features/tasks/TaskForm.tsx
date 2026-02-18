@@ -10,6 +10,7 @@ import {
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import taskService from '@/services/taskService';
+import RecurringTaskForm from './RecurringTaskForm';
 
 interface TaskFormProps {
   editMode?: boolean;
@@ -26,6 +27,7 @@ interface TaskFormData {
   isRecurring: boolean;
   recurringPattern: string;
   recurringInterval: number;
+  recurringEndDate?: string;
 }
 
 const CATEGORIES = ['Personal', 'Work', 'Shopping', 'Health', 'Finance', 'Learning', 'Other'];
@@ -50,8 +52,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
     category: 'Personal',
     tags: [],
     isRecurring: false,
-    recurringPattern: 'daily',
+    recurringPattern: 'weekly',
     recurringInterval: 1,
+    recurringEndDate: '',
   });
 
   const [tagInput, setTagInput] = useState('');
@@ -79,8 +82,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         category: data.category || 'Personal',
         tags: data.tags || [],
         isRecurring: data.isRecurring || false,
-        recurringPattern: data.recurringPattern || 'daily',
+        recurringPattern: data.recurringPattern || 'weekly',
         recurringInterval: data.recurringInterval || 1,
+        recurringEndDate: data.recurringEndDate ? data.recurringEndDate.split('T')[0] : '',
       });
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to load task');
@@ -116,6 +120,21 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
     }
   };
 
+  const handleRecurringChange = (data: {
+    isRecurring: boolean;
+    recurringPattern?: string;
+    recurringInterval?: number;
+    recurringEndDate?: string;
+  }) => {
+    setTask(prev => ({
+      ...prev,
+      isRecurring: data.isRecurring,
+      recurringPattern: data.recurringPattern || 'weekly',
+      recurringInterval: data.recurringInterval || 1,
+      recurringEndDate: data.recurringEndDate || '',
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -132,6 +151,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         ...task,
         recurringPattern: task.isRecurring ? task.recurringPattern : undefined,
         recurringInterval: task.isRecurring ? task.recurringInterval : undefined,
+        recurringEndDate: task.isRecurring && task.recurringEndDate ? task.recurringEndDate : undefined,
       };
 
       if (editMode && id) {
@@ -351,59 +371,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         </div>
 
         {/* Recurring Task */}
-        <div className="p-4 bg-gray-50 dark:bg-gray-950/50 rounded-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300">
-          <div className="flex items-center gap-3 mb-4">
-            <input
-              type="checkbox"
-              id="isRecurring"
-              name="isRecurring"
-              checked={task.isRecurring}
-              onChange={handleChange}
-              className="w-4 h-4 text-gray-600 dark:text-gray-400 border-gray-300 rounded focus:ring-gray-500"
-            />
-            <label htmlFor="isRecurring" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-              <Repeat className="w-4 h-4" />
-              Recurring Task
-            </label>
-          </div>
-
-          {task.isRecurring && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div>
-                <label htmlFor="recurringPattern" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Repeat
-                </label>
-                <select
-                  id="recurringPattern"
-                  name="recurringPattern"
-                  value={task.recurringPattern}
-                  onChange={handleChange}
-                  className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
-                >
-                  {RECURRING_PATTERNS.map(pattern => (
-                    <option key={pattern.value} value={pattern.value}>{pattern.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="recurringInterval" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Every X {task.recurringPattern === 'daily' ? 'days' : task.recurringPattern === 'weekly' ? 'weeks' : 'times'}
-                </label>
-                <input
-                  type="number"
-                  id="recurringInterval"
-                  name="recurringInterval"
-                  min="1"
-                  max="30"
-                  value={task.recurringInterval}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
-                />
-              </div>
-            </div>
-          )}
-        </div>
+        <RecurringTaskForm
+          isRecurring={task.isRecurring}
+          recurringPattern={task.recurringPattern}
+          recurringInterval={task.recurringInterval}
+          recurringEndDate={task.recurringEndDate}
+          onChange={handleRecurringChange}
+        />
 
         {/* Submit Button */}
         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">

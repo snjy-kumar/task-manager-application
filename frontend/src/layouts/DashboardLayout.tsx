@@ -18,7 +18,18 @@ import {
   Search,
   Plus,
   Columns3,
-  CalendarDays
+  CalendarDays,
+  FileText,
+  Activity,
+  GanttChart,
+  Bell as BellIcon,
+  FileArchive,
+  HelpCircle,
+  FolderOpen,
+  Briefcase,
+  Download,
+  Users as UsersIcon,
+  Plug
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useAuth } from '@/context/AuthContext';
@@ -97,22 +108,64 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             active={isActive('/dashboard/kanban')}
           />
           <SidebarLink
-            to="/dashboard/calendar-view"
-            icon={<CalendarDays />}
-            label="Calendar View"
-            active={isActive('/dashboard/calendar-view')}
-          />
-          <SidebarLink
             to="/dashboard/calendar"
             icon={<Calendar />}
             label="Calendar"
             active={isActive('/dashboard/calendar')}
           />
           <SidebarLink
+            to="/dashboard/gantt"
+            icon={<GanttChart />}
+            label="Gantt Chart"
+            active={isActive('/dashboard/gantt')}
+          />
+          <SidebarLink
+            to="/dashboard/analytics"
+            icon={<Activity />}
+            label="Analytics"
+            active={isActive('/dashboard/analytics')}
+          />
+          <SidebarLink
+            to="/dashboard/templates"
+            icon={<FileText />}
+            label="Templates"
+            active={isActive('/dashboard/templates')}
+          />
+          <SidebarLink
             to="/dashboard/reports"
             icon={<BarChart />}
             label="Reports"
             active={isActive('/dashboard/reports')}
+          />
+          <SidebarLink
+            to="/dashboard/search"
+            icon={<Search />}
+            label="Advanced Search"
+            active={isActive('/dashboard/search')}
+          />
+          <SidebarLink
+            to="/dashboard/notifications"
+            icon={<BellIcon />}
+            label="Notifications"
+            active={isActive('/dashboard/notifications')}
+          />
+          <SidebarLink
+            to="/dashboard/reminders"
+            icon={<Clock />}
+            label="Reminders"
+            active={isActive('/dashboard/reminders')}
+          />
+          <SidebarLink
+            to="/dashboard/files"
+            icon={<FolderOpen />}
+            label="File Manager"
+            active={isActive('/dashboard/files')}
+          />
+          <SidebarLink
+            to="/dashboard/import-export"
+            icon={<Download />}
+            label="Import/Export"
+            active={isActive('/dashboard/import-export')}
           />
           <SidebarLink
             to="/dashboard/starred"
@@ -125,6 +178,45 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             icon={<Clock />}
             label="Recently Viewed"
             active={isActive('/dashboard/recent')}
+          />
+
+          <div className="pt-4 pb-2">
+            <div className="border-t border-gray-200 dark:border-gray-700"></div>
+          </div>
+
+          <div className="px-2 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Settings & Help
+          </div>
+
+          <SidebarLink
+            to="/dashboard/teams"
+            icon={<UsersIcon />}
+            label="Team Management"
+            active={isActive('/dashboard/teams')}
+          />
+          <SidebarLink
+            to="/dashboard/workspace-settings"
+            icon={<Briefcase />}
+            label="Workspace"
+            active={isActive('/dashboard/workspace-settings')}
+          />
+          <SidebarLink
+            to="/dashboard/integrations"
+            icon={<Plug />}
+            label="Integrations"
+            active={isActive('/dashboard/integrations')}
+          />
+          <SidebarLink
+            to="/dashboard/audit-log"
+            icon={<FileArchive />}
+            label="Activity Log"
+            active={isActive('/dashboard/audit-log')}
+          />
+          <SidebarLink
+            to="/dashboard/help"
+            icon={<HelpCircle />}
+            label="Help Center"
+            active={isActive('/dashboard/help')}
           />
 
           <div className="pt-4 pb-2">

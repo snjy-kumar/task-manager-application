@@ -33,4 +33,7 @@ const admin = async (req, res, next) => {
     next();
 }
 
-export {authMiddleware, admin}
+// Export with multiple names for compatibility
+const protect = authMiddleware;
+
+export {authMiddleware, protect, admin}

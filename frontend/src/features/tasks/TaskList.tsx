@@ -11,11 +11,15 @@ import {
   Clock,
   AlertCircle,
   Trash,
-  Edit
+  Edit,
+  CheckSquare,
+  Square,
+  X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import taskService, { Task } from '@/services/taskService';
+import { useToast } from '@/components/ui/Toast';
 
 const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -26,6 +30,9 @@ const TaskList: React.FC = () => {
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [sortBy, setSortBy] = useState('dueDate');
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
+  const [bulkActionLoading, setBulkActionLoading] = useState(false);
+  const toast = useToast();
 
   // Fetch tasks on component mount
   useEffect(() => {
@@ -51,9 +58,84 @@ const TaskList: React.FC = () => {
     try {
       await taskService.deleteTask(taskId);
       setTasks(tasks.filter(task => task._id !== taskId));
+      toast.success('Task deleted successfully');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to delete task');
+      toast.error(err.response?.data?.message || 'Failed to delete task');
     }
+  };
+
+  const toggleTaskSelection = (taskId: string) => {
+    setSelectedTasks(prev =>
+      prev.includes(taskId)
+        ? prev.filter(id => id !== taskId)
+        : [...prev, taskId]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedTasks.length === filteredTasks.length) {
+      setSelectedTasks([]);
+    } else {
+      setSelectedTasks(filteredTasks.map(task => task._id));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!window.confirm(`Are you sure you want to delete ${selectedTasks.length} tasks?`)) return;
+
+    try {
+      setBulkActionLoading(true);
+      await Promise.all(selectedTasks.map(taskId => taskService.deleteTask(taskId)));
+      setTasks(tasks.filter(task => !selectedTasks.includes(task._id)));
+      setSelectedTasks([]);
+      toast.success(`${selectedTasks.length} tasks deleted successfully`);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to delete tasks');
+    } finally {
+      setBulkActionLoading(false);
+    }
+  };
+
+  const handleBulkStatusChange = async (status: string) => {
+    try {
+      setBulkActionLoading(true);
+      const updates = selectedTasks.map(taskId => ({ taskId, updates: { status } }));
+      await taskService.bulkUpdate(updates);
+
+      // Update local state
+      setTasks(tasks.map(task =>
+        selectedTasks.includes(task._id) ? { ...task, status } : task
+      ));
+      setSelectedTasks([]);
+      toast.success(`${selectedTasks.length} tasks updated successfully`);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to update tasks');
+    } finally {
+      setBulkActionLoading(false);
+    }
+  };
+
+  const handleBulkPriorityChange = async (priority: string) => {
+    try {
+      setBulkActionLoading(true);
+      const updates = selectedTasks.map(taskId => ({ taskId, updates: { priority } }));
+      await taskService.bulkUpdate(updates);
+
+      // Update local state
+      setTasks(tasks.map(task =>
+        selectedTasks.includes(task._id) ? { ...task, priority } : task
+      ));
+      setSelectedTasks([]);
+      toast.success(`${selectedTasks.length} tasks updated successfully`);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to update tasks');
+    } finally {
+      setBulkActionLoading(false);
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedTasks([]);
   };
 
   // Filter and sort tasks
@@ -128,6 +210,83 @@ const TaskList: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {/* Bulk Actions Toolbar */}
+      {selectedTasks.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="bg-primary/10 dark:bg-primary/20 border-2 border-primary/30 rounded-2xl p-4"
+        >
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium">
+                {selectedTasks.length} task{selectedTasks.length !== 1 ? 's' : ''} selected
+              </span>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={clearSelection}
+                className="h-8"
+              >
+                <X className="h-4 w-4 mr-1" />
+                Clear
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Status Change Dropdown */}
+              <select
+                className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                onChange={(e) => {
+                  if (e.target.value) {
+                    handleBulkStatusChange(e.target.value);
+                    e.target.value = '';
+                  }
+                }}
+                disabled={bulkActionLoading}
+                defaultValue=""
+              >
+                <option value="" disabled>Change Status</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+
+              {/* Priority Change Dropdown */}
+              <select
+                className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                onChange={(e) => {
+                  if (e.target.value) {
+                    handleBulkPriorityChange(e.target.value);
+                    e.target.value = '';
+                  }
+                }}
+                disabled={bulkActionLoading}
+                defaultValue=""
+              >
+                <option value="" disabled>Change Priority</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+
+              {/* Delete Button */}
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={handleBulkDelete}
+                disabled={bulkActionLoading}
+                className="h-8"
+              >
+                <Trash className="h-4 w-4 mr-1" />
+                Delete
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Search and Filter Bar */}
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-4 border border-gray-200 dark:border-gray-700 transition-all duration-300">
@@ -260,11 +419,34 @@ const TaskList: React.FC = () => {
             </Button>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {filteredTasks.map((task) => (
-              <TaskItem key={task._id} task={task} onDelete={handleDeleteTask} />
-            ))}
-          </div>
+          <>
+            {/* Select All Header */}
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+              <button
+                onClick={toggleSelectAll}
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
+              >
+                {selectedTasks.length === filteredTasks.length ? (
+                  <CheckSquare className="h-5 w-5 text-primary" />
+                ) : (
+                  <Square className="h-5 w-5" />
+                )}
+                Select All ({filteredTasks.length})
+              </button>
+            </div>
+
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {filteredTasks.map((task) => (
+                <TaskItem
+                  key={task._id}
+                  task={task}
+                  onDelete={handleDeleteTask}
+                  isSelected={selectedTasks.includes(task._id)}
+                  onToggleSelect={toggleTaskSelection}
+                />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
@@ -282,11 +464,10 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, active, onClick }) =
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1 text-sm rounded-full transition-all duration-300 ${
-        active
+      className={`px-3 py-1 text-sm rounded-full transition-all duration-300 ${active
           ? 'bg-primary text-white'
           : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
-      }`}
+        }`}
     >
       {label}
     </button>
@@ -297,9 +478,11 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, active, onClick }) =
 interface TaskItemProps {
   task: Task;
   onDelete: (taskId: string) => void;
+  isSelected: boolean;
+  onToggleSelect: (taskId: string) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
+const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete, isSelected, onToggleSelect }) => {
   const [actionsOpen, setActionsOpen] = useState(false);
 
   const formatDate = (dateString: string) => {
@@ -339,11 +522,18 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onDelete }) => {
   const statusInfo = getStatusInfo(task.status);
 
   return (
-    <div className="relative p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+    <div className={`relative p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 ${isSelected ? 'bg-primary/5 dark:bg-primary/10' : ''}`}>
       <div className="flex items-start">
-        {/* Checkbox Button */}
-        <button className="mt-1 mr-3 text-gray-400 hover:text-green-500">
-          <CheckCircle className="h-5 w-5" />
+        {/* Selection Checkbox */}
+        <button
+          onClick={() => onToggleSelect(task._id)}
+          className="mt-1 mr-3 text-gray-400 hover:text-primary transition-colors"
+        >
+          {isSelected ? (
+            <CheckSquare className="h-5 w-5 text-primary" />
+          ) : (
+            <Square className="h-5 w-5" />
+          )}
         </button>
 
         <div className="flex-1 min-w-0">

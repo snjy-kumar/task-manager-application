@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
+import compression from "compression";
+import mongoSanitize from "express-mongo-sanitize";
 import * as Sentry from "@sentry/node";
+import { v4 as uuidv4 } from 'uuid';
 import dbConfig from "./src/config/dbConfig.js";
 import logger from "./src/config/logger.js";
 
@@ -13,6 +16,13 @@ import errorHandler from "./src/middleware/errorHandler.js";
 // Routes
 import userRouter from './src/routes/userRouter.js';
 import taskRouter from './src/routes/taskRouter.js';
+import activityRouter from './src/routes/activityRouter.js';
+import templateRouter from './src/routes/templateRouter.js';
+import notificationRouter from './src/routes/notificationRouter.js';
+import userReminderRouter from './src/routes/userReminderRouter.js';
+import searchRouter from './src/routes/searchRouter.js';
+import importExportRouter from './src/routes/importExportRouter.js';
+import teamRouter from './src/routes/teamRouter.js';
 
 const app = express();
 
@@ -41,12 +51,26 @@ if (process.env.SENTRY_DSN) {
 // Trust proxy (for rate limiting behind reverse proxy)
 app.set('trust proxy', 1);
 
+// Request ID tracking
+app.use((req, res, next) => {
+    req.id = uuidv4();
+    res.setHeader('X-Request-ID', req.id);
+    next();
+});
+
 // Security headers (Helmet.js)
 app.use(securityHeaders);
 
+// Compression middleware
+app.use(compression());
+
 // CORS configuration
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173', 'http://localhost:3000'],
+    origin: process.env.CORS_ORIGIN?.split(',') || [
+        'http://localhost:5173', 
+        'http://127.0.0.1:5173',
+        'http://localhost:3000'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -56,6 +80,14 @@ app.use(cors(corsOptions));
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Data sanitization against NoSQL injection
+app.use(mongoSanitize({
+    replaceWith: '_',
+    onSanitize: ({ req, key }) => {
+        logger.warn(`NoSQL injection attempt detected: ${key} from IP: ${req.ip}`);
+    }
+}));
 
 // Request logging (Morgan + Winston)
 app.use(requestLogger);
@@ -88,6 +120,13 @@ app.get('/api/health', async (req, res) => {
 // API Routes
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/tasks", taskRouter);
+app.use("/api/v1/activity", activityRouter);
+app.use("/api/v1/templates", templateRouter);
+app.use("/api/v1/notifications", notificationRouter);
+app.use("/api/v1/reminders", userReminderRouter);
+app.use("/api/v1/search", searchRouter);
+app.use("/api/v1/teams", teamRouter);
+app.use("/api/v1/tasks", importExportRouter); // Import/export routes for tasks
 
 // 404 handler
 app.use((req, res, next) => {

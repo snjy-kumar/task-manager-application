@@ -24,12 +24,14 @@ afterAll(async () => {
     await mongoServer.stop();
 });
 
-// Suppress console logs during tests
+// Suppress console logs during tests (optional - comment out to see logs)
+const originalConsole = { ...console };
 global.console = {
     ...console,
-    log: jest.fn(),
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
+    log: () => {},
+    debug: () => {},
+    info: () => {},
+    // Keep warn and error for debugging
+    warn: originalConsole.warn,
+    error: originalConsole.error,
 };

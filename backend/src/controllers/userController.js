@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import environment from '../config/environment.js';
@@ -31,31 +30,23 @@ export const logInUser = asyncHandler(async (req, res) => {
     }
 
     // Verify password
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await user.comparePassword(password);
 
     if (!isPasswordCorrect) {
-        // Increment failed attempts
-        user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
-
-        // Lock account if max attempts reached
-        if (user.failedLoginAttempts >= MAX_LOGIN_ATTEMPTS) {
-            user.lockUntil = new Date(Date.now() + LOCK_TIME);
-            await user.save();
-            logger.warn(`Account locked after ${MAX_LOGIN_ATTEMPTS} failed attempts: ${email}`);
+        // Increment failed attempts using model method
+        await user.incLoginAttempts();
+        const attemptsRemaining = MAX_LOGIN_ATTEMPTS - (user.failedLoginAttempts + 1);
+        logger.warn(`Failed login attempt for: ${email} (${attemptsRemaining} attempts remaining)`);
+        
+        if (attemptsRemaining <= 0) {
             throw new LockedError('Account locked due to too many failed attempts. Try again in 15 minutes.');
         }
-
-        await user.save();
-        const attemptsRemaining = MAX_LOGIN_ATTEMPTS - user.failedLoginAttempts;
-        logger.warn(`Failed login attempt for: ${email} (${attemptsRemaining} attempts remaining)`);
+        
         throw new BadRequestError(`Invalid password. ${attemptsRemaining} attempts remaining.`);
     }
 
-    // Reset failed attempts on successful login
-    user.failedLoginAttempts = 0;
-    user.lockUntil = undefined;
-    user.lastLogin = new Date();
-    await user.save();
+    // Reset failed attempts on successful login using model method
+    await user.resetLoginAttempts();
 
     // Generate access token (short-lived)
     const accessToken = jwt.sign(
@@ -107,15 +98,11 @@ export const createUser = asyncHandler(async (req, res) => {
         throw new ConflictError('User already exists with this email');
     }
 
-    // Hash password with higher cost factor for production
-    const saltRounds = process.env.NODE_ENV === 'production' ? 12 : 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Create user
+    // Create user (password will be hashed by pre-save hook)
     const user = new User({
         name: name.trim(),
         email: email.toLowerCase().trim(),
-        password: hashedPassword
+        password
     });
     await user.save();
 

@@ -79,6 +79,11 @@ const TaskSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'Task',
   },
+  // Task dependencies - tasks that must be completed before this task can start
+  dependencies: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Task',
+  }],
   completedAt: {
     type: Date,
   },
