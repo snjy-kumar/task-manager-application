@@ -104,7 +104,7 @@ const TaskList: React.FC = () => {
 
       // Update local state
       setTasks(tasks.map(task =>
-        selectedTasks.includes(task._id) ? { ...task, status } : task
+        selectedTasks.includes(task._id) ? { ...task, status: status as Task['status'] } : task
       ));
       setSelectedTasks([]);
       toast.success(`${selectedTasks.length} tasks updated successfully`);
@@ -123,7 +123,7 @@ const TaskList: React.FC = () => {
 
       // Update local state
       setTasks(tasks.map(task =>
-        selectedTasks.includes(task._id) ? { ...task, priority } : task
+        selectedTasks.includes(task._id) ? { ...task, priority: priority as Task['priority'] } : task
       ));
       setSelectedTasks([]);
       toast.success(`${selectedTasks.length} tasks updated successfully`);
@@ -465,8 +465,8 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, active, onClick }) =
     <button
       onClick={onClick}
       className={`px-3 py-1 text-sm rounded-full transition-all duration-300 ${active
-          ? 'bg-primary text-white'
-          : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
+        ? 'bg-primary text-white'
+        : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'
         }`}
     >
       {label}

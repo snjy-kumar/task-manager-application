@@ -74,8 +74,8 @@ const WorkPage: React.FC = () => {
 
   const filteredTasks = tasks.filter(task => {
     if (filter === 'all') return true;
-    if (filter === 'mine') return task.user === user?.id;
-    if (filter === 'team') return task.user !== user?.id;
+    if (filter === 'mine') return task.user === user?._id;
+    if (filter === 'team') return task.user !== user?._id;
     return true;
   });
 
