@@ -65,12 +65,13 @@ app.use(securityHeaders);
 app.use(compression());
 
 // CORS configuration
+const corsOrigin = process.env.CORS_ORIGIN?.trim();
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN?.split(',') || [
+    origin: corsOrigin === '*' ? true : (corsOrigin?.split(',').map(o => o.trim()) || [
         'http://localhost:5173', 
         'http://127.0.0.1:5173',
         'http://localhost:3000'
-    ],
+    ]),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
