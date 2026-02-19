@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: task-manager-application
+    runtime: node
+    rootDir: ./backend
+    buildCommand: npm ci
+    startCommand: npm start
+    plan: free
+    region: oregon
+    branch: master
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRATION
+        value: 1d
+      - key: CORS_ORIGIN
+        value: https://task-manager-application-yzc1.onrender.com
+      - key: LOG_LEVEL
+        value: info
