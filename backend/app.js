@@ -98,6 +98,56 @@ app.use('/api', apiLimiter);
 // Database connection
 dbConfig();
 
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({
+        success: true,
+        message: 'Task Manager API',
+        version: 'v1',
+        documentation: '/api',
+        health: '/api/health'
+    });
+});
+
+// API info endpoint
+app.get('/api', (req, res) => {
+    res.json({
+        success: true,
+        message: 'Task Manager API v1',
+        version: 'v1',
+        endpoints: {
+            health: '/api/health',
+            v1: '/api/v1',
+            auth: '/api/v1/auth',
+            tasks: '/api/v1/tasks',
+            teams: '/api/v1/teams',
+            notifications: '/api/v1/notifications',
+            reminders: '/api/v1/reminders',
+            templates: '/api/v1/templates',
+            activity: '/api/v1/activity',
+            search: '/api/v1/search'
+        }
+    });
+});
+
+// API v1 info endpoint
+app.get('/api/v1', (req, res) => {
+    res.json({
+        success: true,
+        version: 'v1',
+        endpoints: [
+            { path: '/api/v1/auth', methods: ['POST', 'GET'], description: 'Authentication & user management' },
+            { path: '/api/v1/tasks', methods: ['GET', 'POST', 'PUT', 'DELETE'], description: 'Task management with subtasks, comments, attachments' },
+            { path: '/api/v1/teams', methods: ['GET', 'POST', 'PUT', 'DELETE'], description: 'Team collaboration' },
+            { path: '/api/v1/notifications', methods: ['GET', 'PUT', 'DELETE'], description: 'User notifications' },
+            { path: '/api/v1/reminders', methods: ['GET', 'POST', 'PUT', 'DELETE'], description: 'Task reminders' },
+            { path: '/api/v1/templates', methods: ['GET', 'POST', 'PUT', 'DELETE'], description: 'Task templates' },
+            { path: '/api/v1/activity', methods: ['GET'], description: 'Activity logs' },
+            { path: '/api/v1/search', methods: ['GET', 'POST'], description: 'Advanced search' }
+        ]
+    });
+});
+
 // Health check endpoint with database status
 app.get('/api/health', async (req, res) => {
     const { getDbHealth } = await import('./src/config/dbConfig.js');
