@@ -316,3 +316,7 @@ For support, email sanjay17126@gmail.com or create an issue in the GitHub reposi
 ---
 
 **Made with ❤️ by Sanjay Kumar**
+
+## Backend branch demo note
+
+This line was added on the backend branch to demonstrate separate branch development.
