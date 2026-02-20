@@ -48,3 +48,7 @@ export default tseslint.config({
   },
 })
 ```
+
+## Branch demo note
+
+This line was added on the `frontend` branch to demonstrate separate branch development.
