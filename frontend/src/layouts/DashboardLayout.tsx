@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 import {
-  CheckCircle,
+  CheckCircle2,
   Menu,
   X,
   Home,
   ListTodo,
   Calendar,
-  BarChart,
+  BarChart3,
   Settings,
   Star,
-  Clock,
   Bell,
   LogOut,
   User,
@@ -18,18 +18,17 @@ import {
   Search,
   Plus,
   Columns3,
-  CalendarDays,
   FileText,
   Activity,
   GanttChart,
-  Bell as BellIcon,
   FileArchive,
   HelpCircle,
   FolderOpen,
   Briefcase,
   Download,
   Users as UsersIcon,
-  Plug
+  Plug,
+  AlarmClock
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useAuth } from '@/context/AuthContext';
@@ -38,302 +37,257 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
+const navGroups = [
+  {
+    label: 'Workspace',
+    items: [
+      { to: '/dashboard', icon: Home, label: 'Dashboard' },
+      { to: '/dashboard/tasks', icon: ListTodo, label: 'My Tasks' },
+      { to: '/dashboard/kanban', icon: Columns3, label: 'Kanban' },
+      { to: '/dashboard/calendar', icon: Calendar, label: 'Calendar' },
+      { to: '/dashboard/gantt', icon: GanttChart, label: 'Gantt Chart' },
+    ],
+  },
+  {
+    label: 'Insights',
+    items: [
+      { to: '/dashboard/analytics', icon: Activity, label: 'Analytics' },
+      { to: '/dashboard/reports', icon: BarChart3, label: 'Reports' },
+      { to: '/dashboard/search', icon: Search, label: 'Advanced Search' },
+    ],
+  },
+  {
+    label: 'Manage',
+    items: [
+      { to: '/dashboard/templates', icon: FileText, label: 'Templates' },
+      { to: '/dashboard/notifications', icon: Bell, label: 'Notifications' },
+      { to: '/dashboard/reminders', icon: AlarmClock, label: 'Reminders' },
+      { to: '/dashboard/files', icon: FolderOpen, label: 'Files' },
+      { to: '/dashboard/import-export', icon: Download, label: 'Import/Export' },
+      { to: '/dashboard/teams', icon: UsersIcon, label: 'Teams' },
+    ],
+  },
+  {
+    label: 'Account',
+    items: [
+      { to: '/dashboard/starred', icon: Star, label: 'Starred' },
+      { to: '/dashboard/workspace-settings', icon: Briefcase, label: 'Workspace' },
+      { to: '/dashboard/integrations', icon: Plug, label: 'Integrations' },
+      { to: '/dashboard/audit-log', icon: FileArchive, label: 'Activity Log' },
+      { to: '/dashboard/help', icon: HelpCircle, label: 'Help' },
+    ],
+  },
+];
+
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const location = useLocation();
+  const profileRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  // Get user initials for avatar
   const getUserInitials = () => {
     if (!user?.name) return 'U';
-    const names = user.name.split(' ');
-    if (names.length >= 2) {
-      return `${names[0][0]}${names[1][0]}`.toUpperCase();
-    }
-    return user.name.substring(0, 2).toUpperCase();
+    const parts = user.name.split(' ');
+    return parts.length >= 2
+      ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+      : user.name.substring(0, 2).toUpperCase();
   };
 
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false);
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) setNotifOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-950">
+    <div className="h-screen flex overflow-hidden bg-background">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-20 bg-black/50 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <div
-        className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } fixed inset-y-0 left-0 z-30 w-64 transition-all duration-300 transform bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0 lg:static lg:inset-0`}
+      <aside
+        className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed inset-y-0 left-0 z-30 w-60 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}
+        style={{ background: 'hsl(222, 25%, 7%)' }}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
-          <Link to="/dashboard" className="flex items-center">
-            <CheckCircle className="h-8 w-8 text-primary" />
-            <span className="ml-2 font-bold text-xl">Task Manager</span>
+        {/* Logo */}
+        <div className="flex items-center justify-between h-14 px-5 border-b border-white/8 flex-shrink-0">
+          <Link to="/dashboard" className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center shadow-md shadow-amber-500/30">
+              <CheckCircle2 className="w-4 h-4 text-[hsl(222,25%,7%)]" strokeWidth={2.5} />
+            </div>
+            <span className="text-white font-display font-semibold text-base tracking-tight">Taskr</span>
           </Link>
-          <button
-            onClick={toggleSidebar}
-            className="lg:hidden"
-          >
-            <X className="h-6 w-6" />
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-white/40 hover:text-white/80 transition-colors">
+            <X className="w-4 h-4" />
           </button>
         </div>
-        <nav className="mt-6 px-4 space-y-1">
-          <SidebarLink
-            to="/dashboard"
-            icon={<Home />}
-            label="Dashboard"
-            active={isActive('/dashboard')}
-          />
-          <SidebarLink
-            to="/dashboard/tasks"
-            icon={<ListTodo />}
-            label="My Tasks"
-            active={isActive('/dashboard/tasks')}
-          />
-          <SidebarLink
-            to="/dashboard/kanban"
-            icon={<Columns3 />}
-            label="Kanban Board"
-            active={isActive('/dashboard/kanban')}
-          />
-          <SidebarLink
-            to="/dashboard/calendar"
-            icon={<Calendar />}
-            label="Calendar"
-            active={isActive('/dashboard/calendar')}
-          />
-          <SidebarLink
-            to="/dashboard/gantt"
-            icon={<GanttChart />}
-            label="Gantt Chart"
-            active={isActive('/dashboard/gantt')}
-          />
-          <SidebarLink
-            to="/dashboard/analytics"
-            icon={<Activity />}
-            label="Analytics"
-            active={isActive('/dashboard/analytics')}
-          />
-          <SidebarLink
-            to="/dashboard/templates"
-            icon={<FileText />}
-            label="Templates"
-            active={isActive('/dashboard/templates')}
-          />
-          <SidebarLink
-            to="/dashboard/reports"
-            icon={<BarChart />}
-            label="Reports"
-            active={isActive('/dashboard/reports')}
-          />
-          <SidebarLink
-            to="/dashboard/search"
-            icon={<Search />}
-            label="Advanced Search"
-            active={isActive('/dashboard/search')}
-          />
-          <SidebarLink
-            to="/dashboard/notifications"
-            icon={<BellIcon />}
-            label="Notifications"
-            active={isActive('/dashboard/notifications')}
-          />
-          <SidebarLink
-            to="/dashboard/reminders"
-            icon={<Clock />}
-            label="Reminders"
-            active={isActive('/dashboard/reminders')}
-          />
-          <SidebarLink
-            to="/dashboard/files"
-            icon={<FolderOpen />}
-            label="File Manager"
-            active={isActive('/dashboard/files')}
-          />
-          <SidebarLink
-            to="/dashboard/import-export"
-            icon={<Download />}
-            label="Import/Export"
-            active={isActive('/dashboard/import-export')}
-          />
-          <SidebarLink
-            to="/dashboard/starred"
-            icon={<Star />}
-            label="Starred"
-            active={isActive('/dashboard/starred')}
-          />
-          <SidebarLink
-            to="/dashboard/recent"
-            icon={<Clock />}
-            label="Recently Viewed"
-            active={isActive('/dashboard/recent')}
-          />
 
-          <div className="pt-4 pb-2">
-            <div className="border-t border-gray-200 dark:border-gray-700"></div>
-          </div>
+        {/* Quick create */}
+        <div className="px-4 pt-4 pb-2 flex-shrink-0">
+          <Link
+            to="/dashboard/tasks/new"
+            className="flex items-center justify-center gap-2 w-full h-9 rounded-xl bg-amber-500 hover:bg-amber-600 text-[hsl(222,25%,7%)] text-sm font-semibold transition-colors shadow-lg shadow-amber-500/20"
+          >
+            <Plus className="w-4 h-4" strokeWidth={2.5} />
+            New Task
+          </Link>
+        </div>
 
-          <div className="px-2 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-            Settings & Help
-          </div>
-
-          <SidebarLink
-            to="/dashboard/teams"
-            icon={<UsersIcon />}
-            label="Team Management"
-            active={isActive('/dashboard/teams')}
-          />
-          <SidebarLink
-            to="/dashboard/workspace-settings"
-            icon={<Briefcase />}
-            label="Workspace"
-            active={isActive('/dashboard/workspace-settings')}
-          />
-          <SidebarLink
-            to="/dashboard/integrations"
-            icon={<Plug />}
-            label="Integrations"
-            active={isActive('/dashboard/integrations')}
-          />
-          <SidebarLink
-            to="/dashboard/audit-log"
-            icon={<FileArchive />}
-            label="Activity Log"
-            active={isActive('/dashboard/audit-log')}
-          />
-          <SidebarLink
-            to="/dashboard/help"
-            icon={<HelpCircle />}
-            label="Help Center"
-            active={isActive('/dashboard/help')}
-          />
-
-          <div className="pt-4 pb-2">
-            <div className="border-t border-gray-200 dark:border-gray-700"></div>
-          </div>
-
-          <div className="px-2 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-            Quick Actions
-          </div>
-
-          <div className="mt-2">
-            <Link
-              to="/dashboard/tasks/new"
-              className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-300"
-            >
-              <Plus className="h-5 w-5 mr-2 text-gray-500" />
-              Create New Task
-            </Link>
-          </div>
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-5 scrollbar-thin">
+          {navGroups.map((group) => (
+            <div key={group.label}>
+              <p className="px-2 mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/25">
+                {group.label}
+              </p>
+              <ul className="space-y-0.5">
+                {group.items.map((item) => {
+                  const active = isActive(item.to);
+                  return (
+                    <li key={item.to}>
+                      <Link
+                        to={item.to}
+                        className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 ${active
+                            ? 'bg-amber-500/15 text-amber-400 font-medium'
+                            : 'text-white/50 hover:text-white/85 hover:bg-white/6'
+                          }`}
+                      >
+                        <item.icon
+                          className={`w-4 h-4 flex-shrink-0 ${active ? 'text-amber-400' : ''}`}
+                          strokeWidth={active ? 2 : 1.75}
+                        />
+                        {item.label}
+                        {active && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </nav>
-      </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* User footer */}
+        <div className="flex-shrink-0 border-t border-white/8 p-3">
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-white/6 transition-colors cursor-pointer">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center text-xs font-bold font-display flex-shrink-0">
+              {getUserInitials()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-white/85 text-sm font-medium truncate leading-tight">{user?.name || 'User'}</p>
+              <p className="text-white/30 text-[11px] truncate leading-tight">{user?.email || ''}</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6 transition-all duration-300">
-          <div className="flex items-center">
+        <header className="h-14 bg-card border-b border-border flex items-center justify-between px-5 flex-shrink-0">
+          <div className="flex items-center gap-3">
             <button
-              onClick={toggleSidebar}
-              className="text-gray-500 focus:outline-none lg:hidden"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="w-5 h-5" />
             </button>
-            <div className="relative mx-4 lg:mx-0 hidden md:block">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <Search className="h-5 w-5 text-gray-500" />
-              </span>
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
               <input
-                className="form-input w-64 sm:w-72 rounded-md pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 type="text"
-                placeholder="Search tasks..."
+                placeholder="Search tasks…"
+                className="h-9 pl-9 pr-4 w-64 rounded-xl bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
               />
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-2">
             <ThemeToggle />
 
             {/* Notifications */}
-            <div className="relative">
+            <div className="relative" ref={notifRef}>
               <button
-                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="p-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none"
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
               >
-                <Bell className="h-6 w-6" />
-                <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-[10px] font-bold text-white rounded-full flex items-center justify-center">
-                  0
-                </span>
+                <Bell className="w-4 h-4" />
               </button>
-
-              {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-20 transition-all duration-300">
-                  <div className="py-2 px-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-semibold">Notifications</h3>
+              {notifOpen && (
+                <div className="absolute right-0 mt-2 w-72 bg-card border border-border rounded-2xl shadow-xl z-50">
+                  <div className="px-4 py-3 border-b border-border">
+                    <h3 className="font-display font-semibold text-sm">Notifications</h3>
                   </div>
-                  <div className="p-4 text-center text-sm text-gray-500">
-                    No new notifications
+                  <div className="p-6 text-center">
+                    <Bell className="w-8 h-8 text-muted-foreground/30 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">All caught up!</p>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Profile Dropdown */}
-            <div className="relative">
+            {/* Profile */}
+            <div className="relative" ref={profileRef}>
               <button
-                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center space-x-2 focus:outline-none"
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-secondary transition-colors"
               >
-                <div className="h-8 w-8 rounded-full bg-gray-700 dark:bg-gray-300 text-white dark:text-black flex items-center justify-center font-medium text-sm">
+                <div className="w-7 h-7 rounded-lg bg-amber-500/15 border border-amber-500/25 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold font-display">
                   {getUserInitials()}
                 </div>
-                <span className="hidden md:inline-block font-medium">{user?.name || 'User'}</span>
-                <ChevronDown className="h-4 w-4 text-gray-500" />
+                <span className="hidden md:block text-sm font-medium">{user?.name?.split(' ')[0] || 'User'}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
               </button>
 
-              {profileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-20 transition-all duration-300">
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-2xl shadow-xl z-50 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-border">
+                    <p className="text-sm font-medium truncate">{user?.name || 'User'}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user?.email || ''}</p>
+                  </div>
                   <div className="py-1">
                     <Link
                       to="/dashboard/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      onClick={() => setProfileDropdownOpen(false)}
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-secondary transition-colors"
                     >
-                      <div className="flex items-center">
-                        <User className="h-4 w-4 mr-2" />
-                        Profile
-                      </div>
+                      <User className="w-4 h-4" /> Profile
                     </Link>
                     <Link
                       to="/dashboard/settings"
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      onClick={() => setProfileDropdownOpen(false)}
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-secondary transition-colors"
                     >
-                      <div className="flex items-center">
-                        <Settings className="h-4 w-4 mr-2" />
-                        Settings
-                      </div>
+                      <Settings className="w-4 h-4" /> Settings
                     </Link>
-                    <div className="border-t border-gray-200 dark:border-gray-700"></div>
+                  </div>
+                  <div className="border-t border-border py-1">
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="flex items-center gap-2.5 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                     >
-                      <div className="flex items-center">
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Log out
-                      </div>
+                      <LogOut className="w-4 h-4" /> Log out
                     </button>
                   </div>
                 </div>
@@ -342,8 +296,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-gray-100 dark:bg-gray-950 p-6">
+        {/* Page content */}
+        <main
+          ref={mainRef}
+          className="flex-1 overflow-y-auto bg-background p-6 scrollbar-thin"
+        >
           {children}
         </main>
       </div>
@@ -351,29 +308,4 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   );
 };
 
-// Sidebar Link Component
-interface SidebarLinkProps {
-  to: string;
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-}
-
-const SidebarLink: React.FC<SidebarLinkProps> = ({ to, icon, label, active }) => {
-  return (
-    <Link
-      to={to}
-      className={`flex items-center px-4 py-3 text-sm font-medium rounded-md ${active
-        ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-        }`}
-    >
-      <span className={`mr-3 h-5 w-5 ${active ? 'text-primary-500' : 'text-gray-500 dark:text-gray-400'}`}>
-        {icon}
-      </span>
-      <span>{label}</span>
-    </Link>
-  );
-};
-
-export default DashboardLayout; 
+export default DashboardLayout;

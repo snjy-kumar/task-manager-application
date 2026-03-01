@@ -140,11 +140,10 @@ TaskSchema.virtual('daysUntilDue').get(function () {
 // ===== MIDDLEWARE =====
 
 // Set completedAt when status changes to Completed
-TaskSchema.pre('save', function (next) {
+TaskSchema.pre('save', function () {
   if (this.isModified('status') && this.status === 'Completed' && !this.completedAt) {
     this.completedAt = new Date();
   }
-  next();
 });
 
 // ===== STATIC METHODS =====

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
     TrendingUp,
-    CheckCircle,
+    CheckCircle2,
     Clock,
     AlertCircle,
     BarChart3,
-    PieChart,
-    Activity as ActivityIcon
+    Loader2,
 } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
 import taskService, { TaskStats } from '@/services/taskService';
@@ -19,21 +18,18 @@ const AnalyticsDashboard: React.FC = () => {
     const [timeRange, setTimeRange] = useState(7);
     const toast = useToast();
 
-    useEffect(() => {
-        fetchAnalytics();
-    }, [timeRange]);
+    useEffect(() => { fetchAnalytics(); }, [timeRange]);
 
     const fetchAnalytics = async () => {
         try {
             setLoading(true);
             const [taskStats, actStats] = await Promise.all([
                 taskService.getStats(),
-                activityService.getActivityStats(timeRange)
+                activityService.getActivityStats(timeRange),
             ]);
             setStats(taskStats);
             setActivityStats(actStats);
         } catch (error: any) {
-            console.error('Failed to fetch analytics:', error);
             toast.error(error.response?.data?.message || 'Failed to load analytics');
         } finally {
             setLoading(false);
@@ -43,7 +39,7 @@ const AnalyticsDashboard: React.FC = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full"></div>
+                <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
             </div>
         );
     }
@@ -53,20 +49,22 @@ const AnalyticsDashboard: React.FC = () => {
     const completionRate = stats.total > 0 ? ((stats.completed / stats.total) * 100).toFixed(1) : '0';
     const activeTasksRate = stats.total > 0 ? (((stats.pending + stats.inProgress) / stats.total) * 100).toFixed(1) : '0';
 
+    const pct = (n: number) => stats.total > 0 ? (n / stats.total) * 100 : 0;
+
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 p-1">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold">Analytics Dashboard</h1>
-                    <p className="text-gray-500 dark:text-gray-400">
-                        Track your productivity and task metrics
-                    </p>
+                    <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                        Analytics
+                    </h1>
+                    <p className="text-muted-foreground text-sm mt-0.5">Track your productivity and task metrics</p>
                 </div>
                 <select
                     value={timeRange}
                     onChange={(e) => setTimeRange(Number(e.target.value))}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                    className="px-3 py-2 rounded-lg border border-border bg-card text-foreground text-sm focus:outline-none focus:border-amber-500 transition-colors"
                 >
                     <option value={7}>Last 7 days</option>
                     <option value={14}>Last 14 days</option>
@@ -75,195 +73,91 @@ const AnalyticsDashboard: React.FC = () => {
                 </select>
             </div>
 
-            {/* Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
-                            <BarChart3 className="h-6 w-6" />
+            {/* Stat cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                    { label: 'Total Tasks', value: stats.total, icon: BarChart3, accent: 'text-foreground', sub: null },
+                    { label: 'Completed', value: stats.completed, icon: CheckCircle2, accent: 'text-emerald-400', sub: `${completionRate}% rate` },
+                    { label: 'Active', value: stats.pending + stats.inProgress, icon: Clock, accent: 'text-amber-400', sub: `${activeTasksRate}% of total` },
+                    { label: 'Overdue', value: stats.overdue, icon: AlertCircle, accent: stats.overdue > 0 ? 'text-red-400' : 'text-foreground', sub: 'Need attention' },
+                ].map(({ label, value, icon: Icon, accent, sub }) => (
+                    <div key={label} className="rounded-xl border border-border bg-card p-5">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Icon className="w-4 h-4 text-amber-500" />
+                            <span className="text-xs text-muted-foreground uppercase tracking-widest font-medium">{label}</span>
                         </div>
+                        <span className={`text-3xl font-bold ${accent}`}>{value}</span>
+                        {sub && <p className="text-xs text-muted-foreground mt-1">{sub}</p>}
                     </div>
-                    <h3 className="text-3xl font-bold mb-1">{stats.total}</h3>
-                    <p className="text-blue-100">Total Tasks</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
-                            <CheckCircle className="h-6 w-6" />
-                        </div>
-                    </div>
-                    <h3 className="text-3xl font-bold mb-1">{stats.completed}</h3>
-                    <p className="text-green-100">Completed</p>
-                    <p className="text-sm text-green-100 mt-1">{completionRate}% completion rate</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl shadow-lg p-6 text-white">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
-                            <Clock className="h-6 w-6" />
-                        </div>
-                    </div>
-                    <h3 className="text-3xl font-bold mb-1">{stats.pending + stats.inProgress}</h3>
-                    <p className="text-yellow-100">Active Tasks</p>
-                    <p className="text-sm text-yellow-100 mt-1">{activeTasksRate}% of total</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg p-6 text-white">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
-                            <AlertCircle className="h-6 w-6" />
-                        </div>
-                    </div>
-                    <h3 className="text-3xl font-bold mb-1">{stats.overdue}</h3>
-                    <p className="text-red-100">Overdue Tasks</p>
-                    <p className="text-sm text-red-100 mt-1">Need attention</p>
-                </div>
+                ))}
             </div>
 
-            {/* Charts Row */}
+            {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Status Distribution */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+                {/* Status distribution */}
+                <div className="rounded-xl border border-border bg-card p-6">
                     <div className="flex items-center gap-2 mb-6">
-                        <PieChart className="h-5 w-5 text-primary" />
-                        <h3 className="text-lg font-bold">Task Status Distribution</h3>
+                        <BarChart3 className="w-4 h-4 text-amber-500" />
+                        <h3 className="font-semibold text-foreground text-sm">Task Status Distribution</h3>
                     </div>
                     <div className="space-y-4">
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Pending</span>
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{stats.pending}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                                <div
-                                    className="bg-yellow-500 h-3 rounded-full"
-                                    style={{ width: `${stats.total > 0 ? (stats.pending / stats.total) * 100 : 0}%` }}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">In Progress</span>
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{stats.inProgress}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                                <div
-                                    className="bg-blue-500 h-3 rounded-full"
-                                    style={{ width: `${stats.total > 0 ? (stats.inProgress / stats.total) * 100 : 0}%` }}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Completed</span>
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{stats.completed}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                                <div
-                                    className="bg-green-500 h-3 rounded-full"
-                                    style={{ width: `${stats.total > 0 ? (stats.completed / stats.total) * 100 : 0}%` }}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium">Archived</span>
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{stats.archived}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                                <div
-                                    className="bg-gray-500 h-3 rounded-full"
-                                    style={{ width: `${stats.total > 0 ? (stats.archived / stats.total) * 100 : 0}%` }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Priority Distribution */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                    <div className="flex items-center gap-2 mb-6">
-                        <TrendingUp className="h-5 w-5 text-primary" />
-                        <h3 className="text-lg font-bold">Priority Breakdown</h3>
-                    </div>
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                            <div>
-                                <p className="text-sm text-red-600 dark:text-red-400 font-medium">High Priority</p>
-                                <p className="text-2xl font-bold text-red-700 dark:text-red-300">{stats.highPriority}</p>
-                            </div>
-                            <div className="h-16 w-16 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center">
-                                <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Overdue</p>
-                                <p className="text-2xl font-bold mt-1">{stats.overdue}</p>
-                            </div>
-                            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                                <p className="text-sm text-gray-600 dark:text-gray-400">On Track</p>
-                                <p className="text-2xl font-bold mt-1">{stats.total - stats.overdue - stats.completed - stats.archived}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Activity Stats */}
-            {activityStats && (
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                    <div className="flex items-center gap-2 mb-6">
-                        <ActivityIcon className="h-5 w-5 text-primary" />
-                        <h3 className="text-lg font-bold">Activity Summary ({activityStats.period})</h3>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="text-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-                            <p className="text-3xl font-bold text-primary mb-1">{activityStats.total}</p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Total Activities</p>
-                        </div>
-                        {activityStats.byAction.slice(0, 3).map((item: any) => (
-                            <div key={item._id} className="text-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-                                <p className="text-3xl font-bold text-primary mb-1">{item.count}</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
-                                    {item._id.replace('_', ' ')}
-                                </p>
+                        {[
+                            { label: 'Pending', value: stats.pending, color: 'bg-white/20' },
+                            { label: 'In Progress', value: stats.inProgress, color: 'bg-amber-500' },
+                            { label: 'Completed', value: stats.completed, color: 'bg-emerald-500' },
+                            { label: 'Overdue', value: stats.overdue, color: 'bg-red-500' },
+                        ].map(({ label, value, color }) => (
+                            <div key={label}>
+                                <div className="flex justify-between text-sm mb-1.5">
+                                    <span className="text-foreground/70">{label}</span>
+                                    <span className="font-medium text-foreground">{value}</span>
+                                </div>
+                                <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                                    <div className={`h-full rounded-full ${color} transition-all duration-500`} style={{ width: `${pct(value)}%` }} />
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
-            )}
 
-            {/* Insights */}
-            <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-lg p-6 text-white">
-                <h3 className="text-xl font-bold mb-4">📊 Productivity Insights</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-white/10 rounded-lg p-4">
-                        <p className="text-sm text-purple-100 mb-1">Completion Rate</p>
-                        <p className="text-2xl font-bold">{completionRate}%</p>
-                        <p className="text-xs text-purple-100 mt-1">
-                            {Number(completionRate) >= 70 ? '🎉 Excellent!' : Number(completionRate) >= 50 ? '👍 Good progress' : '💪 Keep going!'}
-                        </p>
+                {/* Priority distribution */}
+                <div className="rounded-xl border border-border bg-card p-6">
+                    <div className="flex items-center gap-2 mb-6">
+                        <TrendingUp className="w-4 h-4 text-amber-500" />
+                        <h3 className="font-semibold text-foreground text-sm">Priority Distribution</h3>
                     </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                        <p className="text-sm text-purple-100 mb-1">Task Load</p>
-                        <p className="text-2xl font-bold">{stats.pending + stats.inProgress}</p>
-                        <p className="text-xs text-purple-100 mt-1">
-                            {stats.pending + stats.inProgress > 20 ? '⚠️ High workload' : '✅ Manageable'}
-                        </p>
+                    <div className="space-y-4">
+                        {[
+                            { label: 'High Priority', value: stats.highPriority ?? 0, color: 'bg-red-500' },
+                            { label: 'Other Priority', value: Math.max(0, stats.total - (stats.highPriority ?? 0)), color: 'bg-amber-500' },
+                        ].map(({ label, value, color }) => (
+                            <div key={label}>
+                                <div className="flex justify-between text-sm mb-1.5">
+                                    <span className="text-foreground/70">{label}</span>
+                                    <span className="font-medium text-foreground">{value}</span>
+                                </div>
+                                <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                                    <div className={`h-full rounded-full ${color} transition-all duration-500`} style={{ width: `${pct(value)}%` }} />
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                        <p className="text-sm text-purple-100 mb-1">Overdue Items</p>
-                        <p className="text-2xl font-bold">{stats.overdue}</p>
-                        <p className="text-xs text-purple-100 mt-1">
-                            {stats.overdue === 0 ? '🌟 All caught up!' : '⏰ Needs attention'}
-                        </p>
-                    </div>
+
+                    {activityStats && (
+                        <div className="mt-6 pt-5 border-t border-border">
+                            <p className="text-xs text-muted-foreground uppercase tracking-widest mb-3">Activity ({timeRange}d)</p>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="rounded-lg bg-muted/50 p-3 text-center">
+                                    <p className="text-xl font-bold text-foreground">{activityStats.totalActivities ?? 0}</p>
+                                    <p className="text-xs text-muted-foreground">Total actions</p>
+                                </div>
+                                <div className="rounded-lg bg-muted/50 p-3 text-center">
+                                    <p className="text-xl font-bold text-foreground">{activityStats.uniqueDays ?? 0}</p>
+                                    <p className="text-xs text-muted-foreground">Active days</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

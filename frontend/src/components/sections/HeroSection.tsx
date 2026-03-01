@@ -1,253 +1,198 @@
 import { motion } from 'framer-motion';
-import { Play, ArrowRight, CheckCircle, Star, Users, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap, Users, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const tasks = [
+  { label: 'Design review', priority: 'High', status: 'In Progress', color: 'text-amber-500' },
+  { label: 'Sprint planning', priority: 'Medium', status: 'Pending', color: 'text-amber-400' },
+  { label: 'User research', priority: 'Low', status: 'Completed', color: 'text-green-400' },
+  { label: 'API integration', priority: 'High', status: 'In Progress', color: 'text-amber-500' },
+];
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full min-h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
-      {/* Animated gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute top-20 -left-20 w-96 h-96 bg-gray-700/30 rounded-full filter blur-[100px]"
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-            scale: [1, 1.1, 1]
+    <section className="relative w-full min-h-screen bg-[hsl(222,25%,7%)] overflow-hidden flex items-center">
+      {/* Geometric background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.07]"
+          style={{
+            background: 'radial-gradient(circle at 70% 30%, #F5A623 0%, transparent 60%)',
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div
-          className="absolute top-40 -right-20 w-96 h-96 bg-gray-600/30 rounded-full filter blur-[100px]"
-          animate={{
-            x: [0, -30, 0],
-            y: [0, 50, 0],
-            scale: [1, 1.2, 1]
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: "radial-gradient(#fff 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div
-          className="absolute -bottom-20 left-1/3 w-96 h-96 bg-gray-500/20 rounded-full filter blur-[100px]"
-          animate={{
-            x: [0, 40, 0],
-            y: [0, -30, 0],
-            scale: [1, 1.15, 1]
-          }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {/* Diagonal accent line */}
+        <div className="absolute top-0 right-[28%] h-full w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
       </div>
 
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-
-      {/* Main content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
-        {/* Badge */}
-        <motion.div
-          className="flex justify-center mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200/50 dark:bg-gray-800/10 border border-gray-300 dark:border-gray-700/20 backdrop-blur-sm">
-            <Sparkles className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-            <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">Now with AI-powered task suggestions</span>
-            <ArrowRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          </div>
-        </motion.div>
-
-        {/* Hero Text */}
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-            Manage Tasks with
-            <br />
-            <span className="text-gray-900 dark:text-white">
-              Intelligent Precision
-            </span>
-          </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-            The AI-powered task manager that learns your habits, prioritizes your work,
-            and helps you achieve more with less stress.
-          </p>
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <Link
-            to="/signup"
-            className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black dark:bg-white dark:text-black font-semibold rounded-xl shadow-lg hover:bg-gray-200 dark:hover:bg-gray-200 transition-all duration-300 hover:scale-105"
-          >
-            <span>Start Free Trial</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <div className="absolute inset-0 rounded-xl bg-white blur-xl opacity-50 group-hover:opacity-75 transition-opacity -z-10" />
-          </Link>
-
-          <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-200 dark:bg-white/5 backdrop-blur-sm text-gray-900 dark:text-white font-semibold rounded-xl border border-gray-300 dark:border-white/10 hover:bg-gray-300 dark:hover:bg-white/10 hover:border-gray-400 dark:hover:border-white/20 transition-all duration-300">
-            <Play className="w-5 h-5 text-gray-700 dark:text-gray-400" />
-            <span>Watch Demo</span>
-          </button>
-        </motion.div>
-
-        {/* Trust indicators */}
-        <motion.div
-          className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-20"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          {[
-            { icon: CheckCircle, text: "14-day free trial" },
-            { icon: CheckCircle, text: "No credit card required" },
-            { icon: CheckCircle, text: "Cancel anytime" },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <item.icon className="w-4 h-4 text-green-400" />
-              <span>{item.text}</span>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-        >
-          {[
-            { icon: Users, value: "50,000+", label: "Active Users", gradient: "from-gray-500 to-gray-700" },
-            { icon: Star, value: "4.9/5", label: "User Rating", gradient: "from-gray-500 to-gray-700" },
-            { icon: TrendingUp, value: "40%", label: "Productivity Boost", gradient: "from-green-500 to-emerald-500" },
-          ].map((stat, i) => (
+      <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-0">
+        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-screen lg:min-h-0 lg:py-28">
+          {/* Left — copy */}
+          <div>
+            {/* Badge */}
             <motion.div
-              key={i}
-              className="group relative p-6 rounded-2xl bg-gray-100 dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300"
-              whileHover={{ y: -5 }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 mb-8"
             >
-              <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${stat.gradient} mb-4`}>
-                <stat.icon className="w-6 h-6 text-white" />
-              </div>
-              <div className={`text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent mb-2`}>
-                {stat.value}
-              </div>
-              <p className="text-gray-600 dark:text-gray-400">{stat.label}</p>
+              <Zap className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-amber-400 text-xs font-semibold tracking-wide">AI-powered task intelligence</span>
             </motion.div>
-          ))}
-        </motion.div>
 
-        {/* App Preview */}
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-            <div className="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl">
-            {/* Browser bar */}
-            <div className="flex items-center gap-2 px-4 py-3 bg-gray-200 dark:bg-slate-800/80 border-b border-gray-300 dark:border-white/10">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-gray-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="font-display text-5xl md:text-6xl lg:text-[4.25rem] font-bold text-white leading-[1.08] tracking-tight mb-6"
+            >
+              The task manager
+              <br />
+              <span className="text-amber-400">built for how</span>
+              <br />
+              people work.
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="text-white/45 text-lg leading-relaxed max-w-lg mb-10"
+            >
+              Prioritize ruthlessly, collaborate seamlessly, and ship consistently — from individual tasks to full team workflows.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="flex flex-wrap gap-3 mb-14"
+            >
+              <Link
+                to="/signup"
+                className="group inline-flex items-center gap-2 h-12 px-6 bg-amber-500 hover:bg-amber-600 text-[hsl(222,25%,7%)] font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-amber-500/25 text-sm"
+              >
+                Start for free
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                to="/features"
+                className="inline-flex items-center gap-2 h-12 px-6 bg-white/8 hover:bg-white/12 text-white font-medium rounded-xl border border-white/12 transition-all duration-200 text-sm"
+              >
+                See features
+              </Link>
+            </motion.div>
+
+            {/* Social proof */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex flex-wrap items-center gap-8"
+            >
+              {[
+                { icon: CheckCircle2, text: 'No credit card' },
+                { icon: Users, text: '50k+ users' },
+                { icon: BarChart3, text: '2M+ tasks shipped' },
+              ].map((item) => (
+                <div key={item.text} className="flex items-center gap-2 text-white/40 text-sm">
+                  <item.icon className="w-4 h-4 text-amber-400/70" strokeWidth={1.75} />
+                  {item.text}
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right — product preview */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
+            className="hidden lg:block"
+          >
+            <div className="relative bg-[hsl(222,22%,11%)] rounded-2xl border border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
+              {/* Window topbar */}
+              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/8 bg-[hsl(222,25%,8%)]">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-400/60" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
+                <div className="ml-4 flex-1 h-5 bg-white/5 rounded-md" />
               </div>
-              <div className="flex-1 mx-4">
-                <div className="w-full max-w-md mx-auto px-4 py-1.5 rounded-lg bg-gray-700/50 dark:bg-slate-900/50 text-gray-300 dark:text-slate-400 text-sm text-center">
-                  taskmanager.app/dashboard
+
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 pt-5 pb-3">
+                <div>
+                  <p className="text-white/30 text-xs mb-0.5">Mar 2026</p>
+                  <h3 className="font-display text-white font-semibold text-base">My Tasks</h3>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-6 px-2.5 rounded-lg bg-amber-500/15 text-amber-400 text-[11px] font-semibold flex items-center">Sprint 12</div>
+                  <div className="w-6 h-6 rounded-lg bg-white/8 flex items-center justify-center">
+                    <span className="text-white/50 text-xs">+</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Task list */}
+              <div className="px-4 pb-4 space-y-2">
+                {tasks.map((task, i) => (
+                  <motion.div
+                    key={task.label}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-white/4 border border-white/6 hover:bg-white/6 transition-colors"
+                  >
+                    <div className={`w-1.5 h-8 rounded-full flex-shrink-0 ${task.status === 'Completed' ? 'bg-green-400' : task.status === 'In Progress' ? 'bg-amber-500' : 'bg-white/15'}`} />
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-medium ${task.status === 'Completed' ? 'text-white/35 line-through' : 'text-white/85'}`}>
+                        {task.label}
+                      </p>
+                      <p className="text-[11px] text-white/30 mt-0.5">{task.status}</p>
+                    </div>
+                    <span className={`text-[11px] font-semibold ${task.color}`}>{task.priority}</span>
+                  </motion.div>
+                ))}
+
+                {/* Progress bar */}
+                <div className="pt-2">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-white/30 text-[11px]">Sprint progress</span>
+                    <span className="text-amber-400 text-[11px] font-semibold">67%</span>
+                  </div>
+                  <div className="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-amber-500 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: '67%' }}
+                      transition={{ delay: 1, duration: 0.8, ease: 'easeOut' }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Dashboard preview */}
-            <div className="bg-gradient-to-br from-gray-200 to-gray-300 dark:from-slate-900 dark:to-slate-800 p-8">
-              <img
-                src="/dashboard.png"
-                alt="TaskManager Dashboard"
-                className="w-full rounded-lg shadow-lg"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://placehold.co/1200x700/1e293b/4f46e5?text=TaskManager+Dashboard';
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Floating card - AI Assistant */}
-          <motion.div
-            className="absolute -right-4 top-1/4 max-w-xs p-4 rounded-xl bg-gray-200/80 dark:bg-white/10 backdrop-blur-lg border border-gray-300 dark:border-white/20 shadow-xl hidden lg:block"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-gray-700 dark:bg-gray-300 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white">AI Assistant</h4>
-                <p className="text-xs text-gray-600 dark:text-slate-400">Just now</p>
-              </div>
-            </div>
-            <p className="text-sm text-gray-700 dark:text-slate-300">
-              "I've rescheduled your 3 PM meeting to tomorrow to give you focus time for the project deadline."
-            </p>
+            {/* Floating stat card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+              className="absolute -bottom-4 -left-6 bg-[hsl(222,22%,11%)] border border-white/12 rounded-2xl p-4 shadow-xl"
+              style={{ position: 'absolute' }}
+            >
+              <div className="text-amber-400 font-display font-bold text-xl">↑ 34%</div>
+              <div className="text-white/40 text-xs mt-0.5">productivity this week</div>
+            </motion.div>
           </motion.div>
-
-          {/* Floating card - Productivity Stats */}
-          <motion.div
-            className="absolute -left-4 bottom-1/4 max-w-xs p-4 rounded-xl bg-gray-200/80 dark:bg-white/10 backdrop-blur-lg border border-gray-300 dark:border-white/20 shadow-xl hidden lg:block"
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 1.4 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 dark:text-white">Weekly Insight</h4>
-                <p className="text-xs text-gray-600 dark:text-slate-400">Productivity report</p>
-              </div>
-            </div>
-            <p className="text-sm text-gray-700 dark:text-slate-300">
-              You're <span className="text-green-400 font-semibold">23% more productive</span> this week compared to last!
-            </p>
-          </motion.div>
-        </motion.div>
-
-        {/* Trusted by section */}
-        <motion.div
-          className="mt-20 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.6 }}
-        >
-          <p className="text-gray-600 dark:text-slate-500 mb-8">Trusted by teams at leading companies</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
-            {['Google', 'Microsoft', 'Apple', 'Amazon', 'Netflix'].map((company, i) => (
-              <motion.div
-                key={i}
-                className="text-2xl font-bold text-gray-600 dark:text-slate-500"
-                whileHover={{ scale: 1.1 }}
-              >
-                {company}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        </div>
       </div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-100 dark:from-slate-900 to-transparent" />
     </section>
   );
 };

@@ -156,9 +156,9 @@ const TeamManagementPage: React.FC = () => {
 
     const getRoleBadge = (role: string) => {
         const styles = {
-            owner: 'bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400',
-            admin: 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
-            member: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+            owner: 'bg-amber-500/15 text-amber-400',
+            admin: 'bg-amber-500/10 text-amber-500',
+            member: 'bg-gray-100 text-gray-700 dark:bg-gray-700 '
         };
         return styles[role as keyof typeof styles] || styles.member;
     };
@@ -179,10 +179,10 @@ const TeamManagementPage: React.FC = () => {
             <div className="mb-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 className="text-3xl font-bold text-foreground mb-2">
                             Team Management
                         </h1>
-                        <p className="text-gray-600 dark:text-gray-400">
+                        <p className="text-muted-foreground">
                             Create and manage your teams and members
                         </p>
                     </div>
@@ -195,13 +195,13 @@ const TeamManagementPage: React.FC = () => {
 
             {loading ? (
                 <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
                 </div>
             ) : teams.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
                     <Users className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No teams yet</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">Create your first team to start collaborating</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No teams yet</h3>
+                    <p className="text-muted-foreground mb-4">Create your first team to start collaborating</p>
                     <Button onClick={() => setShowCreateModal(true)}>
                         <Plus className="w-4 h-4 mr-2" />
                         Create Team
@@ -211,25 +211,25 @@ const TeamManagementPage: React.FC = () => {
                 <div className="flex gap-6 flex-1 overflow-hidden">
                     {/* Teams List */}
                     <div className="w-80 flex-shrink-0">
-                        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden h-full flex flex-col">
-                            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                                <h3 className="font-semibold text-gray-900 dark:text-white">Your Teams ({teams.length})</h3>
+                        <div className="bg-card rounded-xl border border-border overflow-hidden h-full flex flex-col">
+                            <div className="p-4 border-b border-border">
+                                <h3 className="font-semibold text-foreground">Your Teams ({teams.length})</h3>
                             </div>
                             <div className="flex-1 overflow-auto">
                                 {teams.map(team => (
                                     <button
                                         key={team._id}
                                         onClick={() => setSelectedTeam(team)}
-                                        className={`w-full text-left p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${selectedTeam?._id === team._id ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-600' : ''
+                                        className={`w-full text-left p-4 border-b border-border hover:bg-muted/50 transition-colors ${selectedTeam?._id === team._id ? 'bg-amber-500/10 border-l-4 border-l-amber-500' : ''
                                             }`}
                                     >
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                                            <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-black font-bold">
                                                 {team.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <h4 className="font-semibold text-gray-900 dark:text-white truncate">{team.name}</h4>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                <h4 className="font-semibold text-foreground truncate">{team.name}</h4>
+                                                <p className="text-xs text-muted-foreground">
                                                     {team.members.length} {team.members.length === 1 ? 'member' : 'members'}
                                                 </p>
                                             </div>
@@ -243,12 +243,12 @@ const TeamManagementPage: React.FC = () => {
                     {/* Team Details */}
                     {selectedTeam && (
                         <div className="flex-1 overflow-auto">
-                            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+                            <div className="bg-card rounded-xl border border-border p-6 mb-6">
                                 <div className="flex items-start justify-between mb-4">
                                     <div>
-                                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{selectedTeam.name}</h2>
+                                        <h2 className="text-2xl font-bold text-foreground mb-2">{selectedTeam.name}</h2>
                                         {selectedTeam.description && (
-                                            <p className="text-gray-600 dark:text-gray-400">{selectedTeam.description}</p>
+                                            <p className="text-muted-foreground">{selectedTeam.description}</p>
                                         )}
                                     </div>
                                     <div className="flex gap-2">
@@ -267,7 +267,7 @@ const TeamManagementPage: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                <div className="flex gap-4 text-sm text-muted-foreground">
                                     <span>Created {new Date(selectedTeam.createdAt).toLocaleDateString()}</span>
                                     <span>•</span>
                                     <span>Owner: {selectedTeam.owner.name}</span>
@@ -275,9 +275,9 @@ const TeamManagementPage: React.FC = () => {
                             </div>
 
                             {/* Members */}
-                            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
-                                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                            <div className="bg-card rounded-xl border border-border mb-6">
+                                <div className="p-4 border-b border-border">
+                                    <h3 className="font-semibold text-foreground">
                                         Members ({selectedTeam.members.length})
                                     </h3>
                                 </div>
@@ -285,12 +285,12 @@ const TeamManagementPage: React.FC = () => {
                                     {selectedTeam.members.map(member => (
                                         <div key={member._id} className="p-4 flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                                <div className="w-10 h-10 bg-amber-500/20 border border-amber-500/30 rounded-full flex items-center justify-center text-amber-400 font-bold">
                                                     {member.user.name.charAt(0).toUpperCase()}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-gray-900 dark:text-white">{member.user.name}</p>
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">{member.user.email}</p>
+                                                    <p className="font-medium text-foreground">{member.user.name}</p>
+                                                    <p className="text-sm text-muted-foreground">{member.user.email}</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3">
@@ -303,7 +303,7 @@ const TeamManagementPage: React.FC = () => {
                                                         <select
                                                             value={member.role}
                                                             onChange={(e) => handleUpdateRole(member.user._id, e.target.value as 'admin' | 'member')}
-                                                            className="text-sm px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                                            className="text-sm px-2 py-1 border border-border rounded bg-card text-foreground"
                                                         >
                                                             <option value="admin">Admin</option>
                                                             <option value="member">Member</option>
@@ -326,9 +326,9 @@ const TeamManagementPage: React.FC = () => {
 
                             {/* Pending Invites */}
                             {selectedTeam.invites.filter(i => i.status === 'pending').length > 0 && (
-                                <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                    <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                                <div className="bg-card rounded-xl border border-border">
+                                    <div className="p-4 border-b border-border">
+                                        <h3 className="font-semibold text-foreground">
                                             Pending Invitations ({selectedTeam.invites.filter(i => i.status === 'pending').length})
                                         </h3>
                                     </div>
@@ -338,8 +338,8 @@ const TeamManagementPage: React.FC = () => {
                                                 <div className="flex items-center gap-3">
                                                     <Mail className="w-5 h-5 text-gray-400" />
                                                     <div>
-                                                        <p className="font-medium text-gray-900 dark:text-white">{invite.email}</p>
-                                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                        <p className="font-medium text-foreground">{invite.email}</p>
+                                                        <p className="text-sm text-muted-foreground">
                                                             Invited by {invite.invitedBy.name} • Expires {new Date(invite.expiresAt).toLocaleDateString()}
                                                         </p>
                                                     </div>
@@ -348,7 +348,7 @@ const TeamManagementPage: React.FC = () => {
                                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(invite.role)}`}>
                                                         {invite.role}
                                                     </span>
-                                                    <span className="px-2 py-1 bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400 rounded-full text-xs font-medium">
+                                                    <span className="px-2 py-1 bg-amber-500/15 text-amber-400 rounded-full text-xs font-medium">
                                                         <Clock className="w-3 h-3 inline mr-1" />
                                                         Pending
                                                     </span>
@@ -374,31 +374,31 @@ const TeamManagementPage: React.FC = () => {
             {/* Create Team Modal */}
             {showCreateModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Create New Team</h3>
+                    <div className="bg-card rounded-xl p-6 w-full max-w-md">
+                        <h3 className="text-xl font-bold text-foreground mb-4">Create New Team</h3>
                         <form onSubmit={handleCreateTeam}>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Team Name *
                                 </label>
                                 <input
                                     type="text"
                                     value={teamName}
                                     onChange={(e) => setTeamName(e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     placeholder="e.g., Marketing Team"
                                     required
                                 />
                             </div>
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Description
                                 </label>
                                 <textarea
                                     value={teamDescription}
                                     onChange={(e) => setTeamDescription(e.target.value)}
                                     rows={3}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     placeholder="Optional description..."
                                 />
                             </div>
@@ -416,35 +416,35 @@ const TeamManagementPage: React.FC = () => {
             {/* Invite User Modal */}
             {showInviteModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Invite Team Member</h3>
+                    <div className="bg-card rounded-xl p-6 w-full max-w-md">
+                        <h3 className="text-xl font-bold text-foreground mb-4">Invite Team Member</h3>
                         <form onSubmit={handleInviteUser}>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Email Address *
                                 </label>
                                 <input
                                     type="email"
                                     value={inviteEmail}
                                     onChange={(e) => setInviteEmail(e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     placeholder="colleague@example.com"
                                     required
                                 />
                             </div>
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Role
                                 </label>
                                 <select
                                     value={inviteRole}
                                     onChange={(e) => setInviteRole(e.target.value as 'admin' | 'member')}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                 >
                                     <option value="member">Member</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                <p className="text-xs text-muted-foreground mt-1">
                                     Admins can invite users and manage team settings
                                 </p>
                             </div>

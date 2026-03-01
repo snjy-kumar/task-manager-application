@@ -102,13 +102,13 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
                 <div>
                     <div className="flex justify-between text-sm mb-2">
                         <span className="font-medium">Progress</span>
-                        <span className="text-gray-600 dark:text-gray-400">
+                        <span className="text-muted-foreground">
                             {completedCount} of {subtasks.length} completed
                         </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div className="w-full bg-border rounded-full h-1.5">
                         <div
-                            className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                            className="bg-amber-500 h-1.5 rounded-full transition-all duration-300"
                             style={{ width: `${progressPercentage}%` }}
                         />
                     </div>
@@ -120,14 +120,14 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
                 {subtasks.map((subtask) => (
                     <div
                         key={subtask._id}
-                        className="flex items-start gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors"
                     >
                         <button
                             onClick={() => handleToggle(subtask._id)}
-                            className="mt-1 text-gray-400 hover:text-green-500 transition-colors"
+                            className="mt-1 text-muted-foreground hover:text-emerald-400 transition-colors"
                         >
                             {subtask.isCompleted ? (
-                                <CheckCircle className="h-5 w-5 text-green-500" />
+                                <CheckCircle className="h-5 w-5 text-emerald-400" />
                             ) : (
                                 <Circle className="h-5 w-5" />
                             )}
@@ -139,14 +139,14 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
                                     type="text"
                                     value={editForm.title}
                                     onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                                     placeholder="Subtask title"
                                 />
                                 <input
                                     type="text"
                                     value={editForm.description}
                                     onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                                     placeholder="Description (optional)"
                                 />
                                 <div className="flex gap-2">
@@ -170,7 +170,7 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
                                     {subtask.title}
                                 </p>
                                 {subtask.description && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                    <p className="text-sm text-muted-foreground mt-1">
                                         {subtask.description}
                                     </p>
                                 )}
@@ -184,9 +184,9 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
                                         setEditingId(subtask._id);
                                         setEditForm({ title: subtask.title, description: subtask.description || '' });
                                     }}
-                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                    className="p-1 hover:bg-muted rounded transition-colors"
                                 >
-                                    <Edit2 className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                    <Edit2 className="h-4 w-4 text-muted-foreground" />
                                 </button>
                                 <button
                                     onClick={() => handleDelete(subtask._id)}
@@ -202,13 +202,13 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
 
             {/* Add New Subtask */}
             {isAdding ? (
-                <div className="space-y-2 p-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                <div className="space-y-2 p-3 border-2 border-dashed border-border rounded-lg">
                     <input
                         type="text"
                         value={newSubtask.title}
                         onChange={(e) => setNewSubtask({ ...newSubtask, title: e.target.value })}
                         onKeyPress={(e) => e.key === 'Enter' && handleCreate()}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                        className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                         placeholder="Subtask title"
                         autoFocus
                     />
@@ -216,7 +216,7 @@ const TaskSubtasks: React.FC<TaskSubtasksProps> = ({ taskId }) => {
                         type="text"
                         value={newSubtask.description}
                         onChange={(e) => setNewSubtask({ ...newSubtask, description: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                        className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                         placeholder="Description (optional)"
                     />
                     <div className="flex gap-2">

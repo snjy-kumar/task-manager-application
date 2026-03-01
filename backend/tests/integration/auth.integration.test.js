@@ -1,22 +1,8 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 import app from '../../app.js';
 import User from '../../src/models/user.model.js';
 
 describe('Authentication Integration Tests', () => {
-    beforeAll(async () => {
-        // Connect to test database
-        if (mongoose.connection.readyState === 0) {
-            await mongoose.connect(process.env.MONGO_URI_TEST || 'mongodb://localhost:27017/taskmanager_test');
-        }
-    });
-
-    afterAll(async () => {
-        // Cleanup
-        await User.deleteMany({});
-        await mongoose.connection.close();
-    });
-
     beforeEach(async () => {
         // Clear users before each test
         await User.deleteMany({});
@@ -70,7 +56,7 @@ describe('Authentication Integration Tests', () => {
             const userData = {
                 name: 'Test User',
                 email: 'hash@example.com',
-                password: 'PlainPassword123'
+                password: 'PlainPassword123!'
             };
 
             await request(app)

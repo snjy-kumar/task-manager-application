@@ -93,15 +93,15 @@ const FileManagerPage: React.FC = () => {
 
     const getFileIcon = (mimeType: string) => {
         if (mimeType.startsWith('image/')) {
-            return <Image className="w-5 h-5 text-purple-600" />;
+            return <Image className="w-5 h-5 text-amber-400" />;
         } else if (mimeType.includes('pdf')) {
             return <FileText className="w-5 h-5 text-red-600" />;
         } else if (mimeType.includes('spreadsheet') || mimeType.includes('excel')) {
-            return <FileSpreadsheet className="w-5 h-5 text-green-600" />;
+            return <FileSpreadsheet className="w-5 h-5 text-emerald-400" />;
         } else if (mimeType.includes('zip') || mimeType.includes('rar')) {
-            return <Archive className="w-5 h-5 text-orange-600" />;
+            return <Archive className="w-5 h-5 text-amber-500" />;
         } else {
-            return <File className="w-5 h-5 text-blue-600" />;
+            return <File className="w-5 h-5 text-muted-foreground" />;
         }
     };
 
@@ -155,34 +155,34 @@ const FileManagerPage: React.FC = () => {
     return (
         <div className="h-full flex flex-col">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     File Manager
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                     Manage all your task attachments and files
                 </p>
             </div>
 
             {/* Storage Stats */}
             {storageStats && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+                <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6">
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                                <HardDrive className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                                <HardDrive className="w-5 h-5 text-amber-500" />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-gray-900 dark:text-white">Storage Usage</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <h3 className="font-semibold text-foreground">Storage Usage</h3>
+                                <p className="text-sm text-muted-foreground">
                                     {storageStats.usedFormatted} of {storageStats.maxFormatted} used
                                 </p>
                             </div>
                         </div>
                         <div className="text-right">
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <p className="text-2xl font-bold text-foreground">
                                 {Math.round(getStoragePercentage())}%
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 {storageStats.attachmentCount} files
                             </p>
                         </div>
@@ -208,18 +208,18 @@ const FileManagerPage: React.FC = () => {
             )}
 
             {/* Filters and Sort */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-4 mb-6">
                 <div className="flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Filter className="w-5 h-5 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter & Sort:</span>
+                        <span className="text-sm font-medium text-foreground/80">Filter & Sort:</span>
                     </div>
 
                     {/* File Type Filter */}
                     <select
                         value={filterType}
                         onChange={(e) => setFilterType(e.target.value)}
-                        className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                        className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                     >
                         <option value="">All File Types</option>
                         <option value="image">Images</option>
@@ -233,7 +233,7 @@ const FileManagerPage: React.FC = () => {
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as any)}
-                        className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                        className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                     >
                         <option value="date">Sort by Date</option>
                         <option value="name">Sort by Name</option>
@@ -244,13 +244,13 @@ const FileManagerPage: React.FC = () => {
 
             {/* Files List */}
             {loading ? (
-                <div className="flex items-center justify-center py-12 bg-white dark:bg-gray-800 rounded-xl">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <div className="flex items-center justify-center py-12 bg-card rounded-xl">
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
                 </div>
             ) : filteredAttachments.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
                     <Database className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-muted-foreground mb-4">
                         No files found
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-500">
@@ -258,7 +258,7 @@ const FileManagerPage: React.FC = () => {
                     </p>
                 </div>
             ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                     <div className="divide-y divide-gray-200 dark:divide-gray-700">
                         {filteredAttachments.map((attachment) => (
                             <div
@@ -274,11 +274,11 @@ const FileManagerPage: React.FC = () => {
                                     {/* File Info */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <h4 className="font-medium text-gray-900 dark:text-white truncate">
+                                            <h4 className="font-medium text-foreground truncate">
                                                 {attachment.originalName}
                                             </h4>
                                         </div>
-                                        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                                        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                                             <span>{formatFileSize(attachment.fileSize)}</span>
                                             <span>•</span>
                                             <span className="flex items-center gap-1">
@@ -288,7 +288,7 @@ const FileManagerPage: React.FC = () => {
                                             <span>•</span>
                                             <Link
                                                 to={`/dashboard/tasks/${attachment.task}`}
-                                                className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                                                className="text-amber-500 hover:text-amber-400 flex items-center gap-1"
                                             >
                                                 View Task <ExternalLink className="w-3 h-3" />
                                             </Link>
@@ -321,10 +321,10 @@ const FileManagerPage: React.FC = () => {
             )}
 
             {/* Info Section */}
-            <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <div className="mt-6 bg-muted/50 rounded-xl p-4 border border-border">
                 <div className="flex gap-3">
-                    <File className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-blue-800 dark:text-blue-300">
+                    <File className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-foreground/80">
                         <p className="font-semibold mb-2">Storage Information:</p>
                         <ul className="space-y-1 list-disc list-inside">
                             <li>Maximum file size: 10 MB per file</li>

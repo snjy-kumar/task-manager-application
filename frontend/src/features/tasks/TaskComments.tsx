@@ -99,7 +99,7 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Write a comment..."
                     rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 resize-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground resize-none focus:outline-none focus:border-amber-500 focus:outline-none focus:border-amber-500"
                 />
                 <div className="flex justify-end">
                     <Button
@@ -115,23 +115,23 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
             {/* Comments List */}
             <div className="space-y-4">
                 {comments.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-muted-foreground">
                         No comments yet. Be the first to comment!
                     </div>
                 ) : (
                     comments.map((comment) => (
                         <div
                             key={comment._id}
-                            className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+                            className="p-4 rounded-xl border border-border bg-muted/40"
                         >
                             <div className="flex items-start justify-between mb-2">
                                 <div className="flex items-center gap-2">
-                                    <div className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-medium">
+                                    <div className="h-8 w-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-medium">
                                         {comment.user.name.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
                                         <p className="font-medium text-sm">{comment.user.name}</p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        <p className="text-xs text-muted-foreground">
                                             {formatTimeAgo(comment.createdAt)}
                                             {comment.isEdited && ' (edited)'}
                                         </p>
@@ -145,9 +145,9 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
                                                 setEditingId(comment._id);
                                                 setEditContent(comment.content);
                                             }}
-                                            className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                            className="p-1 rounded hover:bg-muted transition-colors"
                                         >
-                                            <Edit2 className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                            <Edit2 className="h-4 w-4 text-muted-foreground" />
                                         </button>
                                         <button
                                             onClick={() => handleDelete(comment._id)}
@@ -165,7 +165,7 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
                                         value={editContent}
                                         onChange={(e) => setEditContent(e.target.value)}
                                         rows={3}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 resize-none"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground resize-none focus:outline-none focus:border-amber-500"
                                     />
                                     <div className="flex gap-2">
                                         <Button size="sm" onClick={() => handleUpdate(comment._id)}>
@@ -183,7 +183,7 @@ const TaskComments: React.FC<TaskCommentsProps> = ({ taskId }) => {
                                     </div>
                                 </div>
                             ) : (
-                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                                <p className="text-foreground/80 whitespace-pre-wrap">
                                     {comment.content}
                                 </p>
                             )}

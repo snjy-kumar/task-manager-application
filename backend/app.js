@@ -83,6 +83,16 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Data sanitization against NoSQL injection
+// Express 5: req.query is a read-only prototype getter — create a writable own-property first
+app.use((req, _res, next) => {
+    if (req.query) {
+        Object.defineProperty(req, 'query', {
+            value: Object.assign(Object.create(null), req.query),
+            writable: true, configurable: true, enumerable: true,
+        });
+    }
+    next();
+});
 app.use(mongoSanitize({
     replaceWith: '_',
     onSanitize: ({ req, key }) => {

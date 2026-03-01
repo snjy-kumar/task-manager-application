@@ -6,14 +6,13 @@ const authMiddleware = async (req, res, next) => {
 
     const authHeader = req.header('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'No token, authorization denied' });
+      return res.status(401).json({ success: false, message: 'No token, authorization denied' });
     }
-    
+
     const token = authHeader.split(' ')[1];
-    // console.log(authHeader, token);
 
     if(!token) {
-        return res.status(401).json({message: "Unauthorized"})
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 
     try {
@@ -21,8 +20,8 @@ const authMiddleware = async (req, res, next) => {
         req.User = await User.findById(decode.id);
         next();
     } catch (error) {
-        res.status(403).json({message: "Token is invalid"})
-        
+        res.status(401).json({ success: false, message: 'Token is invalid' });
+
     }
 
 }

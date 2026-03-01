@@ -127,13 +127,13 @@ const SettingsPage = () => {
       {/* Header Section */}
       <div>
         <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="text-gray-500 dark:text-gray-400">Manage your preferences and account settings</p>
+        <p className="text-muted-foreground">Manage your preferences and account settings</p>
       </div>
 
       {/* Settings Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Settings Navigation */}
-        <div className="md:col-span-1 bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
+        <div className="md:col-span-1 bg-card rounded-xl shadow-sm overflow-hidden">
           <nav className="flex flex-col">
             <SettingsNavItem
               icon={<Palette className="h-5 w-5" />}
@@ -177,7 +177,7 @@ const SettingsPage = () => {
               active={activeSetting === 'help'}
               onClick={() => setActiveSetting('help')}
             />
-            <div className="p-3 mt-auto border-t border-gray-200 dark:border-gray-700">
+            <div className="p-3 mt-auto border-t border-border">
               <Button
                 variant="destructive"
                 className="w-full justify-start transition-all duration-300"
@@ -191,7 +191,7 @@ const SettingsPage = () => {
         </div>
 
         {/* Settings Content */}
-        <div className="md:col-span-3 bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-6">
+        <div className="md:col-span-3 bg-card rounded-xl shadow-sm p-6">
           {renderSettingsSection()}
         </div>
       </div>
@@ -211,8 +211,8 @@ const SettingsNavItem = ({ icon, label, active, onClick }: SettingsNavItemProps)
   return (
     <button
       className={`flex items-center w-full px-4 py-3 text-left transition-all duration-300 ${active
-        ? 'bg-gray-200 dark:bg-gray-800/10 text-gray-900 dark:text-white'
-        : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+        ? 'bg-gray-200 dark:bg-gray-800/10 text-foreground'
+        : 'hover:bg-muted'
         }`}
       onClick={onClick}
     >
@@ -241,7 +241,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange, label, d
         </div>
       )}
       <button
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 focus:outline-none ${checked ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 focus:outline-none ${checked ? 'bg-amber-500' : 'bg-gray-300 dark:bg-gray-600'
           }`}
         onClick={onChange}
       >
@@ -319,7 +319,7 @@ const AppearanceSettings: React.FC = () => {
           </div>
 
           {/* Additional Options */}
-          <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="space-y-3 pt-4 border-t border-border">
             <ToggleSwitch
               checked={reducedMotion}
               onChange={() => setReducedMotion(!reducedMotion)}
@@ -395,7 +395,7 @@ const NotificationSettings: React.FC = () => {
           </div>
 
           {/* Push Notifications */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">Push Notifications</h3>
             <div className="space-y-3">
               <ToggleSwitch
@@ -426,7 +426,7 @@ const NotificationSettings: React.FC = () => {
           </div>
 
           {/* Other Notification Settings */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">Other Settings</h3>
             <div className="space-y-3">
               <ToggleSwitch
@@ -467,7 +467,7 @@ const PrivacySettings: React.FC = () => {
           <div>
             <label className="block text-sm font-medium mb-2">Profile Visibility</label>
             <select
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
               value={profileVisibility}
               onChange={(e) => setProfileVisibility(e.target.value)}
             >
@@ -478,7 +478,7 @@ const PrivacySettings: React.FC = () => {
           </div>
 
           {/* Other Privacy Settings */}
-          <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="space-y-3 pt-4 border-t border-border">
             <ToggleSwitch
               checked={activityStatus}
               onChange={() => setActivityStatus(!activityStatus)}
@@ -500,7 +500,7 @@ const PrivacySettings: React.FC = () => {
           </div>
 
           {/* Data Controls */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">Data Controls</h3>
             <div className="space-y-3">
               <Button variant="outline" size="sm" className="transition-all duration-300">
@@ -588,14 +588,14 @@ const SecuritySettings: React.FC = () => {
                 Change Password
               </Button>
             ) : (
-              <div className="space-y-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+              <div className="space-y-4 p-4 border border-border rounded-lg">
                 <div>
                   <label className="block text-sm font-medium mb-2">Current Password</label>
                   <input
                     type="password"
                     value={passwordForm.currentPassword}
                     onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                    className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                     placeholder="Enter current password"
                   />
                 </div>
@@ -605,7 +605,7 @@ const SecuritySettings: React.FC = () => {
                     type="password"
                     value={passwordForm.newPassword}
                     onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                    className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                     placeholder="Enter new password (min 6 characters)"
                   />
                 </div>
@@ -615,7 +615,7 @@ const SecuritySettings: React.FC = () => {
                     type="password"
                     value={passwordForm.confirmPassword}
                     onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                    className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                     placeholder="Confirm new password"
                   />
                 </div>
@@ -646,7 +646,7 @@ const SecuritySettings: React.FC = () => {
           </div>
 
           {/* Two-Factor Authentication */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <div className="flex justify-between items-start mb-3">
               <div>
                 <h3 className="text-base font-medium">Two-Factor Authentication</h3>
@@ -674,13 +674,13 @@ const SecuritySettings: React.FC = () => {
           </div>
 
           {/* Session Settings */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">Session Settings</h3>
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium mb-2">Session Timeout (minutes)</label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                   value={sessionTimeout}
                   onChange={(e) => setSessionTimeout(Number(e.target.value))}
                 >
@@ -703,10 +703,10 @@ const SecuritySettings: React.FC = () => {
           </div>
 
           {/* Security Notice */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <h4 className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-1">Security Tip</h4>
-              <p className="text-xs text-blue-700 dark:text-blue-400">
+          <div className="pt-4 border-t border-border">
+            <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-lg">
+              <h4 className="text-sm font-medium text-amber-400 mb-1">Security Tip</h4>
+              <p className="text-xs text-foreground/70">
                 Always use a strong, unique password and enable two-factor authentication for maximum security.
               </p>
             </div>
@@ -781,45 +781,45 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             <h3 className="text-base font-medium mb-3">Account Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground/80 mb-1">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                   value={editForm.name}
                   onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground/80 mb-1">
                   Email
                 </label>
                 <input
                   type="email"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                   value={editForm.email}
                   onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground/80 mb-1">
                   Role
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-muted transition-all duration-300"
                   value={userData.role}
                   readOnly
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground/80 mb-1">
                   Member Since
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-muted transition-all duration-300"
                   value={formatDate(userData.createdAt)}
                   readOnly
                 />
@@ -838,16 +838,16 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           </div>
 
           {/* Account Status */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">Account Status</h3>
-            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-sm font-medium">Account ID</p>
                   <p className="text-xs text-gray-500 font-mono mt-1">{userData._id}</p>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${userData.isActive
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                  ? 'bg-emerald-500/15 text-emerald-400'
                   : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                   }`}>
                   {userData.isActive ? 'Active' : 'Inactive'}
@@ -888,7 +888,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
                       type="password"
                       value={deletePassword}
                       onChange={(e) => setDeletePassword(e.target.value)}
-                      className="w-full px-3 py-2 border border-red-300 dark:border-red-700 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                      className="w-full px-3 py-2 border border-red-300 dark:border-red-700 rounded-lg bg-card transition-all duration-300"
                       placeholder="Enter your password"
                     />
                   </div>
@@ -940,7 +940,7 @@ const LanguageSettings: React.FC = () => {
           <div>
             <label className="block text-sm font-medium mb-2">Language</label>
             <select
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
               value={language}
               onChange={(e) => {
                 setLanguage(e.target.value);
@@ -956,13 +956,13 @@ const LanguageSettings: React.FC = () => {
             </select>
           </div>
 
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">Time & Date Format</h3>
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium mb-2">Date Format</label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                 >
                   <option>MM/DD/YYYY</option>
                   <option>DD/MM/YYYY</option>
@@ -972,7 +972,7 @@ const LanguageSettings: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium mb-2">Time Format</label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 transition-all duration-300"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card transition-all duration-300"
                 >
                   <option>12-hour (AM/PM)</option>
                   <option>24-hour</option>
@@ -1029,9 +1029,9 @@ const HelpSettings: React.FC = () => {
           </div>
 
           {/* App Version */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-border">
             <h3 className="text-base font-medium mb-3">App Information</h3>
-            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg space-y-2">
+            <div className="p-4 bg-muted rounded-lg space-y-2">
               <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Version</span>
                 <span className="text-sm font-medium">1.0.0</span>
@@ -1076,12 +1076,12 @@ const ThemeOption: React.FC<ThemeOptionProps> = ({ icon, label, selected, onClic
     <button
       onClick={onClick}
       className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all duration-300 ${selected
-        ? 'border-primary bg-primary/10'
-        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+        ? 'border-amber-500 bg-amber-500/10'
+        : 'border-border hover:border-gray-300 dark:hover:border-gray-600'
         }`}
     >
-      <div className={`mb-2 ${selected ? 'text-primary' : ''}`}>{icon}</div>
-      <span className={`text-sm font-medium ${selected ? 'text-primary' : ''}`}>{label}</span>
+      <div className={`mb-2 ${selected ? 'text-amber-500' : ''}`}>{icon}</div>
+      <span className={`text-sm font-medium ${selected ? 'text-amber-500' : ''}`}>{label}</span>
     </button>
   );
 };
@@ -1099,11 +1099,11 @@ const SizeOption: React.FC<SizeOptionProps> = ({ label, className, selected, onC
     <button
       onClick={onClick}
       className={`flex items-center justify-center px-4 py-2 rounded-lg border transition-all duration-300 ${selected
-        ? 'border-primary bg-primary/10'
-        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+        ? 'border-amber-500 bg-amber-500/10'
+        : 'border-border hover:border-gray-300 dark:hover:border-gray-600'
         }`}
     >
-      <span className={`font-medium ${className} ${selected ? 'text-primary' : ''}`}>{label}</span>
+      <span className={`font-medium ${className} ${selected ? 'text-amber-500' : ''}`}>{label}</span>
     </button>
   );
 };

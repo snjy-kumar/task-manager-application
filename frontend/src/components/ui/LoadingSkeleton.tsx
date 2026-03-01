@@ -46,7 +46,7 @@ const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
 
 // Pre-built skeleton components
 export const TaskCardSkeleton: React.FC = () => (
-    <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl space-y-3">
+    <div className="p-4 border border-border rounded-xl space-y-3">
         <div className="flex justify-between items-start">
             <LoadingSkeleton variant="text" width="60%" height={20} />
             <LoadingSkeleton variant="rectangular" width={60} height={24} />
@@ -70,7 +70,7 @@ export const TaskListSkeleton: React.FC<{ count?: number }> = ({ count = 5 }) =>
 export const DashboardStatsSkeleton: React.FC = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="p-6 border border-gray-200 dark:border-gray-700 rounded-xl space-y-3">
+            <div key={i} className="p-6 border border-border rounded-xl space-y-3">
                 <LoadingSkeleton variant="text" width="40%" height={14} />
                 <LoadingSkeleton variant="text" width="60%" height={32} />
                 <LoadingSkeleton variant="text" width="80%" height={12} />
@@ -102,7 +102,7 @@ export const TableSkeleton: React.FC<{ rows?: number; cols?: number }> = ({
 }) => (
     <div className="space-y-2">
         {/* Header */}
-        <div className="flex gap-4 p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex gap-4 p-4 border-b border-border">
             {Array.from({ length: cols }, (_, i) => (
                 <LoadingSkeleton key={i} variant="text" height={16} />
             ))}

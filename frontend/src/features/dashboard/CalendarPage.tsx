@@ -111,8 +111,8 @@ function CalendarPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Completed': return 'text-green-600';
-      case 'In Progress': return 'text-gray-600 dark:text-gray-400';
-      case 'Pending': return 'text-gray-600 dark:text-gray-400';
+      case 'In Progress': return 'text-muted-foreground';
+      case 'Pending': return 'text-muted-foreground';
       default: return 'text-gray-600';
     }
   };
@@ -123,7 +123,7 @@ function CalendarPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Task Calendar</h1>
-          <p className="text-gray-500 dark:text-gray-400">View tasks organized by due date</p>
+          <p className="text-muted-foreground">View tasks organized by due date</p>
         </div>
         <div className="mt-4 md:mt-0 flex items-center space-x-2">
           <Button variant="outline" onClick={fetchTasks} disabled={loading} className="transition-all duration-300">
@@ -140,7 +140,7 @@ function CalendarPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center">
+        <div className="p-4 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 flex items-center">
           <AlertCircle className="h-5 w-5 mr-2" />
           {error}
         </div>
@@ -148,13 +148,13 @@ function CalendarPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar Grid */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
+        <div className="lg:col-span-2 bg-card rounded-xl shadow-sm overflow-hidden">
           {/* Calendar Header */}
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
                 onClick={goToPreviousMonth}
-                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300"
+                className="p-1 rounded-full hover:bg-muted transition-all duration-300"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -163,21 +163,21 @@ function CalendarPage() {
               </h2>
               <button
                 onClick={goToNextMonth}
-                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300"
+                className="p-1 rounded-full hover:bg-muted transition-all duration-300"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
             </div>
             <button
               onClick={() => setCurrentDate(today)}
-              className="text-sm bg-gray-200 dark:bg-gray-800/10 text-gray-900 dark:text-white px-3 py-1.5 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-300"
+              className="text-sm bg-gray-200 dark:bg-gray-800/10 text-foreground px-3 py-1.5 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-all duration-300"
             >
               Today
             </button>
           </div>
 
           {/* Calendar Days */}
-          <div className="grid grid-cols-7 bg-gray-50 dark:bg-gray-900">
+          <div className="grid grid-cols-7 bg-muted/30">
             {DAYS.map((day, index) => (
               <div key={index} className="p-2 text-center text-sm font-medium text-gray-500">
                 {day}
@@ -195,19 +195,19 @@ function CalendarPage() {
               return (
                 <div
                   key={index}
-                  className={`border border-gray-100 dark:border-gray-700 p-2 min-h-[80px] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 ${isToday ? 'bg-gray-100 dark:bg-gray-800/20' : ''
+                  className={`border border-gray-100 dark:border-gray-700 p-2 min-h-[80px] cursor-pointer hover:bg-muted/50 transition-all duration-300 ${isToday ? 'bg-muted/20' : ''
                     } ${isSelected ? 'ring-2 ring-primary' : ''}`}
                   onClick={() => day && setSelectedDay(day)}
                 >
                   {day && (
                     <>
                       <div className="flex justify-between items-start mb-1">
-                        <span className={`text-sm font-medium inline-flex items-center justify-center h-6 w-6 rounded-full ${isToday ? 'bg-primary text-white' : ''
+                        <span className={`text-sm font-medium inline-flex items-center justify-center h-6 w-6 rounded-full ${isToday ? 'bg-amber-500 text-white' : ''
                           }`}>
                           {day}
                         </span>
                         {dayTasks.length > 0 && (
-                          <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-semibold rounded-full bg-primary text-white">
+                          <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-semibold rounded-full bg-amber-500 text-white">
                             {dayTasks.length}
                           </span>
                         )}
@@ -217,7 +217,7 @@ function CalendarPage() {
                         {dayTasks.slice(0, 2).map((task) => (
                           <div
                             key={task._id}
-                            className="text-xs p-1 rounded bg-gray-200 dark:bg-gray-800/10 text-gray-900 dark:text-white truncate"
+                            className="text-xs p-1 rounded bg-gray-200 dark:bg-gray-800/10 text-foreground truncate"
                             title={task.title}
                           >
                             {task.title}
@@ -238,7 +238,7 @@ function CalendarPage() {
         </div>
 
         {/* Selected Day Tasks */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+        <div className="bg-card rounded-xl shadow-sm p-4">
           <h3 className="text-lg font-bold mb-4">
             {selectedDay
               ? `Tasks for ${MONTHS[currentMonth]} ${selectedDay}`
@@ -254,7 +254,7 @@ function CalendarPage() {
                     to={`/dashboard/tasks/${task._id}/edit`}
                     className="block"
                   >
-                    <div className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary transition-all duration-300">
+                    <div className="p-3 rounded-lg border border-border hover:border-amber-500 transition-all duration-300">
                       <div className="flex items-start justify-between">
                         <p className="text-sm font-medium">{task.title}</p>
                         <span className={`h-2 w-2 rounded-full ${getPriorityColor(task.priority)} mt-1.5`}></span>

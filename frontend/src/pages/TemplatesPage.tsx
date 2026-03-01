@@ -63,7 +63,7 @@ const TemplatesPage: React.FC = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full"></div>
+                <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
         );
     }
@@ -76,7 +76,7 @@ const TemplatesPage: React.FC = () => {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold">Task Templates</h1>
-                    <p className="text-gray-500 dark:text-gray-400">
+                    <p className="text-muted-foreground">
                         Create reusable templates for common tasks
                     </p>
                 </div>
@@ -87,13 +87,13 @@ const TemplatesPage: React.FC = () => {
             </div>
 
             {/* Tabs */}
-            <div className="border-b border-gray-200 dark:border-gray-700">
+            <div className="border-b border-border">
                 <div className="flex gap-4">
                     <button
                         onClick={() => setActiveTab('my')}
                         className={`px-4 py-2 font-medium border-b-2 transition-colors ${activeTab === 'my'
-                                ? 'border-primary text-primary'
-                                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'border-amber-500 text-amber-500'
+                                : 'border-transparent text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         My Templates ({templates.length})
@@ -101,8 +101,8 @@ const TemplatesPage: React.FC = () => {
                     <button
                         onClick={() => setActiveTab('popular')}
                         className={`px-4 py-2 font-medium border-b-2 transition-colors ${activeTab === 'popular'
-                                ? 'border-primary text-primary'
-                                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'border-amber-500 text-amber-500'
+                                : 'border-transparent text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         Popular Templates ({popularTemplates.length})
@@ -115,7 +115,7 @@ const TemplatesPage: React.FC = () => {
                 <div className="text-center py-12">
                     <Package className="h-16 w-16 mx-auto mb-4 text-gray-400" />
                     <h3 className="text-lg font-medium mb-2">No templates found</h3>
-                    <p className="text-gray-500 dark:text-gray-400 mb-4">
+                    <p className="text-muted-foreground mb-4">
                         {activeTab === 'my'
                             ? 'Create your first template to get started'
                             : 'No popular templates available yet'}
@@ -132,31 +132,31 @@ const TemplatesPage: React.FC = () => {
                     {displayTemplates.map((template) => (
                         <div
                             key={template._id}
-                            className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300"
+                            className="bg-card rounded-xl shadow-sm border border-border overflow-hidden hover:shadow-md transition-all duration-300"
                         >
                             <div className="p-6">
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="flex-1">
                                         <h3 className="text-lg font-bold mb-1">{template.name}</h3>
                                         {template.description && (
-                                            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                                            <p className="text-sm text-muted-foreground line-clamp-2">
                                                 {template.description}
                                             </p>
                                         )}
                                     </div>
                                     {template.isPublic && (
-                                        <span className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 font-medium">
+                                        <span className="px-2 py-1 text-xs rounded-full bg-amber-500/10 text-amber-400 font-medium">
                                             Public
                                         </span>
                                     )}
                                 </div>
 
                                 <div className="space-y-2 mb-4">
-                                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                         <Package className="h-4 w-4" />
                                         <span className="font-medium">{template.template.category}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                         <Clock className="h-4 w-4" />
                                         <span>
                                             {template.template.estimatedDuration
@@ -165,7 +165,7 @@ const TemplatesPage: React.FC = () => {
                                         </span>
                                     </div>
                                     {template.template.subtasks && template.template.subtasks.length > 0 && (
-                                        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                             <TrendingUp className="h-4 w-4" />
                                             <span>{template.template.subtasks.length} subtasks</span>
                                         </div>
@@ -178,13 +178,13 @@ const TemplatesPage: React.FC = () => {
                                         {template.template.tags.slice(0, 3).map((tag, index) => (
                                             <span
                                                 key={index}
-                                                className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                                className="px-2 py-1 text-xs rounded-full bg-muted text-foreground/80"
                                             >
                                                 {tag}
                                             </span>
                                         ))}
                                         {template.template.tags.length > 3 && (
-                                            <span className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                                            <span className="px-2 py-1 text-xs rounded-full bg-muted text-foreground/80">
                                                 +{template.template.tags.length - 3}
                                             </span>
                                         )}
@@ -192,7 +192,7 @@ const TemplatesPage: React.FC = () => {
                                 )}
 
                                 {/* Stats */}
-                                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
+                                <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
                                     <span>Used {template.useCount} times</span>
                                 </div>
 

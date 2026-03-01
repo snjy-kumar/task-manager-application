@@ -54,11 +54,11 @@ const RemindersManagementPage: React.FC = () => {
     const getReminderIcon = (type: string) => {
         switch (type) {
             case 'email':
-                return <Mail className="w-5 h-5 text-blue-600" />;
+                return <Mail className="w-5 h-5 text-amber-400" />;
             case 'in-app':
-                return <Smartphone className="w-5 h-5 text-purple-600" />;
+                return <Smartphone className="w-5 h-5 text-amber-500" />;
             case 'both':
-                return <Bell className="w-5 h-5 text-green-600" />;
+                return <Bell className="w-5 h-5 text-emerald-400" />;
             default:
                 return <Bell className="w-5 h-5 text-gray-600" />;
         }
@@ -90,13 +90,13 @@ const RemindersManagementPage: React.FC = () => {
         const reminderTime = new Date(reminder.reminderTime);
 
         if (reminder.isSent) {
-            return { label: 'Sent', color: 'text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-300' };
+            return { label: 'Sent', color: 'text-gray-600 bg-muted ' };
         } else if (reminderTime < now) {
             return { label: 'Overdue', color: 'text-red-600 bg-red-100 dark:bg-red-900/20 dark:text-red-400' };
         } else if (reminderTime.getTime() - now.getTime() < 3600000) { // Less than 1 hour
             return { label: 'Soon', color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/20 dark:text-orange-400' };
         } else {
-            return { label: 'Upcoming', color: 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-400' };
+            return { label: 'Upcoming', color: 'text-emerald-400 bg-emerald-500/10' };
         }
     };
 
@@ -136,71 +136,71 @@ const RemindersManagementPage: React.FC = () => {
     return (
         <div className="h-full flex flex-col">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     Reminders
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                     Manage all your task reminders in one place
                 </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                            <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                            <Bell className="w-5 h-5 text-amber-500" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Total</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">{reminders.length}</p>
+                            <p className="text-sm text-muted-foreground">Total</p>
+                            <p className="text-2xl font-bold text-foreground">{reminders.length}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                            <Clock className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                            <Clock className="w-5 h-5 text-emerald-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Upcoming</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">{upcomingCount}</p>
+                            <p className="text-sm text-muted-foreground">Upcoming</p>
+                            <p className="text-2xl font-bold text-foreground">{upcomingCount}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
                             <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Past Due</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">{pastCount}</p>
+                            <p className="text-sm text-muted-foreground">Past Due</p>
+                            <p className="text-2xl font-bold text-foreground">{pastCount}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                            <CheckCircle2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                            <CheckCircle2 className="w-5 h-5 text-muted-foreground" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Sent</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">{sentCount}</p>
+                            <p className="text-sm text-muted-foreground">Sent</p>
+                            <p className="text-2xl font-bold text-foreground">{sentCount}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Filters */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-4 mb-6">
                 <div className="flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Filter className="w-5 h-5 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter:</span>
+                        <span className="text-sm font-medium text-foreground/80">Filter:</span>
                     </div>
 
                     {/* Time Filter Tabs */}
@@ -215,8 +215,8 @@ const RemindersManagementPage: React.FC = () => {
                                 key={tab.value}
                                 onClick={() => setFilter(tab.value as any)}
                                 className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${filter === tab.value
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                    ? 'bg-amber-500 text-black'
+                                    : 'bg-muted text-muted-foreground hover:bg-gray-200 dark:hover:bg-gray-600'
                                     }`}
                             >
                                 {tab.label} <span className="ml-1 text-xs opacity-75">({tab.count})</span>
@@ -228,7 +228,7 @@ const RemindersManagementPage: React.FC = () => {
                     <select
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
-                        className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                        className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                     >
                         <option value="">All Types</option>
                         <option value="email">Email Only</option>
@@ -240,18 +240,18 @@ const RemindersManagementPage: React.FC = () => {
 
             {/* Reminders List */}
             {loading ? (
-                <div className="flex items-center justify-center py-12 bg-white dark:bg-gray-800 rounded-xl">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <div className="flex items-center justify-center py-12 bg-card rounded-xl">
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
                 </div>
             ) : filteredReminders.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
                     <Bell className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-muted-foreground mb-4">
                         {filter === 'all' ? 'No reminders found' : `No ${filter} reminders`}
                     </p>
                 </div>
             ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                     <div className="divide-y divide-gray-200 dark:divide-gray-700">
                         {filteredReminders.map((reminder) => {
                             const status = getReminderStatus(reminder);
@@ -273,7 +273,7 @@ const RemindersManagementPage: React.FC = () => {
                                             <div className="flex items-center gap-2 mb-1">
                                                 <Link
                                                     to={`/dashboard/tasks/${reminder.task}`}
-                                                    className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 truncate"
+                                                    className="font-medium text-foreground hover:text-amber-500 truncate"
                                                 >
                                                     Task: {typeof reminder.task === 'string' ? reminder.task : reminder.task.title}
                                                 </Link>
@@ -282,14 +282,14 @@ const RemindersManagementPage: React.FC = () => {
 
                                             {/* Message */}
                                             {reminder.message && (
-                                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                                <p className="text-sm text-muted-foreground mb-2">
                                                     {reminder.message}
                                                 </p>
                                             )}
 
                                             {/* Details */}
                                             <div className="flex flex-wrap items-center gap-3 text-xs">
-                                                <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                                <div className="flex items-center gap-1 text-muted-foreground">
                                                     <Clock className="w-3.5 h-3.5" />
                                                     <span>{formatReminderTime(reminder.reminderTime)}</span>
                                                 </div>
@@ -298,7 +298,7 @@ const RemindersManagementPage: React.FC = () => {
                                                     {status.label}
                                                 </span>
 
-                                                <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-medium">
+                                                <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 font-medium">
                                                     {reminder.type}
                                                 </span>
                                             </div>
@@ -324,10 +324,10 @@ const RemindersManagementPage: React.FC = () => {
             )}
 
             {/* Info Section */}
-            <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <div className="mt-6 bg-muted/50 rounded-xl p-4 border border-border">
                 <div className="flex gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-blue-800 dark:text-blue-300">
+                    <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-foreground/80">
                         <p className="font-semibold mb-2">About Reminders:</p>
                         <ul className="space-y-1 list-disc list-inside">
                             <li><strong>Email:</strong> Receive reminder via email</li>

@@ -128,10 +128,10 @@ const TaskTimeTracking: React.FC<TaskTimeTrackingProps> = ({ taskId }) => {
     return (
         <div className="space-y-6">
             {/* Timer Section */}
-            <div className="p-6 rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+            <div className="p-6 rounded-lg border-2 border-border bg-amber-500/5">
                 <div className="text-center mb-4">
                     <h3 className="text-lg font-semibold mb-2">Timer</h3>
-                    <div className="text-4xl font-mono font-bold text-primary mb-4">
+                    <div className="text-4xl font-mono font-bold text-amber-500 mb-4">
                         {activeTimer ? formatDuration(elapsedTime) : '0h 0m 0s'}
                     </div>
                     {activeTimer ? (
@@ -158,17 +158,17 @@ const TaskTimeTracking: React.FC<TaskTimeTrackingProps> = ({ taskId }) => {
             </div>
 
             {/* Total Time */}
-            <div className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-between">
+            <div className="p-4 rounded-xl border border-border bg-muted/50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-primary" />
+                    <Clock className="h-5 w-5 text-amber-500" />
                     <span className="font-medium">Total Time Tracked</span>
                 </div>
-                <span className="text-xl font-bold text-primary">{totalTimeFormatted}</span>
+                <span className="text-xl font-bold text-amber-500">{totalTimeFormatted}</span>
             </div>
 
             {/* Manual Entry Form */}
             {showManualForm ? (
-                <div className="p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg space-y-3">
+                <div className="p-4 border-2 border-dashed border-border rounded-lg space-y-3">
                     <h4 className="font-medium">Add Manual Time Entry</h4>
                     <div className="grid grid-cols-2 gap-3">
                         <div>
@@ -177,7 +177,7 @@ const TaskTimeTracking: React.FC<TaskTimeTrackingProps> = ({ taskId }) => {
                                 type="datetime-local"
                                 value={manualEntry.startTime}
                                 onChange={(e) => setManualEntry({ ...manualEntry, startTime: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                             />
                         </div>
                         <div>
@@ -186,7 +186,7 @@ const TaskTimeTracking: React.FC<TaskTimeTrackingProps> = ({ taskId }) => {
                                 type="datetime-local"
                                 value={manualEntry.endTime}
                                 onChange={(e) => setManualEntry({ ...manualEntry, endTime: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                             />
                         </div>
                     </div>
@@ -196,7 +196,7 @@ const TaskTimeTracking: React.FC<TaskTimeTrackingProps> = ({ taskId }) => {
                             type="text"
                             value={manualEntry.description}
                             onChange={(e) => setManualEntry({ ...manualEntry, description: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                             placeholder="What did you work on?"
                         />
                     </div>
@@ -216,31 +216,31 @@ const TaskTimeTracking: React.FC<TaskTimeTrackingProps> = ({ taskId }) => {
             <div className="space-y-2">
                 <h4 className="font-medium mb-3">Time Entries ({entries.length})</h4>
                 {entries.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <div className="text-center py-8 text-muted-foreground">
                         No time entries yet. Start tracking your time!
                     </div>
                 ) : (
                     entries.map((entry) => (
                         <div
                             key={entry._id}
-                            className="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
+                            className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors"
                         >
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                     <Clock className="h-4 w-4 text-gray-500" />
                                     <span className="font-medium">{formatDuration(entry.duration)}</span>
                                     {entry.isActive && (
-                                        <span className="px-2 py-0.5 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 font-medium">
+                                        <span className="px-2 py-0.5 text-xs rounded-full bg-emerald-500/15 text-emerald-400 font-medium">
                                             Active
                                         </span>
                                     )}
                                 </div>
-                                <div className="text-sm text-gray-600 dark:text-gray-400">
+                                <div className="text-sm text-muted-foreground">
                                     {formatDate(entry.startTime)}
                                     {entry.endTime && ` - ${formatDate(entry.endTime)}`}
                                 </div>
                                 {entry.description && (
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                    <p className="text-sm text-muted-foreground mt-1">
                                         {entry.description}
                                     </p>
                                 )}

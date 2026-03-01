@@ -91,9 +91,9 @@ const RecentlyViewedPage = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Completed': return 'text-green-600';
-      case 'In Progress': return 'text-gray-600 dark:text-gray-400';
-      case 'Pending': return 'text-gray-600 dark:text-gray-400';
+      case 'Completed': return 'text-emerald-400';
+      case 'In Progress': return 'text-muted-foreground';
+      case 'Pending': return 'text-muted-foreground';
       default: return 'text-gray-600';
     }
   };
@@ -102,7 +102,7 @@ const RecentlyViewedPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-muted-foreground mx-auto mb-4" />
           <p className="text-gray-500">Loading recent activity...</p>
         </div>
       </div>
@@ -115,7 +115,7 @@ const RecentlyViewedPage = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Recent Activity</h1>
-          <p className="text-gray-500 dark:text-gray-400">Your recently created and modified tasks</p>
+          <p className="text-muted-foreground">Your recently created and modified tasks</p>
         </div>
         <div className="mt-4 md:mt-0 flex gap-2">
           <Button variant="outline" onClick={fetchTasks} size="sm" className="transition-all duration-300">
@@ -130,7 +130,7 @@ const RecentlyViewedPage = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center">
+        <div className="p-4 rounded-lg bg-red-500/10 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center">
           <AlertCircle className="h-5 w-5 mr-2" />
           {error}
         </div>
@@ -144,7 +144,7 @@ const RecentlyViewedPage = () => {
             to={`/dashboard/tasks/${task._id}/edit`}
             className="block"
           >
-            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-300">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden hover:shadow-md transition-all duration-300">
               <div className="p-4">
                 <div className="flex justify-between items-start">
                   <div className="flex-1 min-w-0">
@@ -198,7 +198,7 @@ const RecentlyViewedPage = () => {
                 <Link
                   key={task._id}
                   to={`/dashboard/tasks/${task._id}/edit`}
-                  className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-300"
+                  className="block p-2 hover:bg-muted rounded-lg transition-all duration-300"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -229,7 +229,7 @@ const RecentlyViewedPage = () => {
                 <Link
                   key={task._id}
                   to={`/dashboard/tasks/${task._id}/edit`}
-                  className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-300"
+                  className="block p-2 hover:bg-muted rounded-lg transition-all duration-300"
                 >
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
@@ -255,17 +255,17 @@ const RecentlyViewedPage = () => {
           size="md"
         >
           <div className="space-y-3 mt-3">
-            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center p-3 bg-card rounded-lg shadow-sm">
               <span className="text-sm font-medium">Total Tasks</span>
-              <span className="text-lg font-bold text-gray-900 dark:text-white">{tasks.length}</span>
+              <span className="text-lg font-bold text-foreground">{tasks.length}</span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center p-3 bg-card rounded-lg shadow-sm">
               <span className="text-sm font-medium">Created This Week</span>
-              <span className="text-lg font-bold text-green-600">{recentlyCreated.length}</span>
+              <span className="text-lg font-bold text-emerald-400">{recentlyCreated.length}</span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center p-3 bg-card rounded-lg shadow-sm">
               <span className="text-sm font-medium">Recently Completed</span>
-              <span className="text-lg font-bold text-gray-600 dark:text-gray-400">{recentlyCompleted.length}</span>
+              <span className="text-lg font-bold text-muted-foreground">{recentlyCompleted.length}</span>
             </div>
           </div>
         </BentoCard>

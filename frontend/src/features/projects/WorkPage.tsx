@@ -139,7 +139,7 @@ const WorkPage: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Work</h1>
-          <p className="text-gray-500 dark:text-gray-400">Manage your work projects and tasks</p>
+          <p className="text-muted-foreground">Manage your work projects and tasks</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
           <Button variant="outline" size="sm" className="transition-all duration-300">
@@ -170,15 +170,15 @@ const WorkPage: React.FC = () => {
               size="sm"
             >
               <div className="mt-2 grid grid-cols-3 gap-2">
-                <div className="bg-primary/10 p-2 rounded-lg text-center">
+                <div className="bg-amber-500/10 p-2 rounded-lg text-center">
                   <span className="text-xl font-bold">{taskStats.total}</span>
                   <p className="text-xs text-gray-500">Total</p>
                 </div>
-                <div className="bg-green-500/10 p-2 rounded-lg text-center">
+                <div className="bg-emerald-500/10 p-2 rounded-lg text-center">
                   <span className="text-xl font-bold">{taskStats.completed}</span>
                   <p className="text-xs text-gray-500">Completed</p>
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-800/10 p-2 rounded-lg text-center">
+                <div className="bg-muted/10 p-2 rounded-lg text-center">
                   <span className="text-xl font-bold">{taskStats.pending}</span>
                   <p className="text-xs text-gray-500">Pending</p>
                 </div>
@@ -195,12 +195,12 @@ const WorkPage: React.FC = () => {
                   <span>Completion rate</span>
                   <span>{taskStats.completionRate}%</span>
                 </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
-                  <div className="h-full bg-primary rounded-full" style={{ width: `${taskStats.completionRate}%` }} />
+                <div className="h-2 bg-border rounded-full">
+                  <div className="h-full bg-amber-500 rounded-full" style={{ width: `${taskStats.completionRate}%` }} />
                 </div>
                 <div className="flex justify-between text-xs text-gray-500 mt-3">
                   <span>Active tasks:</span>
-                  <span className="text-primary font-medium">{taskStats.pending}</span>
+                  <span className="text-amber-500 font-medium">{taskStats.pending}</span>
                 </div>
               </div>
             </BentoCard>
@@ -233,23 +233,23 @@ const WorkPage: React.FC = () => {
           </BentoGrid>
 
           {/* Filter Tabs */}
-          <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
+          <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
             <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-card shadow-sm' : 'text-muted-foreground'
                 }`}
               onClick={() => setFilter('all')}
             >
               All Tasks
             </button>
             <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'mine' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'mine' ? 'bg-card shadow-sm' : 'text-muted-foreground'
                 }`}
               onClick={() => setFilter('mine')}
             >
               My Tasks
             </button>
             <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'team' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'team' ? 'bg-card shadow-sm' : 'text-muted-foreground'
                 }`}
               onClick={() => setFilter('team')}
             >
@@ -261,7 +261,7 @@ const WorkPage: React.FC = () => {
           <div className="flex items-center space-x-4 text-sm">
             <span className="text-gray-500">Sort by:</span>
             <button
-              className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+              className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-foreground font-medium' : ''}`}
               onClick={() => handleSortChange('priority')}
             >
               Priority
@@ -270,7 +270,7 @@ const WorkPage: React.FC = () => {
               )}
             </button>
             <button
-              className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+              className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-foreground font-medium' : ''}`}
               onClick={() => handleSortChange('dueDate')}
             >
               Due Date
@@ -279,7 +279,7 @@ const WorkPage: React.FC = () => {
               )}
             </button>
             <button
-              className={`flex items-center transition-all duration-300 ${sortBy === 'project' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+              className={`flex items-center transition-all duration-300 ${sortBy === 'project' ? 'text-foreground font-medium' : ''}`}
               onClick={() => handleSortChange('project')}
             >
               Project
@@ -302,12 +302,12 @@ const WorkPage: React.FC = () => {
               ))}
 
               {sortedTasks.length === 0 && (
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
+                <div className="bg-card rounded-xl shadow-sm p-8 text-center">
                   <div className="flex justify-center mb-4">
                     <CheckCircle className="h-12 w-12 text-gray-300 dark:text-gray-600" />
                   </div>
                   <h3 className="text-lg font-medium mb-2">No tasks found</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  <p className="text-muted-foreground mb-4">
                     {filter === 'mine'
                       ? "You don't have any work tasks assigned to you."
                       : filter === 'team'
@@ -327,7 +327,7 @@ const WorkPage: React.FC = () => {
             <div className="space-y-6">
               {/* Project Breakdown */}
               {projectStats.length > 0 && (
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+                <div className="bg-card rounded-xl shadow-sm p-4">
                   <h3 className="text-lg font-medium mb-3">Projects</h3>
                   <div className="space-y-2">
                     {projectStats.map((project) => (
@@ -336,7 +336,7 @@ const WorkPage: React.FC = () => {
                           <span className="h-3 w-3 rounded-full bg-gray-400 dark:bg-gray-600 mr-2"></span>
                           <span className="text-sm">{project.name}</span>
                         </div>
-                        <span className="text-xs bg-gray-100 dark:bg-gray-700 rounded-full px-2 py-0.5">
+                        <span className="text-xs bg-muted rounded-full px-2 py-0.5">
                           {project.count}
                         </span>
                       </div>
@@ -349,7 +349,7 @@ const WorkPage: React.FC = () => {
               )}
 
               {/* Quick Links */}
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+              <div className="bg-card rounded-xl shadow-sm p-4">
                 <h3 className="text-lg font-medium mb-3">Quick Links</h3>
                 <div className="space-y-2">
                   <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
@@ -386,19 +386,19 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle }) => {
   const projectTag = task.tags?.find(tag => tag.toLowerCase() !== 'work') || task.category;
 
   return (
-    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isCompleted
-      ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
-      : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+    <div className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${isCompleted
+      ? 'bg-muted/50 border-border'
+      : 'bg-card border-border'
       }`}>
       <div className="flex items-center min-w-0">
         <input
           type="checkbox"
           checked={isCompleted}
           onChange={() => onToggle(task._id, task.status)}
-          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
+          className="h-5 w-5 text-muted-foreground rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
         />
         <div className="min-w-0">
-          <h3 className={`text-sm font-medium truncate ${isCompleted ? 'text-gray-500 dark:text-gray-400 line-through' : ''
+          <h3 className={`text-sm font-medium truncate ${isCompleted ? 'text-muted-foreground line-through' : ''
             }`}>
             {task.title}
           </h3>
@@ -406,15 +406,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle }) => {
             <span className={`h-2 w-2 rounded-full ${priorityColorClass}`}></span>
             <span className="flex items-center">
               <Clock className="h-3 w-3 mr-1" />
-              {formatDueDate(task.dueDate)}
+              {formatDueDate(task.dueDate, task.status).text}
             </span>
             {projectTag && (
-              <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+              <span className="px-1.5 py-0.5 rounded bg-muted text-foreground">
                 {projectTag}
               </span>
             )}
             {task.isOverdue && !isCompleted && (
-              <span className="px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+              <span className="px-1.5 py-0.5 rounded bg-red-500/10 dark:bg-red-900/30 text-red-800 dark:text-red-300">
                 Overdue
               </span>
             )}

@@ -69,17 +69,17 @@ const RecurringTaskForm: React.FC<RecurringTaskFormProps> = ({
     };
 
     return (
-        <div className="space-y-4 p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+        <div className="space-y-4 p-4 border-2 border-dashed border-border rounded-lg">
             <div className="flex items-center gap-3">
                 <input
                     type="checkbox"
                     id="recurring"
                     checked={enabled}
                     onChange={(e) => handleEnabledChange(e.target.checked)}
-                    className="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary"
+                    className="h-5 w-5 rounded border-gray-300 text-amber-500 focus:ring-primary"
                 />
                 <label htmlFor="recurring" className="flex items-center gap-2 font-medium cursor-pointer">
-                    <Repeat className="h-5 w-5 text-primary" />
+                    <Repeat className="h-5 w-5 text-amber-500" />
                     Make this a recurring task
                 </label>
             </div>
@@ -92,7 +92,7 @@ const RecurringTaskForm: React.FC<RecurringTaskFormProps> = ({
                             <select
                                 value={pattern}
                                 onChange={(e) => handlePatternChange(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                             >
                                 <option value="daily">Daily</option>
                                 <option value="weekly">Weekly</option>
@@ -112,7 +112,7 @@ const RecurringTaskForm: React.FC<RecurringTaskFormProps> = ({
                                     max="365"
                                     value={interval}
                                     onChange={(e) => handleIntervalChange(Number(e.target.value))}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                                 />
                             </div>
                         )}
@@ -127,19 +127,19 @@ const RecurringTaskForm: React.FC<RecurringTaskFormProps> = ({
                             type="date"
                             value={endDate}
                             onChange={(e) => handleEndDateChange(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                         />
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-xs text-muted-foreground mt-1">
                             Leave empty for tasks that repeat indefinitely
                         </p>
                     </div>
 
                     {/* Preview */}
-                    <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-                        <p className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-1">
+                    <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20">
+                        <p className="text-sm font-medium text-amber-400 mb-1">
                             📅 Recurring Schedule
                         </p>
-                        <p className="text-sm text-blue-700 dark:text-blue-400">
+                        <p className="text-sm text-foreground/70">
                             {pattern === 'custom'
                                 ? `This task will repeat every ${interval} day${interval > 1 ? 's' : ''}`
                                 : `This task will repeat ${pattern}`}

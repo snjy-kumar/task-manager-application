@@ -146,7 +146,7 @@ const TaskAttachments: React.FC<TaskAttachmentsProps> = ({ taskId }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
       </div>
     );
   }
@@ -155,22 +155,22 @@ const TaskAttachments: React.FC<TaskAttachmentsProps> = ({ taskId }) => {
     <div className="space-y-6">
       {/* Storage Stats */}
       {storageStats && (
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+        <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-medium text-foreground/80">
               Storage Used
             </span>
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm text-muted-foreground">
               {storageStats.usedFormatted} / {storageStats.maxFormatted}
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-border rounded-full h-1.5">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="bg-amber-500 h-1.5 rounded-full transition-all duration-300"
               style={{ width: `${Math.min(storageStats.percentage, 100)}%` }}
             ></div>
           </div>
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-2 text-xs text-muted-foreground">
             {storageStats.attachmentCount} file{storageStats.attachmentCount !== 1 ? 's' : ''} uploaded
           </div>
           {storageStats.percentage > 90 && (
@@ -203,34 +203,34 @@ const TaskAttachments: React.FC<TaskAttachmentsProps> = ({ taskId }) => {
 
         {uploading && (
           <div className="mt-3">
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-border rounded-full h-1.5">
               <div
-                className="bg-green-600 h-2 rounded-full transition-all duration-300"
+                className="bg-emerald-500 h-1.5 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               ></div>
             </div>
           </div>
         )}
 
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+        <p className="text-xs text-muted-foreground mt-2 text-center">
           Max file size: 10MB. Supported: Images, PDFs, Documents, Archives
         </p>
       </div>
 
       {/* Attachments List */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+        <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
           <Paperclip className="w-5 h-5 mr-2" />
           Attachments ({attachments.length})
         </h3>
 
         {attachments.length === 0 ? (
-          <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
+          <div className="text-center py-12 bg-muted/30 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
             <File className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
+            <p className="text-muted-foreground text-sm">
               No attachments yet
             </p>
-            <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">
+            <p className="text-muted-foreground text-xs mt-1">
               Upload files to attach them to this task
             </p>
           </div>
@@ -239,16 +239,16 @@ const TaskAttachments: React.FC<TaskAttachmentsProps> = ({ taskId }) => {
             {attachments.map((attachment) => (
               <div
                 key={attachment._id}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow"
+                className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3 flex-1 min-w-0">
                     <div className="text-3xl">{getFileIcon(attachment.mimeType)}</div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                      <h4 className="font-medium text-foreground truncate">
                         {attachment.originalName}
                       </h4>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                         <span>{formatFileSize(attachment.fileSize)}</span>
                         <span>•</span>
                         <span>{new Date(attachment.createdAt).toLocaleDateString()}</span>
@@ -258,7 +258,7 @@ const TaskAttachments: React.FC<TaskAttachmentsProps> = ({ taskId }) => {
                   <div className="flex items-center gap-2 ml-4">
                     <button
                       onClick={() => handleDownload(attachment)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                      className="p-2 text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors"
                       title="Download"
                     >
                       <Download className="w-5 h-5" />

@@ -92,7 +92,7 @@ class TimeEntryService {
    */
   async getActiveTimer(): Promise<TimeEntry | null> {
     const response = await api.get<{ success: boolean; activeTimer: TimeEntry | null }>(
-      '/tasks/time/active'
+      '/tasks/active-timer'
     );
     return response.data.activeTimer;
   }

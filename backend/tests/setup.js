@@ -5,6 +5,10 @@ let mongoServer;
 
 // Connect to in-memory database before tests
 beforeAll(async () => {
+    // Disconnect any existing connection (e.g. from app.js initialization)
+    if (mongoose.connection.readyState !== 0) {
+        await mongoose.disconnect();
+    }
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     await mongoose.connect(mongoUri);

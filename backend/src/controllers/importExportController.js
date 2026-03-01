@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+import { asyncHandler, NotFoundError, BadRequestError } from '../middleware/errorHandler.js';
 import Task from '../models/task.model.js';
 import Subtask from '../models/subtask.model.js';
 import { Parser } from 'json2csv';
@@ -11,7 +11,7 @@ export const exportTasksToCSV = asyncHandler(async (req, res) => {
 
   // Build filter
   const filter = {
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   };
 
@@ -29,8 +29,7 @@ export const exportTasksToCSV = asyncHandler(async (req, res) => {
   const tasks = await Task.find(filter).sort({ createdAt: -1 }).lean();
 
   if (tasks.length === 0) {
-    res.status(404);
-    throw new Error('No tasks found to export');
+    throw new NotFoundError('No tasks found to export');
   }
 
   // Format data for CSV
@@ -73,7 +72,7 @@ export const exportTasksToJSON = asyncHandler(async (req, res) => {
 
   // Build filter
   const filter = {
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   };
 
@@ -91,8 +90,7 @@ export const exportTasksToJSON = asyncHandler(async (req, res) => {
   let tasks = await Task.find(filter).sort({ createdAt: -1 }).lean();
 
   if (tasks.length === 0) {
-    res.status(404);
-    throw new Error('No tasks found to export');
+    throw new NotFoundError('No tasks found to export');
   }
 
   // Include subtasks if requested
@@ -127,14 +125,13 @@ export const importTasksFromJSON = asyncHandler(async (req, res) => {
   const { tasks, mode = 'add' } = req.body; // mode: 'add' or 'replace'
 
   if (!tasks || !Array.isArray(tasks) || tasks.length === 0) {
-    res.status(400);
-    throw new Error('Invalid import data. Expected an array of tasks.');
+    throw new BadRequestError('Invalid import data. Expected an array of tasks.');
   }
 
   // If mode is 'replace', delete existing tasks
   if (mode === 'replace') {
     await Task.updateMany(
-      { user: req.user._id },
+      { user: req.User._id },
       { isDeleted: true }
     );
   }
@@ -158,7 +155,7 @@ export const importTasksFromJSON = asyncHandler(async (req, res) => {
 
       // Create new task
       const newTask = await Task.create({
-        user: req.user._id,
+        user: req.User._id,
         title: taskData.title,
         description: taskData.description,
         status: taskData.status || 'Pending',
@@ -214,8 +211,7 @@ export const importTasksFromCSV = asyncHandler(async (req, res) => {
   // For now, return a placeholder
   
   if (!req.file) {
-    res.status(400);
-    throw new Error('No file uploaded');
+    throw new BadRequestError('No file uploaded');
   }
 
   res.status(501).json({

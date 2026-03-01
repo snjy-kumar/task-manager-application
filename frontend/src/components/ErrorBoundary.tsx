@@ -55,26 +55,26 @@ class ErrorBoundary extends Component<Props, State> {
 
             // Default error UI
             return (
-                <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
-                    <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+                <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
+                    <div className="max-w-md w-full bg-card rounded-xl shadow-sm p-8 text-center">
                         {/* Icon */}
                         <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-6">
                             <AlertTriangle className="w-8 h-8 text-red-500" />
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 className="text-2xl font-bold text-foreground mb-2">
                             Something went wrong
                         </h1>
 
                         {/* Message */}
-                        <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        <p className="text-gray-600  mb-6">
                             We're sorry, but something unexpected happened. Please try refreshing the page or go back to the home page.
                         </p>
 
                         {/* Error details (development only) */}
                         {process.env.NODE_ENV === 'development' && this.state.error && (
-                            <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-left overflow-auto max-h-40">
+                            <div className="mb-6 p-4 bg-muted rounded-lg text-left overflow-auto max-h-40">
                                 <p className="text-sm font-mono text-red-600 dark:text-red-400">
                                     {this.state.error.toString()}
                                 </p>
@@ -90,7 +90,7 @@ class ErrorBoundary extends Component<Props, State> {
                         <div className="flex gap-3 justify-center">
                             <button
                                 onClick={this.handleGoHome}
-                                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                                className="flex items-center gap-2 px-4 py-2 bg-muted text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                             >
                                 <Home className="w-4 h-4" />
                                 Go Home

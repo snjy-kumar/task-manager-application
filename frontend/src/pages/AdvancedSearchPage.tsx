@@ -127,18 +127,18 @@ const AdvancedSearchPage: React.FC = () => {
     const getPriorityColor = (priority: string) => {
         switch (priority) {
             case 'High': return 'text-red-600 bg-red-100 dark:bg-red-900/20';
-            case 'Medium': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20';
-            case 'Low': return 'text-green-600 bg-green-100 dark:bg-green-900/20';
+            case 'Medium': return 'text-amber-400 bg-amber-500/10';
+            case 'Low': return 'text-emerald-400 bg-emerald-500/10';
             default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900/20';
         }
     };
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'Completed': return 'text-green-600 bg-green-100 dark:bg-green-900/20';
-            case 'In Progress': return 'text-blue-600 bg-blue-100 dark:bg-blue-900/20';
+            case 'Completed': return 'text-emerald-400 bg-emerald-500/10';
+            case 'In Progress': return 'text-amber-400 bg-amber-500/10';
             case 'Pending': return 'text-gray-600 bg-gray-100 dark:bg-gray-900/20';
-            case 'Archived': return 'text-purple-600 bg-purple-100 dark:bg-purple-900/20';
+            case 'Archived': return 'text-muted-foreground bg-muted';
             default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900/20';
         }
     };
@@ -146,10 +146,10 @@ const AdvancedSearchPage: React.FC = () => {
     return (
         <div className="max-w-7xl mx-auto">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     Advanced Search
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                     Search and filter tasks with powerful criteria
                 </p>
             </div>
@@ -178,7 +178,7 @@ const AdvancedSearchPage: React.FC = () => {
             </div>
 
             {/* Search Bar */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-6 mb-6">
                 <div className="flex gap-4">
                     <div className="flex-1 relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -188,7 +188,7 @@ const AdvancedSearchPage: React.FC = () => {
                             onChange={(e) => setFilters({ ...filters, query: e.target.value })}
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             placeholder="Search tasks by title or description..."
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:border-amber-500"
                         />
                     </div>
                     <Button onClick={() => handleSearch()} disabled={loading}>
@@ -215,11 +215,11 @@ const AdvancedSearchPage: React.FC = () => {
 
                 {/* Advanced Filters */}
                 {showFilters && (
-                    <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="mt-6 pt-6 border-t border-border">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {/* Status Filter */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Status
                                 </label>
                                 <div className="space-y-2">
@@ -229,9 +229,9 @@ const AdvancedSearchPage: React.FC = () => {
                                                 type="checkbox"
                                                 checked={(filters.status as string[])?.includes(status)}
                                                 onChange={() => toggleArrayFilter('status', status)}
-                                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                className="rounded border-border text-amber-500 focus:ring-amber-500"
                                             />
-                                            <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{status}</span>
+                                            <span className="ml-2 text-sm text-foreground/80">{status}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -239,7 +239,7 @@ const AdvancedSearchPage: React.FC = () => {
 
                             {/* Priority Filter */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Priority
                                 </label>
                                 <div className="space-y-2">
@@ -249,9 +249,9 @@ const AdvancedSearchPage: React.FC = () => {
                                                 type="checkbox"
                                                 checked={(filters.priority as string[])?.includes(priority)}
                                                 onChange={() => toggleArrayFilter('priority', priority)}
-                                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                className="rounded border-border text-amber-500 focus:ring-amber-500"
                                             />
-                                            <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{priority}</span>
+                                            <span className="ml-2 text-sm text-foreground/80">{priority}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -259,7 +259,7 @@ const AdvancedSearchPage: React.FC = () => {
 
                             {/* Category Filter */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Category
                                 </label>
                                 <div className="space-y-2">
@@ -269,9 +269,9 @@ const AdvancedSearchPage: React.FC = () => {
                                                 type="checkbox"
                                                 checked={(filters.category as string[])?.includes(category)}
                                                 onChange={() => toggleArrayFilter('category', category)}
-                                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                className="rounded border-border text-amber-500 focus:ring-amber-500"
                                             />
-                                            <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">{category}</span>
+                                            <span className="ml-2 text-sm text-foreground/80">{category}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -279,38 +279,38 @@ const AdvancedSearchPage: React.FC = () => {
 
                             {/* Due Date Range */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Due Date From
                                 </label>
                                 <input
                                     type="date"
                                     value={filters.dueDateFrom}
                                     onChange={(e) => setFilters({ ...filters, dueDateFrom: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Due Date To
                                 </label>
                                 <input
                                     type="date"
                                     value={filters.dueDateTo}
                                     onChange={(e) => setFilters({ ...filters, dueDateTo: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                 />
                             </div>
 
                             {/* Sort Options */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Sort By
                                 </label>
                                 <select
                                     value={filters.sortBy}
                                     onChange={(e) => setFilters({ ...filters, sortBy: e.target.value as any })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                 >
                                     <option value="createdAt">Created Date</option>
                                     <option value="updatedAt">Updated Date</option>
@@ -333,7 +333,7 @@ const AdvancedSearchPage: React.FC = () => {
 
             {/* Results */}
             {totalResults > 0 && (
-                <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                <div className="mb-4 text-sm text-muted-foreground">
                     Found {totalResults} task{totalResults !== 1 ? 's' : ''}
                 </div>
             )}
@@ -343,14 +343,14 @@ const AdvancedSearchPage: React.FC = () => {
                     <Link
                         key={task._id}
                         to={`/dashboard/tasks/${task._id}`}
-                        className="block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow"
+                        className="block bg-card rounded-xl shadow-sm border border-border p-4 hover:shadow-md transition-shadow"
                     >
                         <div className="flex items-start justify-between">
                             <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                                <h3 className="text-lg font-semibold text-foreground mb-1">
                                     {task.title}
                                 </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                                <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                                     {task.description}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
@@ -361,19 +361,19 @@ const AdvancedSearchPage: React.FC = () => {
                                         {task.priority}
                                     </span>
                                     {task.category && (
-                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-muted text-foreground/80">
                                             {task.category}
                                         </span>
                                     )}
                                     {task.tags?.map(tag => (
-                                        <span key={tag} className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">
+                                        <span key={tag} className="px-2 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400">
                                             #{tag}
                                         </span>
                                     ))}
                                 </div>
                             </div>
                             <div className="ml-4 text-right">
-                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                <div className="text-sm text-muted-foreground">
                                     Due: {new Date(task.dueDate).toLocaleDateString()}
                                 </div>
                             </div>
@@ -383,9 +383,9 @@ const AdvancedSearchPage: React.FC = () => {
             </div>
 
             {results.length === 0 && !loading && (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
                     <Search className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-muted-foreground">
                         {filters.query || Object.values(filters).some(v => Array.isArray(v) && v.length > 0)
                             ? 'No tasks found matching your search criteria'
                             : 'Enter search criteria to find tasks'}

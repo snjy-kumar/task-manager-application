@@ -64,7 +64,7 @@ const ToastItem: React.FC<{ toast: Toast; onRemove: () => void }> = ({ toast, on
     return (
         <div
             className={`
-        flex items-start gap-3 p-4 rounded-lg border shadow-lg
+        flex items-start gap-3 p-4 rounded-lg border shadow-sm
         transform transition-all duration-300 ease-out
         animate-slide-in
         ${toastStyles[toast.type]}
@@ -73,9 +73,9 @@ const ToastItem: React.FC<{ toast: Toast; onRemove: () => void }> = ({ toast, on
         >
             <ToastIcon type={toast.type} />
             <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-900 dark:text-gray-100">{toast.title}</p>
+                <p className="font-medium text-foreground">{toast.title}</p>
                 {toast.message && (
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">{toast.message}</p>
+                    <p className="mt-1 text-sm text-gray-600 ">{toast.message}</p>
                 )}
             </div>
             <button

@@ -44,7 +44,7 @@ const AuditLogPage: React.FC = () => {
             // Note: This would need to be an endpoint that gets all user activities
             // For now using task-specific activities as placeholder
             const data = await activityService.getUserActivity(page, 20);
-            setActivities(data.activities || data);
+            setActivities(data.activities || (data as unknown as ActivityType[]));
             setTotalPages(data.pagination?.total || 1);
         } catch (err: any) {
             error(err.response?.data?.message || 'Failed to load activity log');
@@ -56,17 +56,17 @@ const AuditLogPage: React.FC = () => {
     const getActionIcon = (action: string) => {
         switch (action.toLowerCase()) {
             case 'created':
-                return <Plus className="w-5 h-5 text-green-600" />;
+                return <Plus className="w-5 h-5 text-emerald-400" />;
             case 'updated':
-                return <Edit className="w-5 h-5 text-blue-600" />;
+                return <Edit className="w-5 h-5 text-amber-500" />;
             case 'deleted':
-                return <Trash2 className="w-5 h-5 text-red-600" />;
+                return <Trash2 className="w-5 h-5 text-red-400" />;
             case 'completed':
-                return <CheckCircle2 className="w-5 h-5 text-green-600" />;
+                return <CheckCircle2 className="w-5 h-5 text-emerald-400" />;
             case 'viewed':
                 return <Eye className="w5 h-5 text-gray-600" />;
             case 'status_changed':
-                return <ActivityIcon className="w-5 h-5 text-purple-600" />;
+                return <ActivityIcon className="w-5 h-5 text-amber-400" />;
             default:
                 return <ActivityIcon className="w-5 h-5 text-gray-600" />;
         }
@@ -75,17 +75,17 @@ const AuditLogPage: React.FC = () => {
     const getActionBadgeColor = (action: string) => {
         switch (action.toLowerCase()) {
             case 'created':
-                return 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400';
+                return 'bg-emerald-500/10 text-green-700 dark:bg-green-900/20 dark:text-green-400';
             case 'updated':
-                return 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400';
+                return 'bg-amber-500/10 text-amber-400';
             case 'deleted':
-                return 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400';
+                return 'bg-red-500/10 text-red-700 dark:bg-red-900/20 dark:text-red-400';
             case 'completed':
-                return 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400';
+                return 'bg-emerald-500/10 text-green-700 dark:bg-green-900/20 dark:text-green-400';
             case 'viewed':
-                return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
+                return 'bg-gray-100 text-gray-700 dark:bg-gray-700 ';
             default:
-                return 'bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400';
+                return 'bg-amber-500/10 text-amber-500';
         }
     };
 
@@ -122,10 +122,10 @@ const AuditLogPage: React.FC = () => {
             <div className="mb-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 className="text-3xl font-bold text-foreground mb-2">
                             Activity Log
                         </h1>
-                        <p className="text-gray-600 dark:text-gray-400">
+                        <p className="text-muted-foreground">
                             Track all actions and changes in your workspace
                         </p>
                     </div>
@@ -138,54 +138,54 @@ const AuditLogPage: React.FC = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                            <ActivityIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                            <ActivityIcon className="w-5 h-5 text-amber-500" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Total Activities</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">{activities.length}</p>
+                            <p className="text-sm text-muted-foreground">Total Activities</p>
+                            <p className="text-2xl font-bold text-foreground">{activities.length}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                            <Plus className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        <div className="w-10 h-10 bg-emerald-500/10 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                            <Plus className="w-5 h-5 text-emerald-400 dark:text-green-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Created</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <p className="text-sm text-muted-foreground">Created</p>
+                            <p className="text-2xl font-bold text-foreground">
                                 {activities.filter(a => a.action.toLowerCase() === 'created').length}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                            <Edit className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                            <Edit className="w-5 h-5 text-amber-500" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Updated</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <p className="text-sm text-muted-foreground">Updated</p>
+                            <p className="text-2xl font-bold text-foreground">
                                 {activities.filter(a => a.action.toLowerCase() === 'updated').length}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-card rounded-xl p-4 border border-border">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-                            <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+                        <div className="w-10 h-10 bg-red-500/10 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
+                            <Trash2 className="w-5 h-5 text-red-400 dark:text-red-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Deleted</p>
-                            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <p className="text-sm text-muted-foreground">Deleted</p>
+                            <p className="text-2xl font-bold text-foreground">
                                 {activities.filter(a => a.action.toLowerCase() === 'deleted').length}
                             </p>
                         </div>
@@ -194,17 +194,17 @@ const AuditLogPage: React.FC = () => {
             </div>
 
             {/* Filters */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-4 mb-6">
                 <div className="flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-2">
                         <Filter className="w-5 h-5 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter:</span>
+                        <span className="text-sm font-medium text-foreground/80">Filter:</span>
                     </div>
 
                     <select
                         value={filterAction}
                         onChange={(e) => setFilterAction(e.target.value)}
-                        className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                        className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                     >
                         <option value="">All Actions</option>
                         <option value="created">Created</option>
@@ -221,7 +221,7 @@ const AuditLogPage: React.FC = () => {
                             type="date"
                             value={filterDateFrom}
                             onChange={(e) => setFilterDateFrom(e.target.value)}
-                            className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                            className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                             placeholder="From"
                         />
                         <span className="text-gray-500">to</span>
@@ -229,7 +229,7 @@ const AuditLogPage: React.FC = () => {
                             type="date"
                             value={filterDateTo}
                             onChange={(e) => setFilterDateTo(e.target.value)}
-                            className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                            className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                             placeholder="To"
                         />
                     </div>
@@ -244,16 +244,16 @@ const AuditLogPage: React.FC = () => {
 
             {/* Activity List */}
             {loading ? (
-                <div className="flex items-center justify-center py-12 bg-white dark:bg-gray-800 rounded-xl">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <div className="flex items-center justify-center py-12 bg-card rounded-xl">
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
                 </div>
             ) : activities.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
                     <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400">No activity logs found</p>
+                    <p className="text-muted-foreground">No activity logs found</p>
                 </div>
             ) : (
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex-1 flex flex-col">
+                <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden flex-1 flex flex-col">
                     <div className="flex-1 overflow-auto">
                         <div className="divide-y divide-gray-200 dark:divide-gray-700">
                             {activities.map((activity) => (
@@ -274,18 +274,18 @@ const AuditLogPage: React.FC = () => {
                                                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getActionBadgeColor(activity.action)}`}>
                                                         {activity.action}
                                                     </span>
-                                                    <span className="text-sm text-gray-900 dark:text-white font-medium">
+                                                    <span className="text-sm text-foreground font-medium">
                                                         {activity.description}
                                                     </span>
                                                 </div>
-                                                <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                                                <span className="text-xs text-muted-foreground whitespace-nowrap">
                                                     {formatTimestamp(activity.createdAt)}
                                                 </span>
                                             </div>
 
                                             {/* Details */}
                                             {activity.description && (
-                                                <div className="mt-2 p-2 bg-gray-50 dark:bg-gray-900/50 rounded text-xs text-gray-600 dark:text-gray-400">
+                                                <div className="mt-2 p-2 bg-muted/30 rounded text-xs text-muted-foreground">
                                                     <pre className="whitespace-pre-wrap font-mono">
                                                         {activity.description}
                                                     </pre>
@@ -293,7 +293,7 @@ const AuditLogPage: React.FC = () => {
                                             )}
 
                                             {/* Metadata */}
-                                            <div className="flex items-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                            <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
                                                 <span className="flex items-center gap-1">
                                                     <User className="w-3.5 h-3.5" />
                                                     User: {typeof activity.user === 'string' ? activity.user : activity.user.name}
@@ -313,7 +313,7 @@ const AuditLogPage: React.FC = () => {
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                        <div className="border-t border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
+                        <div className="border-t border-border p-4 flex items-center justify-between">
                             <Button
                                 variant="outline"
                                 size="sm"
@@ -322,7 +322,7 @@ const AuditLogPage: React.FC = () => {
                             >
                                 Previous
                             </Button>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                            <span className="text-sm text-muted-foreground">
                                 Page {page} of {totalPages}
                             </span>
                             <Button
@@ -339,10 +339,10 @@ const AuditLogPage: React.FC = () => {
             )}
 
             {/* Info */}
-            <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <div className="mt-6 bg-amber-500/5 rounded-xl p-4 border border-amber-500/20">
                 <div className="flex gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-blue-800 dark:text-blue-300">
+                    <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-amber-400">
                         <p className="font-semibold mb-2">About Activity Logs:</p>
                         <ul className="space-y-1 list-disc list-inside">
                             <li>All actions are automatically logged for audit purposes</li>

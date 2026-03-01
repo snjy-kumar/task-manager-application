@@ -115,9 +115,9 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
 
   const getTypeBadge = (type: string) => {
     const styles = {
-      email: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
-      'in-app': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-      both: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+      email: 'bg-amber-500/10 text-amber-400',
+      'in-app': 'bg-amber-500/15 text-amber-500',
+      both: 'bg-emerald-500/15 text-emerald-400'
     };
     return styles[type as keyof typeof styles] || styles['in-app'];
   };
@@ -143,7 +143,7 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
       </div>
     );
   }
@@ -151,7 +151,7 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+        <h3 className="text-lg font-semibold text-foreground flex items-center">
           <Bell className="w-5 h-5 mr-2" />
           Reminders ({reminders.length})
         </h3>
@@ -162,12 +162,12 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
       </div>
 
       {reminders.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
+        <div className="text-center py-12 bg-muted/30 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
           <Clock className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
+          <p className="text-muted-foreground text-sm">
             No reminders set
           </p>
-          <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">
+          <p className="text-muted-foreground text-xs mt-1">
             Get notified before your task is due
           </p>
         </div>
@@ -176,9 +176,9 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
           {reminders.map((reminder) => (
             <div
               key={reminder._id}
-              className={`bg-white dark:bg-gray-800 border rounded-lg p-4 transition-all ${reminder.isSent
-                ? 'border-gray-200 dark:border-gray-700 opacity-60'
-                : 'border-blue-200 dark:border-blue-800 hover:shadow-md'
+              className={`bg-card border rounded-lg p-4 transition-all ${reminder.isSent
+                ? 'border-border opacity-60'
+                : 'border-amber-500/30 hover:border-amber-500/60'
                 }`}
             >
               <div className="flex items-start justify-between">
@@ -189,17 +189,17 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
                       {reminder.type === 'in-app' ? 'In-App' : reminder.type === 'email' ? 'Email' : 'Both'}
                     </span>
                     {reminder.isSent && (
-                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 ">
                         Sent
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-1">
+                  <div className="flex items-center gap-2 text-foreground/80 mb-1">
                     <Clock className="w-4 h-4" />
                     <span className="font-medium">{formatDateTime(reminder.reminderTime)}</span>
                   </div>
                   {reminder.message && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    <p className="text-sm text-muted-foreground mt-2">
                       {reminder.message}
                     </p>
                   )}
@@ -213,7 +213,7 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
                   <div className="flex items-center gap-2 ml-4">
                     <button
                       onClick={() => handleEdit(reminder)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                      className="p-2 text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors"
                       title="Edit"
                     >
                       <Edit2 className="w-4 h-4" />
@@ -236,10 +236,10 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
       {/* Add/Edit Reminder Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="bg-card border border-border rounded-xl max-w-md w-full">
+            <div className="p-6 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 className="text-lg font-semibold text-foreground">
                   {editingReminder ? 'Edit Reminder' : 'Add Reminder'}
                 </h3>
                 <button
@@ -256,16 +256,16 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground/80 mb-2">
                   Task
                 </label>
-                <div className="px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm text-gray-900 dark:text-gray-100">
+                <div className="px-3 py-2 bg-muted/60 rounded-lg text-sm text-foreground">
                   {taskTitle}
                 </div>
               </div>
 
               <div>
-                <label htmlFor="reminderTime" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label htmlFor="reminderTime" className="block text-sm font-medium text-foreground/80 mb-2">
                   Reminder Time <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -274,20 +274,20 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
                   value={formData.reminderTime}
                   onChange={(e) => setFormData({ ...formData, reminderTime: e.target.value })}
                   min={getMinDateTime()}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-amber-500 dark:bg-gray-700 "
                   required
                 />
               </div>
 
               <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label htmlFor="type" className="block text-sm font-medium text-foreground/80 mb-2">
                   Notification Type
                 </label>
                 <select
                   id="type"
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-amber-500 dark:bg-gray-700 "
                 >
                   <option value="in-app">In-App Only</option>
                   <option value="email">Email Only</option>
@@ -296,7 +296,7 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-foreground/80 mb-2">
                   Custom Message (optional)
                 </label>
                 <textarea
@@ -306,9 +306,9 @@ const TaskReminders: React.FC<TaskRemindersProps> = ({ taskId, taskTitle }) => {
                   placeholder="Add a custom reminder message..."
                   rows={3}
                   maxLength={500}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100 resize-none"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-amber-500 dark:bg-gray-700  resize-none"
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {formData.message?.length || 0}/500 characters
                 </p>
               </div>

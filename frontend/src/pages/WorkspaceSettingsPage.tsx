@@ -70,10 +70,10 @@ const WorkspaceSettingsPage: React.FC = () => {
     return (
         <div className="h-full flex flex-col">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     Workspace Settings
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                     Manage your workspace configuration and preferences
                 </p>
             </div>
@@ -81,7 +81,7 @@ const WorkspaceSettingsPage: React.FC = () => {
             <div className="flex flex-col lg:flex-row gap-6 flex-1">
                 {/* Sidebar Tabs */}
                 <div className="lg:w-64 flex-shrink-0">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-2">
+                    <div className="bg-card rounded-xl shadow-sm border border-border p-2">
                         {tabs.map(tab => {
                             const Icon = tab.icon;
                             return (
@@ -89,8 +89,8 @@ const WorkspaceSettingsPage: React.FC = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as any)}
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === tab.id
-                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                        ? 'bg-amber-500/5 text-amber-500'
+                                        : 'text-foreground/80 hover:bg-muted'
                                         }`}
                                 >
                                     <Icon className="w-5 h-5" />
@@ -103,52 +103,52 @@ const WorkspaceSettingsPage: React.FC = () => {
 
                 {/* Content Area */}
                 <div className="flex-1">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div className="bg-card rounded-xl shadow-sm border border-border p-6">
                         {/* General Settings */}
                         {activeTab === 'general' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                    <h3 className="text-lg font-semibold text-foreground mb-4">
                                         General Settings
                                     </h3>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-2">
                                         Workspace Name
                                     </label>
                                     <input
                                         type="text"
                                         value={workspaceName}
                                         onChange={(e) => setWorkspaceName(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         placeholder="Enter workspace name"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-2">
                                         Description
                                     </label>
                                     <textarea
                                         value={workspaceDescription}
                                         onChange={(e) => setWorkspaceDescription(e.target.value)}
                                         rows={3}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         placeholder="Describe your workspace"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-foreground/80 mb-2">
                                             <Globe className="w-4 h-4 inline mr-1" />
                                             Timezone
                                         </label>
                                         <select
                                             value={timezone}
                                             onChange={(e) => setTimezone(e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         >
                                             <option value="UTC">UTC</option>
                                             <option value="America/New_York">Eastern Time (ET)</option>
@@ -161,14 +161,14 @@ const WorkspaceSettingsPage: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-foreground/80 mb-2">
                                             <Calendar className="w-4 h-4 inline mr-1" />
                                             Date Format
                                         </label>
                                         <select
                                             value={dateFormat}
                                             onChange={(e) => setDateFormat(e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         >
                                             <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                                             <option value="DD/MM/YYYY">DD/MM/YYYY</option>
@@ -177,14 +177,14 @@ const WorkspaceSettingsPage: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-foreground/80 mb-2">
                                             <Clock className="w-4 h-4 inline mr-1" />
                                             Time Format
                                         </label>
                                         <select
                                             value={timeFormat}
                                             onChange={(e) => setTimeFormat(e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         >
                                             <option value="12h">12-hour (AM/PM)</option>
                                             <option value="24h">24-hour</option>
@@ -198,21 +198,21 @@ const WorkspaceSettingsPage: React.FC = () => {
                         {activeTab === 'notifications' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                    <h3 className="text-lg font-semibold text-foreground mb-4">
                                         Notification Settings
                                     </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                                    <p className="text-sm text-muted-foreground mb-6">
                                         Choose how you want to be notified about updates
                                     </p>
                                 </div>
 
                                 <div className="space-y-4">
-                                    <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <div className="flex items-center gap-3">
                                             <Mail className="w-5 h-5 text-gray-500" />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">Email Notifications</p>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">Receive notifications via email</p>
+                                                <p className="font-medium text-foreground">Email Notifications</p>
+                                                <p className="text-sm text-muted-foreground">Receive notifications via email</p>
                                             </div>
                                         </div>
                                         <input
@@ -223,12 +223,12 @@ const WorkspaceSettingsPage: React.FC = () => {
                                         />
                                     </label>
 
-                                    <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <div className="flex items-center gap-3">
                                             <Bell className="w-5 h-5 text-gray-500" />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">Push Notifications</p>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">Receive push notifications in-app</p>
+                                                <p className="font-medium text-foreground">Push Notifications</p>
+                                                <p className="text-sm text-muted-foreground">Receive push notifications in-app</p>
                                             </div>
                                         </div>
                                         <input
@@ -239,12 +239,12 @@ const WorkspaceSettingsPage: React.FC = () => {
                                         />
                                     </label>
 
-                                    <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <div className="flex items-center gap-3">
                                             <Clock className="w-5 h-5 text-gray-500" />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">Task Reminders</p>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">Get reminded about upcoming tasks</p>
+                                                <p className="font-medium text-foreground">Task Reminders</p>
+                                                <p className="text-sm text-muted-foreground">Get reminded about upcoming tasks</p>
                                             </div>
                                         </div>
                                         <input
@@ -255,12 +255,12 @@ const WorkspaceSettingsPage: React.FC = () => {
                                         />
                                     </label>
 
-                                    <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <div className="flex items-center gap-3">
                                             <Mail className="w-5 h-5 text-gray-500" />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">Weekly Digest</p>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">Receive weekly summary emails</p>
+                                                <p className="font-medium text-foreground">Weekly Digest</p>
+                                                <p className="text-sm text-muted-foreground">Receive weekly summary emails</p>
                                             </div>
                                         </div>
                                         <input
@@ -271,12 +271,12 @@ const WorkspaceSettingsPage: React.FC = () => {
                                         />
                                     </label>
 
-                                    <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <div className="flex items-center gap-3">
                                             <Users className="w-5 h-5 text-gray-500" />
                                             <div>
-                                                <p className="font-medium text-gray-900 dark:text-white">Mention Notifications</p>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">When someone mentions you</p>
+                                                <p className="font-medium text-foreground">Mention Notifications</p>
+                                                <p className="text-sm text-muted-foreground">When someone mentions you</p>
                                             </div>
                                         </div>
                                         <input
@@ -294,22 +294,22 @@ const WorkspaceSettingsPage: React.FC = () => {
                         {activeTab === 'security' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                    <h3 className="text-lg font-semibold text-foreground mb-4">
                                         Security Settings
                                     </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                                    <p className="text-sm text-muted-foreground mb-6">
                                         Manage your account security and authentication
                                     </p>
                                 </div>
 
                                 <div className="space-y-4">
-                                    <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                    <div className="p-4 border border-border rounded-lg">
                                         <div className="flex items-center justify-between mb-2">
                                             <div className="flex items-center gap-3">
                                                 <Shield className="w-5 h-5 text-gray-500" />
                                                 <div>
-                                                    <p className="font-medium text-gray-900 dark:text-white">Two-Factor Authentication</p>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400">Add an extra layer of security</p>
+                                                    <p className="font-medium text-foreground">Two-Factor Authentication</p>
+                                                    <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
                                                 </div>
                                             </div>
                                             <input
@@ -320,8 +320,8 @@ const WorkspaceSettingsPage: React.FC = () => {
                                             />
                                         </div>
                                         {twoFactorAuth && (
-                                            <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                                                <p className="text-sm text-blue-800 dark:text-blue-300">
+                                            <div className="mt-3 p-3 bg-amber-500/5 rounded-lg">
+                                                <p className="text-sm text-amber-400">
                                                     Configure 2FA by connecting your authenticator app
                                                 </p>
                                                 <Button variant="outline" size="sm" className="mt-2">
@@ -332,14 +332,14 @@ const WorkspaceSettingsPage: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-foreground/80 mb-2">
                                             <Clock className="w-4 h-4 inline mr-1" />
                                             Session Timeout (minutes)
                                         </label>
                                         <select
                                             value={sessionTimeout}
                                             onChange={(e) => setSessionTimeout(e.target.value)}
-                                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                            className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                         >
                                             <option value="15">15 minutes</option>
                                             <option value="30">30 minutes</option>
@@ -349,10 +349,10 @@ const WorkspaceSettingsPage: React.FC = () => {
                                         </select>
                                     </div>
 
-                                    <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                    <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                         <div>
-                                            <p className="font-medium text-gray-900 dark:text-white">Allow Multiple Sessions</p>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">Sign in from multiple devices</p>
+                                            <p className="font-medium text-foreground">Allow Multiple Sessions</p>
+                                            <p className="text-sm text-muted-foreground">Sign in from multiple devices</p>
                                         </div>
                                         <input
                                             type="checkbox"
@@ -368,7 +368,7 @@ const WorkspaceSettingsPage: React.FC = () => {
                                     <p className="text-sm text-red-800 dark:text-red-400 mb-3">
                                         Permanently delete your workspace and all associated data
                                     </p>
-                                    <Button variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
+                                    <Button variant="outline" className="text-red-400 border-red-600 hover:bg-red-50">
                                         <Trash2 className="w-4 h-4 mr-2" />
                                         Delete Workspace
                                     </Button>
@@ -380,22 +380,22 @@ const WorkspaceSettingsPage: React.FC = () => {
                         {activeTab === 'preferences' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                    <h3 className="text-lg font-semibold text-foreground mb-4">
                                         User Preferences
                                     </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                                    <p className="text-sm text-muted-foreground mb-6">
                                         Customize your workspace experience
                                     </p>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-2">
                                         Default Task View
                                     </label>
                                     <select
                                         value={defaultView}
                                         onChange={(e) => setDefaultView(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     >
                                         <option value="list">List View</option>
                                         <option value="kanban">Kanban Board</option>
@@ -405,13 +405,13 @@ const WorkspaceSettingsPage: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-2">
                                         Tasks Per Page
                                     </label>
                                     <select
                                         value={tasksPerPage}
                                         onChange={(e) => setTasksPerPage(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     >
                                         <option value="10">10 tasks</option>
                                         <option value="20">20 tasks</option>
@@ -420,10 +420,10 @@ const WorkspaceSettingsPage: React.FC = () => {
                                     </select>
                                 </div>
 
-                                <label className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <label className="flex items-center justify-between p-4 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                     <div>
-                                        <p className="font-medium text-gray-900 dark:text-white">Show Completed Tasks</p>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">Display completed tasks in task lists</p>
+                                        <p className="font-medium text-foreground">Show Completed Tasks</p>
+                                        <p className="text-sm text-muted-foreground">Display completed tasks in task lists</p>
                                     </div>
                                     <input
                                         type="checkbox"
@@ -434,13 +434,13 @@ const WorkspaceSettingsPage: React.FC = () => {
                                 </label>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label className="block text-sm font-medium text-foreground/80 mb-2">
                                         Auto-Archive Completed Tasks
                                     </label>
                                     <select
                                         value={autoArchive}
                                         onChange={(e) => setAutoArchive(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                        className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                     >
                                         <option value="never">Never</option>
                                         <option value="7">After 7 days</option>
@@ -452,7 +452,7 @@ const WorkspaceSettingsPage: React.FC = () => {
                         )}
 
                         {/* Save Button */}
-                        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
+                        <div className="mt-8 pt-6 border-t border-border flex justify-end gap-3">
                             <Button variant="outline">
                                 Cancel
                             </Button>

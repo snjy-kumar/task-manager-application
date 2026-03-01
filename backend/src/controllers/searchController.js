@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+import { asyncHandler, BadRequestError } from '../middleware/errorHandler.js';
 import Task from '../models/task.model.js';
 
 // @desc    Advanced search for tasks with multiple filters
@@ -27,7 +27,7 @@ export const advancedSearch = asyncHandler(async (req, res) => {
 
   // Build filter object
   const filter = {
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   };
 
@@ -146,7 +146,7 @@ export const getSearchSuggestions = asyncHandler(async (req, res) => {
   // Get unique tags used by this user
   if (field === 'tags' || !field) {
     const tagsResult = await Task.distinct('tags', { 
-      user: req.user._id, 
+      user: req.User._id, 
       isDeleted: false 
     });
     suggestions.tags = tagsResult;
@@ -166,7 +166,7 @@ export const quickFilter = asyncHandler(async (req, res) => {
   const { limit = 20 } = req.query;
 
   const baseFilter = {
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   };
 
@@ -228,8 +228,7 @@ export const quickFilter = asyncHandler(async (req, res) => {
       break;
 
     default:
-      res.status(400);
-      throw new Error('Invalid filter name');
+      throw new BadRequestError('Invalid filter name');
   }
 
   const tasks = await Task.find(filter)

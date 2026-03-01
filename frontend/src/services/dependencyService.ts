@@ -35,13 +35,13 @@ class DependencyService {
 
   // Get tasks that depend on this task
   async getDependents(taskId: string): Promise<Dependency[]> {
-    const response = await api.get(`/tasks/${taskId}/dependents`);
+    const response = await api.get(`/tasks/${taskId}/dependencies/dependents`);
     return response.data.data;
   }
 
   // Check if task can be started
   async canStartTask(taskId: string): Promise<{ canStart: boolean; blockingCount: number }> {
-    const response = await api.get(`/tasks/${taskId}/can-start`);
+    const response = await api.get(`/tasks/${taskId}/dependencies/can-start`);
     return {
       canStart: response.data.canStart,
       blockingCount: response.data.blockingCount

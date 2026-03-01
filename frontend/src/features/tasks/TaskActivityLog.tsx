@@ -40,18 +40,18 @@ const TaskActivityLog: React.FC<TaskActivityLogProps> = ({ taskId }) => {
     const getActionIcon = (action: string) => {
         switch (action) {
             case 'created':
-                return <FileText className="h-4 w-4 text-blue-500" />;
+                return <FileText className="h-4 w-4 text-amber-400" />;
             case 'updated':
             case 'status_changed':
             case 'priority_changed':
-                return <Activity className="h-4 w-4 text-yellow-500" />;
+                return <Activity className="h-4 w-4 text-amber-500" />;
             case 'completed':
-                return <Activity className="h-4 w-4 text-green-500" />;
+                return <Activity className="h-4 w-4 text-emerald-400" />;
             case 'comment_added':
-                return <FileText className="h-4 w-4 text-purple-500" />;
+                return <FileText className="h-4 w-4 text-amber-400" />;
             case 'subtask_added':
             case 'subtask_completed':
-                return <Activity className="h-4 w-4 text-indigo-500" />;
+                return <Activity className="h-4 w-4 text-amber-500" />;
             case 'deleted':
             case 'archived':
                 return <Activity className="h-4 w-4 text-red-500" />;
@@ -63,16 +63,16 @@ const TaskActivityLog: React.FC<TaskActivityLogProps> = ({ taskId }) => {
     const getActionColor = (action: string) => {
         switch (action) {
             case 'created':
-                return 'border-blue-500';
+                return 'border-amber-500';
             case 'completed':
-                return 'border-green-500';
+                return 'border-emerald-400';
             case 'deleted':
             case 'archived':
                 return 'border-red-500';
             case 'comment_added':
-                return 'border-purple-500';
+                return 'border-amber-400';
             default:
-                return 'border-gray-300 dark:border-gray-600';
+                return 'border-border';
         }
     };
 
@@ -120,7 +120,7 @@ const TaskActivityLog: React.FC<TaskActivityLogProps> = ({ taskId }) => {
     return (
         <div className="space-y-4">
             {activities.length === 0 ? (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-8 text-muted-foreground">
                     <Activity className="h-12 w-12 mx-auto mb-2 opacity-50" />
                     <p>No activity yet</p>
                 </div>
@@ -128,25 +128,25 @@ const TaskActivityLog: React.FC<TaskActivityLogProps> = ({ taskId }) => {
                 <>
                     <div className="relative">
                         {/* Timeline Line */}
-                        <div className="absolute left-[19px] top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+                        <div className="absolute left-[19px] top-0 bottom-0 w-0.5 bg-border" />
 
                         {/* Activities */}
                         <div className="space-y-4">
                             {activities.map((activity) => (
                                 <div key={activity._id} className="relative flex gap-4">
                                     {/* Icon */}
-                                    <div className={`relative z-10 flex-shrink-0 h-10 w-10 rounded-full border-4 ${getActionColor(activity.action)} bg-white dark:bg-gray-900 flex items-center justify-center`}>
+                                    <div className={`relative z-10 flex-shrink-0 h-10 w-10 rounded-full border-4 ${getActionColor(activity.action)} bg-card flex items-center justify-center`}>
                                         {getActionIcon(activity.action)}
                                     </div>
 
                                     {/* Content */}
                                     <div className="flex-1 pb-4">
-                                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                                        <div className="bg-muted rounded-lg p-4 border border-border">
                                             <p className="text-sm font-medium mb-1">
                                                 {formatActionText(activity)}
                                             </p>
 
-                                            <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
                                                 <span className="flex items-center gap-1">
                                                     <Clock className="h-3 w-3" />
                                                     {formatTimeAgo(activity.createdAt)}
@@ -177,7 +177,7 @@ const TaskActivityLog: React.FC<TaskActivityLogProps> = ({ taskId }) => {
                             <button
                                 onClick={() => setPage(page + 1)}
                                 disabled={loading}
-                                className="px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                className="px-4 py-2 text-sm font-medium text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors"
                             >
                                 {loading ? 'Loading...' : 'Load More'}
                             </button>

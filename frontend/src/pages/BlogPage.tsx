@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
+import {
   Search,
   Clock,
   Tag,
@@ -9,166 +9,165 @@ import {
   ArrowRight,
   Calendar,
   User,
-  Bookmark
+  Bookmark,
+  X,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
+
+/* ─── Design tokens ─────────────────────────────────────────────── */
+const BG = 'hsl(222,25%,7%)';
+const CARD = 'hsl(222,25%,10%)';
+const BORDER = 'rgba(255,255,255,0.08)';
 
 const BlogPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  
-  // Filter blog posts based on search query and active category
+
   const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = searchQuery === '' || 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch = searchQuery === '' ||
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    
     const matchesCategory = activeCategory === 'all' || post.categories.includes(activeCategory);
-    
     return matchesSearch && matchesCategory;
   });
-  
+
   return (
-    <main className="flex-1">
-      {/* Hero Section */}
-      <section className="w-full py-20 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
-        <div className="container px-4 md:px-6 mx-auto">
-          <div className="text-center max-w-3xl mx-auto">
-            <motion.h1 
-              className="text-4xl md:text-5xl font-bold mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              AI Task Manager Blog
-            </motion.h1>
-            <motion.p 
-              className="text-xl text-gray-100 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Productivity tips, AI insights, and updates from our team.
-            </motion.p>
-            
-            <motion.div
-              className="bg-white/10 p-2 rounded-full flex items-center max-w-xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <Search className="h-5 w-5 ml-3 text-white" />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                className="bg-transparent border-none flex-1 p-2 text-white placeholder-gray-100 focus:outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && (
-                <button 
-                  className="mr-3 text-gray-100 hover:text-white"
-                  onClick={() => setSearchQuery('')}
-                >
-                  Clear
-                </button>
-              )}
-            </motion.div>
-          </div>
+    <main className="flex-1" style={{ background: BG }}>
+
+      {/* Hero */}
+      <section className="relative w-full py-20 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] opacity-[0.05]"
+            style={{ background: 'radial-gradient(ellipse at center, #F5A623 0%, transparent 65%)' }} />
+          <div className="absolute inset-0 opacity-[0.02]"
+            style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        </div>
+        <div className="relative max-w-4xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 mb-6"
+          >
+            <span className="text-amber-400 text-xs font-semibold tracking-wide uppercase">Blog & Insights</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.07] tracking-tight mb-5"
+          >
+            Productivity tips &
+            <br />
+            <span className="text-amber-400">AI insights.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-white/50 text-lg mb-8 max-w-xl mx-auto"
+          >
+            Thought leadership, how-to guides, and product updates from our team.
+          </motion.p>
+
+          {/* Search bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex items-center max-w-xl mx-auto rounded-xl border px-4 py-1"
+            style={{ background: CARD, borderColor: BORDER }}
+          >
+            <Search className="w-4 h-4 text-white/40 shrink-0" />
+            <input
+              type="text"
+              placeholder="Search articles..."
+              className="flex-1 bg-transparent px-3 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')}>
+                <X className="w-4 h-4 text-white/40 hover:text-white/70 transition-colors" />
+              </button>
+            )}
+          </motion.div>
         </div>
       </section>
 
       {/* Featured Posts */}
-      <section className="w-full py-16">
-        <div className="container px-4 md:px-6 mx-auto">
-          <h2 className="text-3xl font-bold mb-8">Featured Articles</h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Feature */}
+      <section className="w-full py-14">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="text-xs font-semibold tracking-widest uppercase text-amber-400">Featured</span>
+            <div className="h-px flex-1" style={{ background: BORDER }} />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main feature */}
             <div className="lg:col-span-2">
               {featuredPost && (
                 <motion.div
-                  className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg h-full"
+                  className="group relative rounded-2xl overflow-hidden border h-full min-h-[420px]"
+                  style={{ borderColor: BORDER }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="relative h-80 overflow-hidden">
-                    <img 
-                      src={featuredPost.image} 
-                      alt={featuredPost.title} 
-                      className="w-full h-full object-cover transform transition-transform hover:scale-105 duration-300" 
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
-                      <div className="flex items-center text-white text-sm mb-2">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        <span>{featuredPost.date}</span>
-                        <span className="mx-2">•</span>
-                        <User className="h-4 w-4 mr-1" />
-                        <span>{featuredPost.author}</span>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white">{featuredPost.title}</h3>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {featuredPost.categories.map((category, index) => (
-                        <span 
-                          key={index} 
-                          className="text-xs font-medium bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
-                          onClick={() => setActiveCategory(category)}
-                        >
-                          {getCategoryName(category)}
+                  <img
+                    src={featuredPost.image}
+                    alt={featuredPost.title}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,12,18,0.95) 0%, rgba(10,12,18,0.4) 60%, transparent 100%)' }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-7">
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {featuredPost.categories.map((cat, i) => (
+                        <span key={i} className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                          {getCategoryName(cat)}
                         </span>
                       ))}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">{featuredPost.excerpt}</p>
-                    <Button asChild>
-                      <Link to={`/blog/${featuredPost.slug}`}>
-                        Read More <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
+                    <h3 className="text-2xl font-bold text-white mb-3 leading-tight">{featuredPost.title}</h3>
+                    <div className="flex items-center gap-3 text-white/50 text-sm mb-4">
+                      <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{featuredPost.date}</span>
+                      <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{featuredPost.author}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{featuredPost.readTime}</span>
+                    </div>
+                    <Link
+                      to={`/blog/${featuredPost.slug}`}
+                      className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm transition-colors"
+                    >
+                      Read article <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
                 </motion.div>
               )}
             </div>
-            
-            {/* Secondary Features */}
-            <div className="space-y-6">
-              {secondaryFeaturedPosts.map((post, index) => (
+
+            {/* Secondary featured */}
+            <div className="space-y-4">
+              {secondaryFeaturedPosts.map((post, idx) => (
                 <motion.div
                   key={post.id}
-                  className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-sm flex flex-col sm:flex-row h-full"
+                  className="group rounded-2xl overflow-hidden border flex gap-0 h-36"
+                  style={{ background: CARD, borderColor: BORDER }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
                 >
-                  <div className="sm:w-1/3 h-40 sm:h-auto">
-                    <img 
-                      src={post.image} 
-                      alt={post.title} 
-                      className="w-full h-full object-cover" 
-                    />
+                  <div className="w-32 shrink-0 overflow-hidden">
+                    <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <div className="p-4 sm:p-6 sm:w-2/3">
-                    <div className="flex items-center text-gray-500 text-sm mb-2">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      <span>{post.date}</span>
-                    </div>
-                    <h3 className="text-lg font-bold mb-2">{post.title}</h3>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {post.categories.slice(0, 2).map((category, index) => (
-                        <span 
-                          key={index} 
-                          className="text-xs font-medium bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
-                          onClick={() => setActiveCategory(category)}
-                        >
-                          {getCategoryName(category)}
-                        </span>
-                      ))}
-                    </div>
-                    <Link to={`/blog/${post.slug}`} className="text-primary font-medium hover:underline inline-flex items-center">
-                      Read Article <ChevronRight className="ml-1 h-4 w-4" />
+                  <div className="flex flex-col justify-center p-4 min-w-0">
+                    <span className="text-xs text-white/40 mb-1.5 flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />{post.date}
+                    </span>
+                    <h3 className="text-sm font-semibold text-white leading-snug mb-2 line-clamp-2">{post.title}</h3>
+                    <Link to={`/blog/${post.slug}`} className="inline-flex items-center gap-1 text-amber-400 text-xs font-semibold hover:text-amber-300 transition-colors">
+                      Read <ChevronRight className="w-3 h-3" />
                     </Link>
                   </div>
                 </motion.div>
@@ -178,149 +177,161 @@ const BlogPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Blog Content */}
-      <section className="w-full py-12 bg-gray-50 dark:bg-gray-900">
-        <div className="container px-4 md:px-6 mx-auto">
+      {/* Divider */}
+      <div className="max-w-7xl mx-auto px-6"><div className="h-px" style={{ background: BORDER }} /></div>
+
+      {/* Main content */}
+      <section className="w-full py-14">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Categories Sidebar */}
-            <div className="w-full lg:w-1/4 lg:order-2">
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 sticky top-24">
-                <h2 className="text-xl font-bold mb-4">Categories</h2>
-                <ul className="space-y-2">
-                  <li>
-                    <button
-                      className={`w-full text-left px-3 py-2 rounded-lg flex items-center ${
-                        activeCategory === 'all' 
-                          ? 'bg-primary text-white' 
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                      }`}
-                      onClick={() => setActiveCategory('all')}
-                    >
-                      <span className="mr-2">All Topics</span>
-                      <span className="ml-auto bg-white/20 text-xs px-2 py-1 rounded-full">
-                        {blogPosts.length}
-                      </span>
-                    </button>
-                  </li>
-                  {blogCategories.map((category) => (
-                    <li key={category.id}>
+
+            {/* Sidebar */}
+            <aside className="w-full lg:w-64 shrink-0 lg:order-2">
+              <div className="sticky top-24 space-y-6">
+                {/* Categories */}
+                <div className="rounded-2xl border p-5" style={{ background: CARD, borderColor: BORDER }}>
+                  <h2 className="text-sm font-semibold text-white/70 uppercase tracking-wide mb-4">Categories</h2>
+                  <ul className="space-y-1">
+                    <li>
                       <button
-                        className={`w-full text-left px-3 py-2 rounded-lg flex items-center ${
-                          activeCategory === category.id 
-                            ? 'bg-primary text-white' 
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
-                        onClick={() => setActiveCategory(category.id)}
+                        className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center justify-between transition-colors ${activeCategory === 'all'
+                            ? 'bg-amber-500/15 text-amber-400 font-semibold'
+                            : 'text-white/60 hover:text-white hover:bg-white/5'
+                          }`}
+                        onClick={() => setActiveCategory('all')}
                       >
-                        <span>{category.name}</span>
-                        <span className="ml-auto bg-white/20 text-xs px-2 py-1 rounded-full">
-                          {blogPosts.filter(post => post.categories.includes(category.id)).length}
+                        <span>All Topics</span>
+                        <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${activeCategory === 'all' ? 'bg-amber-500/20 text-amber-400' : 'bg-white/8 text-white/40'}`}>
+                          {blogPosts.length}
                         </span>
                       </button>
                     </li>
-                  ))}
-                </ul>
-                
-                <h2 className="text-xl font-bold mt-8 mb-4">Popular Tags</h2>
-                <div className="flex flex-wrap gap-2">
-                  {blogTags.map((tag) => (
-                    <span 
-                      key={tag.id}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer"
-                    >
-                      <Tag className="h-3 w-3 mr-1" />
-                      {tag.name}
-                    </span>
-                  ))}
+                    {blogCategories.map((category) => {
+                      const count = blogPosts.filter(p => p.categories.includes(category.id)).length;
+                      return (
+                        <li key={category.id}>
+                          <button
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center justify-between transition-colors ${activeCategory === category.id
+                                ? 'bg-amber-500/15 text-amber-400 font-semibold'
+                                : 'text-white/60 hover:text-white hover:bg-white/5'
+                              }`}
+                            onClick={() => setActiveCategory(category.id)}
+                          >
+                            <span>{category.name}</span>
+                            <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${activeCategory === category.id ? 'bg-amber-500/20 text-amber-400' : 'bg-white/8 text-white/40'}`}>
+                              {count}
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
-                
-                <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800/30 rounded-lg">
-                  <h3 className="font-bold mb-2">Subscribe to our newsletter</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Get the latest articles and resources straight to your inbox.</p>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <input 
-                      type="email" 
-                      placeholder="Your email"
-                      className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700"
-                    />
-                    <Button type="button" size="sm">Subscribe</Button>
+
+                {/* Tags */}
+                <div className="rounded-2xl border p-5" style={{ background: CARD, borderColor: BORDER }}>
+                  <h2 className="text-sm font-semibold text-white/70 uppercase tracking-wide mb-4">Popular Tags</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {blogTags.map((tag) => (
+                      <span key={tag.id} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs bg-white/5 border text-white/50 hover:text-white hover:border-amber-500/30 cursor-pointer transition-colors" style={{ borderColor: BORDER }}>
+                        <Tag className="w-2.5 h-2.5" />{tag.name}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              </div>
-            </div>
-            
-            {/* Blog Post Cards */}
-            <div className="w-full lg:w-3/4">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">
-                  {activeCategory === 'all' 
-                    ? 'Latest Articles' 
-                    : `Articles in ${getCategoryName(activeCategory)}`}
-                </h2>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">
-                    {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'}
-                  </span>
+
+                {/* Newsletter */}
+                <div className="rounded-2xl border p-5" style={{ background: 'hsl(222,25%,11%)', borderColor: 'rgba(245,166,35,0.15)' }}>
+                  <h3 className="text-sm font-semibold text-white mb-1">Newsletter</h3>
+                  <p className="text-xs text-white/45 mb-4">Get the latest articles straight to your inbox.</p>
+                  <input
+                    type="email"
+                    placeholder="you@example.com"
+                    className="w-full px-3 py-2 rounded-lg text-sm bg-white/5 border text-white placeholder-white/30 focus:outline-none focus:border-amber-500/50 transition-colors mb-2"
+                    style={{ borderColor: BORDER }}
+                  />
+                  <button className="w-full h-9 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm transition-colors">
+                    Subscribe
+                  </button>
                 </div>
               </div>
-              
+            </aside>
+
+            {/* Article grid */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-white">
+                  {activeCategory === 'all' ? 'Latest Articles' : getCategoryName(activeCategory)}
+                </h2>
+                <span className="text-sm text-white/40">
+                  {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'}
+                </span>
+              </div>
+
               {filteredPosts.length === 0 ? (
-                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 text-center shadow-lg transition-all duration-300">
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">No articles found matching your criteria.</p>
-                  <Button onClick={() => {setSearchQuery(''); setActiveCategory('all');}}>
-                    Reset Filters
-                  </Button>
+                <div className="rounded-2xl border p-12 text-center" style={{ background: CARD, borderColor: BORDER }}>
+                  <p className="text-white/40 mb-4">No articles match your search.</p>
+                  <button
+                    onClick={() => { setSearchQuery(''); setActiveCategory('all'); }}
+                    className="inline-flex items-center gap-2 h-9 px-4 rounded-lg border border-white/15 text-white/60 hover:text-white text-sm transition-colors"
+                  >
+                    Reset filters
+                  </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {filteredPosts.map((post, index) => (
-                    <BlogPostCard 
-                      key={post.id} 
-                      post={post} 
-                      delay={index * 0.1} 
-                    />
+                    <BlogPostCard key={post.id} post={post} delay={index * 0.07} />
                   ))}
                 </div>
               )}
-              
+
               {filteredPosts.length > 0 && (
                 <div className="mt-10 flex justify-center">
-                  <Button variant="outline">Load More Articles</Button>
+                  <button className="inline-flex items-center gap-2 h-10 px-6 rounded-xl border text-white/60 hover:text-white hover:border-white/30 text-sm font-medium transition-colors" style={{ borderColor: BORDER }}>
+                    Load more articles
+                  </button>
                 </div>
               )}
             </div>
           </div>
         </div>
       </section>
-      
-      {/* Newsletter Section */}
-      <section className="w-full py-16 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white">
-        <div className="container px-4 md:px-6 mx-auto">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Join Our Newsletter</h2>
-            <p className="text-xl mb-8 text-white/80">
-              Get the latest productivity tips, AI news, and exclusive updates delivered straight to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                className="px-4 py-3 rounded-lg flex-1 text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/20"
-              />
-              <Button className="bg-white text-primary hover:bg-gray-100">
-                Subscribe
-              </Button>
+
+      {/* Newsletter banner */}
+      <section className="w-full py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div
+            className="relative rounded-3xl overflow-hidden p-10 md:p-14 text-center border"
+            style={{ background: 'hsl(222,25%,11%)', borderColor: 'rgba(245,166,35,0.15)' }}
+          >
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-48 opacity-[0.07]"
+              style={{ background: 'radial-gradient(ellipse at center, #F5A623 0%, transparent 70%)' }} />
+            <div className="relative">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Stay in the loop</h2>
+              <p className="text-white/50 max-w-lg mx-auto mb-8">
+                Get productivity tips, AI news, and product updates delivered to your inbox. No spam, ever.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-4">
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  className="flex-1 px-4 py-3 rounded-xl text-sm bg-white/5 border text-white placeholder-white/30 focus:outline-none focus:border-amber-500/50 transition-colors"
+                  style={{ borderColor: BORDER }}
+                />
+                <button className="h-12 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm transition-colors shrink-0">
+                  Subscribe
+                </button>
+              </div>
+              <p className="text-xs text-white/30">We respect your privacy. Unsubscribe anytime.</p>
             </div>
-            <p className="mt-4 text-sm text-white/70">
-              We respect your privacy. Unsubscribe at any time.
-            </p>
           </div>
         </div>
       </section>
     </main>
   );
 };
+
 
 interface BlogPost {
   id: string;
@@ -345,57 +356,46 @@ interface BlogPostCardProps {
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, delay = 0 }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md flex flex-col h-full border border-gray-200 dark:border-gray-700"
+      className="group rounded-2xl overflow-hidden border flex flex-col h-full"
+      style={{ background: CARD, borderColor: BORDER }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.45, delay }}
     >
-      <div className="relative">
-        <img 
-          src={post.image} 
-          alt={post.title} 
-          className="w-full h-48 object-cover" 
-        />
-        <div className="absolute top-3 right-3 flex space-x-2">
-          <Bookmark className="h-5 w-5 text-white bg-black/20 p-1 rounded-full" />
-        </div>
+      <div className="relative overflow-hidden h-44">
+        <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,12,18,0.5) 0%, transparent 60%)' }} />
+        <button className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center hover:bg-black/50 transition-colors">
+          <Bookmark className="w-3.5 h-3.5 text-white" />
+        </button>
       </div>
-      <div className="p-6 flex-1 flex flex-col">
-        <div className="flex items-center text-gray-500 text-sm mb-2">
-          <Calendar className="h-4 w-4 mr-1" />
-          <span>{post.date}</span>
-          <span className="mx-2">•</span>
-          <Clock className="h-4 w-4 mr-1" />
-          <span>{post.readTime}</span>
+
+      <div className="p-5 flex-1 flex flex-col">
+        <div className="flex items-center gap-3 text-white/35 text-xs mb-3">
+          <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{post.date}</span>
+          <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime}</span>
         </div>
-        
-        <h3 className="text-xl font-bold mb-2 flex-grow-0">{post.title}</h3>
-        
-        <div className="flex flex-wrap gap-2 mb-3">
-          {post.categories.slice(0, 2).map((category, index) => (
-            <span 
-              key={index} 
-              className="text-xs font-medium bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full"
-            >
-              {getCategoryName(category)}
+
+        <h3 className="text-base font-semibold text-white leading-snug mb-2 line-clamp-2">{post.title}</h3>
+
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {post.categories.slice(0, 2).map((cat, i) => (
+            <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              {getCategoryName(cat)}
             </span>
           ))}
         </div>
-        
-        <p className="text-gray-500 dark:text-gray-400 mb-4 flex-grow">{post.excerpt}</p>
-        
-        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center">
-            <img 
-              src={post.authorAvatar} 
-              alt={post.author} 
-              className="w-8 h-8 rounded-full mr-2" 
-            />
-            <span className="text-sm font-medium">{post.author}</span>
+
+        <p className="text-sm text-white/45 mb-4 flex-grow line-clamp-3">{post.excerpt}</p>
+
+        <div className="mt-auto pt-4 border-t flex items-center justify-between" style={{ borderColor: BORDER }}>
+          <div className="flex items-center gap-2">
+            <img src={post.authorAvatar} alt={post.author} className="w-7 h-7 rounded-full object-cover" />
+            <span className="text-xs text-white/55 font-medium">{post.author}</span>
           </div>
-          <Link to={`/blog/${post.slug}`} className="text-primary font-medium hover:underline">
-            Read
+          <Link to={`/blog/${post.slug}`} className="inline-flex items-center gap-1 text-amber-400 text-xs font-semibold hover:text-amber-300 transition-colors">
+            Read <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </div>
@@ -408,7 +408,6 @@ const getCategoryName = (categoryId: string): string => {
   return category ? category.name : 'Uncategorized';
 };
 
-// Sample data
 const blogCategories = [
   { id: 'productivity', name: 'Productivity' },
   { id: 'ai', name: 'AI & Machine Learning' },

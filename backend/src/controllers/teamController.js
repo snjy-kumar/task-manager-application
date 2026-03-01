@@ -8,7 +8,7 @@ import { AppError } from '../utils/errors.js';
 export const createTeam = async (req, res, next) => {
     try {
         const { name, description } = req.body;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.create({
             name,
@@ -33,7 +33,7 @@ export const createTeam = async (req, res, next) => {
 // Get all teams for the current user
 export const getMyTeams = async (req, res, next) => {
     try {
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const teams = await Team.find({
             $or: [
@@ -55,7 +55,7 @@ export const getMyTeams = async (req, res, next) => {
 export const getTeamById = async (req, res, next) => {
     try {
         const { teamId } = req.params;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId)
             .populate('owner', 'name email')
@@ -83,7 +83,7 @@ export const updateTeam = async (req, res, next) => {
     try {
         const { teamId } = req.params;
         const { name, description, settings } = req.body;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {
@@ -114,7 +114,7 @@ export const updateTeam = async (req, res, next) => {
 export const deleteTeam = async (req, res, next) => {
     try {
         const { teamId } = req.params;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {
@@ -139,7 +139,7 @@ export const inviteUser = async (req, res, next) => {
     try {
         const { teamId } = req.params;
         const { email, role = 'member' } = req.body;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {
@@ -199,7 +199,7 @@ export const inviteUser = async (req, res, next) => {
 export const acceptInvitation = async (req, res, next) => {
     try {
         const { token } = req.params;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findOne({ 'invites.token': token });
         if (!team) {
@@ -243,7 +243,7 @@ export const acceptInvitation = async (req, res, next) => {
 export const removeMember = async (req, res, next) => {
     try {
         const { teamId, memberId } = req.params;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {
@@ -277,7 +277,7 @@ export const updateMemberRole = async (req, res, next) => {
     try {
         const { teamId, memberId } = req.params;
         const { role } = req.body;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {
@@ -313,7 +313,7 @@ export const updateMemberRole = async (req, res, next) => {
 export const leaveTeam = async (req, res, next) => {
     try {
         const { teamId } = req.params;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {
@@ -338,7 +338,7 @@ export const leaveTeam = async (req, res, next) => {
 export const cancelInvitation = async (req, res, next) => {
     try {
         const { teamId, inviteId } = req.params;
-        const userId = req.user._id;
+        const userId = req.User._id;
 
         const team = await Team.findById(teamId);
         if (!team) {

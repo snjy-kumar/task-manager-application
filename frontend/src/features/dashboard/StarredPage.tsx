@@ -93,7 +93,7 @@ const StarredPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-muted-foreground mx-auto mb-4" />
           <p className="text-gray-500">Loading important tasks...</p>
         </div>
       </div>
@@ -106,7 +106,7 @@ const StarredPage = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Important Tasks</h1>
-          <p className="text-gray-500 dark:text-gray-400">Your high-priority and upcoming tasks</p>
+          <p className="text-muted-foreground">Your high-priority and upcoming tasks</p>
         </div>
         <div className="mt-4 md:mt-0 flex gap-2">
           <Button variant="outline" onClick={fetchTasks} size="sm" className="transition-all duration-300">
@@ -146,7 +146,7 @@ const StarredPage = () => {
                   to={`/dashboard/tasks/${task._id}/edit`}
                   className="block"
                 >
-                  <div className="flex items-center p-3 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-red-500 transition-all duration-300">
+                  <div className="flex items-center p-3 rounded-md border border-border bg-card hover:border-red-500 transition-all duration-300">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{task.title}</p>
                       <div className="flex items-center mt-1 space-x-2">
@@ -194,7 +194,7 @@ const StarredPage = () => {
                   to={`/dashboard/tasks/${task._id}/edit`}
                   className="block"
                 >
-                  <div className="p-2 rounded-lg bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="p-2 rounded-lg bg-card shadow-sm hover:shadow-md transition-all duration-300">
                     <p className="text-sm font-medium truncate">{task.title}</p>
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
@@ -226,7 +226,7 @@ const StarredPage = () => {
                   to={`/dashboard/tasks/${task._id}/edit`}
                   className="block"
                 >
-                  <div className="p-2 rounded-lg bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="p-2 rounded-lg bg-card shadow-sm hover:shadow-md transition-all duration-300">
                     <p className="text-sm font-medium truncate">{task.title}</p>
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-gray-500">{formatDate(task.dueDate)}</span>
@@ -255,12 +255,12 @@ const StarredPage = () => {
               <div className="text-3xl font-bold text-red-600">{highPriorityTasks.length}</div>
               <div className="text-xs text-gray-500 mt-1">High Priority</div>
             </div>
-            <div className="text-center p-4 bg-gray-100 dark:bg-gray-800/20 rounded-lg">
-              <div className="text-3xl font-bold text-gray-600 dark:text-gray-400">{upcomingTasks.length}</div>
+            <div className="text-center p-4 bg-muted/20 rounded-lg">
+              <div className="text-3xl font-bold text-muted-foreground">{upcomingTasks.length}</div>
               <div className="text-xs text-gray-500 mt-1">Due This Week</div>
             </div>
-            <div className="text-center p-4 bg-gray-100 dark:bg-gray-800/20 rounded-lg">
-              <div className="text-3xl font-bold text-gray-600 dark:text-gray-400">{inProgressTasks.length}</div>
+            <div className="text-center p-4 bg-muted/20 rounded-lg">
+              <div className="text-3xl font-bold text-muted-foreground">{inProgressTasks.length}</div>
               <div className="text-xs text-gray-500 mt-1">In Progress</div>
             </div>
           </div>

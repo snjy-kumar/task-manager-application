@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+import { asyncHandler, NotFoundError, BadRequestError } from '../middleware/errorHandler.js';
 import Attachment from '../models/attachment.model.js';
 import Task from '../models/task.model.js';
 import Activity from '../models/activity.model.js';
@@ -13,33 +13,30 @@ export const uploadAttachment = asyncHandler(async (req, res) => {
   
   // Check if file was uploaded
   if (!req.file) {
-    res.status(400);
-    throw new Error('No file uploaded');
+    throw new BadRequestError('No file uploaded');
   }
 
   // Verify task exists and user owns it
-  const task = await Task.findOne({ _id: taskId, user: req.user._id, isDeleted: false });
+  const task = await Task.findOne({ _id: taskId, user: req.User._id, isDeleted: false });
   if (!task) {
     // Delete the uploaded file if task not found
     await fs.unlink(req.file.path);
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   // Check storage limit (e.g., 100MB per user)
   const MAX_STORAGE = 100 * 1024 * 1024; // 100MB
-  const currentUsage = await Attachment.getUserStorageUsed(req.user._id);
+  const currentUsage = await Attachment.getUserStorageUsed(req.User._id);
   
   if (currentUsage + req.file.size > MAX_STORAGE) {
     await fs.unlink(req.file.path);
-    res.status(400);
-    throw new Error('Storage limit exceeded. Maximum 100MB allowed.');
+    throw new BadRequestError('Storage limit exceeded. Maximum 100MB allowed.');
   }
 
   // Create attachment record
   const attachment = await Attachment.create({
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     fileName: req.file.filename,
     originalName: req.file.originalname,
     fileSize: req.file.size,
@@ -51,7 +48,7 @@ export const uploadAttachment = asyncHandler(async (req, res) => {
   // Log activity
   await Activity.logActivity({
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     action: 'attachment_added',
     description: `Added attachment "${req.file.originalname}"`
   });
@@ -69,10 +66,9 @@ export const getAttachments = asyncHandler(async (req, res) => {
   const { taskId } = req.params;
 
   // Verify task exists and user owns it
-  const task = await Task.findOne({ _id: taskId, user: req.user._id, isDeleted: false });
+  const task = await Task.findOne({ _id: taskId, user: req.User._id, isDeleted: false });
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   const attachments = await Attachment.find({ 
@@ -97,13 +93,12 @@ export const deleteAttachment = asyncHandler(async (req, res) => {
   const attachment = await Attachment.findOne({
     _id: attachmentId,
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   });
 
   if (!attachment) {
-    res.status(404);
-    throw new Error('Attachment not found');
+    throw new NotFoundError('Attachment not found');
   }
 
   // Soft delete
@@ -121,7 +116,7 @@ export const deleteAttachment = asyncHandler(async (req, res) => {
   // Log activity
   await Activity.logActivity({
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     action: 'attachment_deleted',
     description: `Deleted attachment "${attachment.originalName}"`
   });
@@ -142,21 +137,19 @@ export const downloadAttachment = asyncHandler(async (req, res) => {
   const attachment = await Attachment.findOne({
     _id: attachmentId,
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   });
 
   if (!attachment) {
-    res.status(404);
-    throw new Error('Attachment not found');
+    throw new NotFoundError('Attachment not found');
   }
 
   // Check if file exists
   try {
     await fs.access(attachment.uploadPath);
   } catch (error) {
-    res.status(404);
-    throw new Error('File not found on server');
+    throw new NotFoundError('File not found on server');
   }
 
   // Send file for download
@@ -167,11 +160,11 @@ export const downloadAttachment = asyncHandler(async (req, res) => {
 // @route   GET /api/v1/attachments/storage
 // @access  Private
 export const getStorageStats = asyncHandler(async (req, res) => {
-  const used = await Attachment.getUserStorageUsed(req.user._id);
+  const used = await Attachment.getUserStorageUsed(req.User._id);
   const MAX_STORAGE = 100 * 1024 * 1024; // 100MB
   
   const attachmentCount = await Attachment.countDocuments({
-    user: req.user._id,
+    user: req.User._id,
     isDeleted: false
   });
 

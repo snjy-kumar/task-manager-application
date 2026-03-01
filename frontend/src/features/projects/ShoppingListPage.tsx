@@ -166,7 +166,7 @@ const ShoppingListPage: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Shopping List</h1>
-          <p className="text-gray-500 dark:text-gray-400">Manage your shopping needs efficiently</p>
+          <p className="text-muted-foreground">Manage your shopping needs efficiently</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
           <Button variant="outline" size="sm" className="transition-all duration-300">
@@ -197,15 +197,15 @@ const ShoppingListPage: React.FC = () => {
               size="sm"
             >
               <div className="mt-2 grid grid-cols-3 gap-2">
-                <div className="bg-primary/10 p-2 rounded-lg text-center">
+                <div className="bg-amber-500/10 p-2 rounded-lg text-center">
                   <span className="text-xl font-bold">{totalItems}</span>
                   <p className="text-xs text-gray-500">Total</p>
                 </div>
-                <div className="bg-green-500/10 p-2 rounded-lg text-center">
+                <div className="bg-emerald-500/10 p-2 rounded-lg text-center">
                   <span className="text-xl font-bold">{purchasedItems}</span>
                   <p className="text-xs text-gray-500">Purchased</p>
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-800/10 p-2 rounded-lg text-center">
+                <div className="bg-muted/10 p-2 rounded-lg text-center">
                   <span className="text-xl font-bold">{pendingItems}</span>
                   <p className="text-xs text-gray-500">To Buy</p>
                 </div>
@@ -221,15 +221,15 @@ const ShoppingListPage: React.FC = () => {
                 <div className="text-center mb-2">
                   <span className="text-2xl font-bold">{completionRate}%</span>
                 </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <div className="h-2 bg-border rounded-full">
                   <div
-                    className="h-full bg-primary rounded-full transition-all duration-300"
+                    className="h-full bg-amber-500 rounded-full transition-all duration-300"
                     style={{ width: `${completionRate}%` }}
                   />
                 </div>
                 <div className="flex justify-between text-xs text-gray-500 mt-2">
                   <span>Progress:</span>
-                  <span className="text-primary font-medium">{purchasedItems} of {totalItems}</span>
+                  <span className="text-amber-500 font-medium">{purchasedItems} of {totalItems}</span>
                 </div>
               </div>
             </BentoCard>
@@ -251,7 +251,7 @@ const ShoppingListPage: React.FC = () => {
                 ))}
                 {categoryStats.length > 3 && (
                   <button
-                    className="text-xs text-gray-600 dark:text-gray-400 hover:underline w-full text-left"
+                    className="text-xs text-muted-foreground hover:underline w-full text-left"
                     onClick={() => setCategoryFilter('all')}
                   >
                     View All Categories
@@ -265,14 +265,14 @@ const ShoppingListPage: React.FC = () => {
           </BentoGrid>
 
           {/* Quick Add Form */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+          <div className="bg-card rounded-xl shadow-sm p-4">
             <form onSubmit={handleNewItemSubmit} className="flex gap-2">
               <input
                 type="text"
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
                 placeholder="Add item to shopping list..."
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                className="flex-1 px-3 py-2 border border-border rounded-lg bg-card text-foreground transition-all duration-300"
               />
               <Button type="submit" size="sm" className="transition-all duration-300">
                 <Plus className="h-4 w-4 mr-2" /> Add
@@ -281,23 +281,23 @@ const ShoppingListPage: React.FC = () => {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
+          <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
             <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-card shadow-sm' : 'text-muted-foreground'
                 }`}
               onClick={() => setFilter('all')}
             >
               All Items
             </button>
             <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'pending' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'pending' ? 'bg-card shadow-sm' : 'text-muted-foreground'
                 }`}
               onClick={() => setFilter('pending')}
             >
               To Buy
             </button>
             <button
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'purchased' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'purchased' ? 'bg-card shadow-sm' : 'text-muted-foreground'
                 }`}
               onClick={() => setFilter('purchased')}
             >
@@ -310,14 +310,14 @@ const ShoppingListPage: React.FC = () => {
             <div className="flex items-center space-x-4 text-sm">
               <span className="text-gray-500">Sort by:</span>
               <button
-                className={`flex items-center transition-all duration-300 ${sortBy === 'name' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+                className={`flex items-center transition-all duration-300 ${sortBy === 'name' ? 'text-foreground font-medium' : ''}`}
                 onClick={() => handleSortChange('name')}
               >
                 Name
                 {sortBy === 'name' && <ArrowUpDown className="h-3 w-3 ml-1" />}
               </button>
               <button
-                className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+                className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-foreground font-medium' : ''}`}
                 onClick={() => handleSortChange('priority')}
               >
                 Priority
@@ -332,7 +332,7 @@ const ShoppingListPage: React.FC = () => {
                   id="category-filter"
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
-                  className="text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 py-1 px-2 transition-all duration-300"
+                  className="text-sm border border-border rounded-lg bg-card text-foreground py-1 px-2 transition-all duration-300"
                 >
                   <option value="all">All Categories</option>
                   {categoryStats.map(category => (
@@ -357,19 +357,19 @@ const ShoppingListPage: React.FC = () => {
               ))}
 
               {sortedItems.length === 0 && (
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
+                <div className="bg-card rounded-xl shadow-sm p-8 text-center">
                   <div className="flex justify-center mb-4">
                     <ShoppingCart className="h-12 w-12 text-gray-300 dark:text-gray-600" />
                   </div>
                   <h3 className="text-lg font-medium mb-2">No items found</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  <p className="text-muted-foreground mb-4">
                     {filter === 'purchased'
                       ? "You haven't purchased any items yet."
                       : filter === 'pending'
                         ? "No items left to buy. Your shopping is complete!"
                         : "Your shopping list is empty. Add some items to get started."}
                   </p>
-                  <Button className="transition-all duration-300" onClick={() => document.querySelector('input[type="text"]')?.focus()}>
+                  <Button className="transition-all duration-300" onClick={() => (document.querySelector('input[type="text"]') as HTMLElement)?.focus()}>
                     <Plus className="h-4 w-4 mr-2" /> Add New Item
                   </Button>
                 </div>
@@ -380,13 +380,13 @@ const ShoppingListPage: React.FC = () => {
             <div className="space-y-6">
               {/* Categories */}
               {categoryStats.length > 0 && (
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+                <div className="bg-card rounded-xl shadow-sm p-4">
                   <h3 className="text-lg font-medium mb-3">Categories</h3>
                   <div className="space-y-2">
                     {categoryStats.map((category) => (
                       <div
                         key={category.name}
-                        className={`flex items-center justify-between py-1 px-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 ${categoryFilter === category.name ? 'bg-gray-100 dark:bg-gray-700' : ''
+                        className={`flex items-center justify-between py-1 px-2 rounded-md cursor-pointer hover:bg-muted transition-all duration-300 ${categoryFilter === category.name ? 'bg-muted' : ''
                           }`}
                         onClick={() => setCategoryFilter(category.name === categoryFilter ? 'all' : category.name)}
                       >
@@ -394,7 +394,7 @@ const ShoppingListPage: React.FC = () => {
                           <span className="h-3 w-3 rounded-full bg-gray-400 dark:bg-gray-600 mr-2"></span>
                           <span className="text-sm">{category.name}</span>
                         </div>
-                        <span className="text-xs bg-gray-100 dark:bg-gray-700 rounded-full px-2 py-0.5">
+                        <span className="text-xs bg-muted rounded-full px-2 py-0.5">
                           {category.count}
                         </span>
                       </div>
@@ -404,7 +404,7 @@ const ShoppingListPage: React.FC = () => {
               )}
 
               {/* Quick Actions */}
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+              <div className="bg-card rounded-xl shadow-sm p-4">
                 <h3 className="text-lg font-medium mb-3">Quick Actions</h3>
                 <div className="space-y-2">
                   <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
@@ -439,20 +439,20 @@ const ShoppingItem: React.FC<ShoppingItemProps> = ({ task, onToggle, onDelete })
   const additionalTags = task.tags?.filter(tag => tag.toLowerCase() !== 'shopping') || [];
 
   return (
-    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isPurchased
-      ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
-      : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+    <div className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${isPurchased
+      ? 'bg-muted/50 border-border'
+      : 'bg-card border-border'
       }`}>
       <div className="flex items-center min-w-0 flex-1">
         <input
           type="checkbox"
           checked={isPurchased}
           onChange={() => onToggle(task._id, task.status)}
-          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
+          className="h-5 w-5 text-muted-foreground rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between">
-            <h3 className={`text-sm font-medium truncate ${isPurchased ? 'text-gray-500 dark:text-gray-400 line-through' : ''
+            <h3 className={`text-sm font-medium truncate ${isPurchased ? 'text-muted-foreground line-through' : ''
               }`}>
               {task.title}
             </h3>
@@ -462,16 +462,16 @@ const ShoppingItem: React.FC<ShoppingItemProps> = ({ task, onToggle, onDelete })
             {task.dueDate && (
               <span className="flex items-center">
                 <Clock className="h-3 w-3 mr-1" />
-                {formatDueDate(task.dueDate)}
+                {formatDueDate(task.dueDate, task.status).text}
               </span>
             )}
             {additionalTags.map(tag => (
-              <span key={tag} className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+              <span key={tag} className="px-1.5 py-0.5 rounded bg-muted text-foreground">
                 {tag}
               </span>
             ))}
             {task.isOverdue && !isPurchased && (
-              <span className="px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+              <span className="px-1.5 py-0.5 rounded bg-red-500/10 dark:bg-red-900/30 text-red-800 dark:text-red-300">
                 Needed now
               </span>
             )}

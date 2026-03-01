@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+import { asyncHandler, NotFoundError, BadRequestError } from '../middleware/errorHandler.js';
 import Task from '../models/task.model.js';
 import Activity from '../models/activity.model.js';
 
@@ -11,31 +11,27 @@ export const addDependency = asyncHandler(async (req, res) => {
 
   // Verify both tasks exist and user owns them
   const [task, dependencyTask] = await Promise.all([
-    Task.findOne({ _id: taskId, user: req.user._id, isDeleted: false }),
-    Task.findOne({ _id: dependencyId, user: req.user._id, isDeleted: false })
+    Task.findOne({ _id: taskId, user: req.User._id, isDeleted: false }),
+    Task.findOne({ _id: dependencyId, user: req.User._id, isDeleted: false })
   ]);
 
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   if (!dependencyTask) {
-    res.status(404);
-    throw new Error('Dependency task not found');
+    throw new NotFoundError('Dependency task not found');
   }
 
   // Check if dependency already exists
   if (task.dependencies.includes(dependencyId)) {
-    res.status(400);
-    throw new Error('Dependency already exists');
+    throw new BadRequestError('Dependency already exists');
   }
 
   // Check for circular dependency
   const hasCircularDependency = await checkCircularDependency(dependencyId, taskId);
   if (hasCircularDependency) {
-    res.status(400);
-    throw new Error('Circular dependency detected. A task cannot depend on a task that depends on it.');
+    throw new BadRequestError('Circular dependency detected. A task cannot depend on a task that depends on it.');
   }
 
   // Add dependency
@@ -45,7 +41,7 @@ export const addDependency = asyncHandler(async (req, res) => {
   // Log activity
   await Activity.logActivity({
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     action: 'dependency_added',
     description: `Added dependency on task "${dependencyTask.title}"`
   });
@@ -66,19 +62,17 @@ export const removeDependency = asyncHandler(async (req, res) => {
 
   const task = await Task.findOne({ 
     _id: taskId, 
-    user: req.user._id, 
+    user: req.User._id, 
     isDeleted: false 
   });
 
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   // Check if dependency exists
   if (!task.dependencies.includes(dependencyId)) {
-    res.status(400);
-    throw new Error('Dependency does not exist');
+    throw new BadRequestError('Dependency does not exist');
   }
 
   // Remove dependency
@@ -90,7 +84,7 @@ export const removeDependency = asyncHandler(async (req, res) => {
   // Log activity
   await Activity.logActivity({
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     action: 'dependency_removed',
     description: `Removed task dependency`
   });
@@ -111,13 +105,12 @@ export const getDependencies = asyncHandler(async (req, res) => {
 
   const task = await Task.findOne({ 
     _id: taskId, 
-    user: req.user._id, 
+    user: req.User._id, 
     isDeleted: false 
   }).populate('dependencies', 'title status priority dueDate completedAt');
 
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   // Check which dependencies are blocking (not completed)
@@ -145,18 +138,17 @@ export const getDependents = asyncHandler(async (req, res) => {
   // Verify task exists and user owns it
   const task = await Task.findOne({ 
     _id: taskId, 
-    user: req.user._id, 
+    user: req.User._id, 
     isDeleted: false 
   });
 
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   // Find all tasks that have this task as a dependency
   const dependents = await Task.find({
-    user: req.user._id,
+    user: req.User._id,
     dependencies: taskId,
     isDeleted: false
   }).select('title status priority dueDate');
@@ -208,13 +200,12 @@ export const canStartTask = asyncHandler(async (req, res) => {
 
   const task = await Task.findOne({ 
     _id: taskId, 
-    user: req.user._id, 
+    user: req.User._id, 
     isDeleted: false 
   }).populate('dependencies', 'status');
 
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   const canStart = task.dependencies.every(dep => dep.status === 'Completed');

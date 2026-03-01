@@ -131,8 +131,8 @@ const HelpCenterPage: React.FC = () => {
         <div className="h-full flex flex-col">
             {/* Header */}
             <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <HelpCircle className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <HelpCircle className="w-8 h-8 text-amber-500" />
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                     How can we help you?
@@ -160,10 +160,10 @@ const HelpCenterPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <a
                     href="#"
-                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
+                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-500/500 dark:hover:border-amber-500/500 transition-colors"
                 >
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                        <Video className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                        <Video className="w-6 h-6 text-amber-500" />
                     </div>
                     <div>
                         <h3 className="font-semibold text-gray-900 dark:text-white">Video Tutorials</h3>
@@ -174,7 +174,7 @@ const HelpCenterPage: React.FC = () => {
 
                 <a
                     href="#"
-                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
+                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-500/500 dark:hover:border-amber-500/500 transition-colors"
                 >
                     <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
                         <MessageCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -188,10 +188,10 @@ const HelpCenterPage: React.FC = () => {
 
                 <a
                     href="mailto:support@taskmanager.com"
-                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
+                    className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-500/500 dark:hover:border-amber-500/500 transition-colors"
                 >
-                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    <div className="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                        <Mail className="w-6 h-6 text-amber-400" />
                     </div>
                     <div>
                         <h3 className="font-semibold text-gray-900 dark:text-white">Email Support</h3>
@@ -212,16 +212,16 @@ const HelpCenterPage: React.FC = () => {
                                 <button
                                     key={category.id}
                                     onClick={() => setSelectedCategory(category.id)}
-                                    className="text-left p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all"
+                                    className="text-left p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-amber-500/500 dark:hover:border-amber-500/500 hover:shadow-md transition-all"
                                 >
-                                    <Icon className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-3" />
+                                    <Icon className="w-8 h-8 text-amber-500 mb-3" />
                                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
                                         {category.title}
                                     </h3>
                                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                                         {category.description}
                                     </p>
-                                    <p className="text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                                    <p className="text-xs text-amber-500 flex items-center gap-1">
                                         {category.articles.length} articles
                                         <ChevronRight className="w-4 h-4" />
                                     </p>
@@ -315,7 +315,7 @@ const HelpCenterPage: React.FC = () => {
                                 className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4"
                             >
                                 <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-start gap-2">
-                                    <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                                    <Info className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
                                     {faq.question}
                                 </h3>
                                 <p className="text-gray-600 dark:text-gray-400 ml-7">{faq.answer}</p>
@@ -326,11 +326,11 @@ const HelpCenterPage: React.FC = () => {
             )}
 
             {/* Contact Section */}
-            <div className="mt-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white text-center">
+            <div className="mt-8 bg-gradient-to-r from-amber-600 to-amber-700 rounded-xl p-6 text-white text-center">
                 <h3 className="text-xl font-bold mb-2">Still need help?</h3>
                 <p className="mb-4 opacity-90">Our support team is here to assist you</p>
                 <div className="flex gap-3 justify-center">
-                    <Button variant="outline" className="bg-white text-blue-600 hover:bg-gray-100 border-0">
+                    <Button variant="outline" className="bg-white text-amber-500 hover:bg-gray-100 border-0">
                         <MessageCircle className="w-4 h-4 mr-2" />
                         Start Live Chat
                     </Button>

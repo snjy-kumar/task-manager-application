@@ -17,18 +17,18 @@ interface ConfirmDialogProps {
 const variantStyles = {
     danger: {
         icon: 'text-red-500',
-        button: 'bg-red-600 hover:bg-red-700 text-white',
+        button: 'bg-red-500 hover:bg-red-600 text-white',
         bg: 'bg-red-100 dark:bg-red-900/30'
     },
     warning: {
-        icon: 'text-gray-500 dark:text-gray-400',
+        icon: 'text-muted-foreground',
         button: 'bg-gray-600 hover:bg-gray-700 text-white',
-        bg: 'bg-gray-100 dark:bg-gray-800/30'
+        bg: 'bg-muted/30'
     },
     info: {
-        icon: 'text-gray-500 dark:text-gray-400',
+        icon: 'text-muted-foreground',
         button: 'bg-gray-600 hover:bg-gray-700 text-white dark:bg-gray-300 dark:hover:bg-gray-400 dark:text-black',
-        bg: 'bg-gray-100 dark:bg-gray-800/30'
+        bg: 'bg-muted/30'
     }
 };
 
@@ -57,7 +57,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
             {/* Dialog */}
             <div className="flex min-h-full items-center justify-center p-4">
-                <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl max-w-md w-full p-6 transform transition-all duration-300">
+                <div className="relative bg-card rounded-xl shadow-xl max-w-md w-full p-6 transform transition-all duration-300">
                     {/* Close button */}
                     <button
                         onClick={onClose}
@@ -73,10 +73,10 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
                     {/* Content */}
                     <div className="mt-4 text-center">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <h3 className="text-lg font-semibold text-foreground">
                             {title}
                         </h3>
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                        <p className="mt-2 text-sm text-gray-600 ">
                             {message}
                         </p>
                     </div>

@@ -39,7 +39,7 @@ const IntegrationsPage: React.FC = () => {
             id: 'google-calendar',
             name: 'Google Calendar',
             description: 'Sync your tasks with Google Calendar and get reminders',
-            icon: <Calendar className="w-8 h-8 text-blue-600" />,
+            icon: <Calendar className="w-8 h-8 text-amber-500" />,
             category: 'productivity',
             status: 'available',
             features: ['Two-way sync', 'Event reminders', 'Task deadlines', 'Calendar views'],
@@ -49,7 +49,7 @@ const IntegrationsPage: React.FC = () => {
             id: 'slack',
             name: 'Slack',
             description: 'Get task notifications and updates in your Slack workspace',
-            icon: <MessageSquare className="w-8 h-8 text-purple-600" />,
+            icon: <MessageSquare className="w-8 h-8 text-amber-400" />,
             category: 'communication',
             status: 'available',
             features: ['Real-time notifications', 'Task creation', 'Team mentions', 'Status updates'],
@@ -79,7 +79,7 @@ const IntegrationsPage: React.FC = () => {
             id: 'trello',
             name: 'Trello',
             description: 'Import boards and cards from Trello',
-            icon: <Trello className="w-8 h-8 text-blue-500" />,
+            icon: <Trello className="w-8 h-8 text-amber-500" />,
             category: 'productivity',
             status: 'coming-soon',
             features: ['Board import', 'Card sync', 'Label mapping', 'Member assignment']
@@ -108,7 +108,7 @@ const IntegrationsPage: React.FC = () => {
             id: 'api',
             name: 'REST API',
             description: 'Build custom integrations with our API',
-            icon: <Code className="w-8 h-8 text-indigo-600" />,
+            icon: <Code className="w-8 h-8 text-amber-500" />,
             category: 'development',
             status: 'available',
             features: ['Full API access', 'Authentication', 'Rate limiting', 'Documentation'],
@@ -118,7 +118,7 @@ const IntegrationsPage: React.FC = () => {
             id: 'microsoft-teams',
             name: 'Microsoft Teams',
             description: 'Collaborate with your team in Microsoft Teams',
-            icon: <MessageSquare className="w-8 h-8 text-blue-700" />,
+            icon: <MessageSquare className="w-8 h-8 text-amber-500" />,
             category: 'communication',
             status: 'coming-soon',
             features: ['Team notifications', 'Task bot', 'Tabs integration', 'Activity feed']
@@ -166,7 +166,7 @@ const IntegrationsPage: React.FC = () => {
                 );
             case 'available':
                 return (
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 rounded-full text-xs font-medium">
+                    <span className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-xs font-medium">
                         Available
                     </span>
                 );
@@ -222,8 +222,8 @@ const IntegrationsPage: React.FC = () => {
 
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                            <Plug className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                            <Plug className="w-5 h-5 text-amber-500" />
                         </div>
                         <div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Available</p>
@@ -236,8 +236,8 @@ const IntegrationsPage: React.FC = () => {
 
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                            <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+                            <Zap className="w-5 h-5 text-amber-400" />
                         </div>
                         <div>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Coming Soon</p>
@@ -256,7 +256,7 @@ const IntegrationsPage: React.FC = () => {
                         key={cat.value}
                         onClick={() => setFilter(cat.value)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === cat.value
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-amber-500 text-white'
                             : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'
                             }`}
                     >
@@ -357,14 +357,14 @@ const IntegrationsPage: React.FC = () => {
             </div>
 
             {/* Info Banner */}
-            <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+            <div className="mt-6 bg-amber-500/5 rounded-xl p-6 border border-amber-500/200">
                 <div className="flex gap-4">
-                    <AlertCircle className="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" />
                     <div>
-                        <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">
+                        <h4 className="font-semibold text-foreground mb-2">
                             Need a custom integration?
                         </h4>
-                        <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+                        <p className="text-sm text-amber-400 mb-3">
                             Use our REST API or Webhooks to build custom integrations. Check out our{' '}
                             <a href="#" className="underline font-medium">API documentation</a> to get started.
                         </p>

@@ -130,9 +130,9 @@ const GanttChartPage: React.FC = () => {
             case 'High':
                 return 'bg-red-500 hover:bg-red-600';
             case 'Medium':
-                return 'bg-yellow-500 hover:bg-yellow-600';
+                return 'bg-amber-500 hover:bg-yellow-600';
             case 'Low':
-                return 'bg-green-500 hover:bg-green-600';
+                return 'bg-emerald-500 hover:bg-emerald-500';
             default:
                 return 'bg-gray-500 hover:bg-gray-600';
         }
@@ -168,16 +168,16 @@ const GanttChartPage: React.FC = () => {
     return (
         <div className="h-full flex flex-col">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     Gantt Chart
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                     Visual timeline view of your tasks
                 </p>
             </div>
 
             {/* Controls */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div className="bg-card rounded-xl shadow-sm border border-border p-4 mb-6">
                 <div className="flex flex-wrap items-center gap-4">
                     {/* Date Navigation */}
                     <div className="flex items-center gap-2">
@@ -190,20 +190,20 @@ const GanttChartPage: React.FC = () => {
                         <Button variant="outline" size="sm" onClick={() => navigateDate('next')}>
                             <ChevronRight className="w-4 h-4" />
                         </Button>
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2">
+                        <span className="text-sm font-medium text-foreground/80 ml-2">
                             {start.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                         </span>
                     </div>
 
                     {/* View Mode */}
-                    <div className="flex gap-1 border border-gray-300 dark:border-gray-600 rounded-lg p-1">
+                    <div className="flex gap-1 border border-border rounded-lg p-1">
                         {(['day', 'week', 'month'] as ViewMode[]).map(mode => (
                             <button
                                 key={mode}
                                 onClick={() => setViewMode(mode)}
                                 className={`px-3 py-1 text-sm font-medium rounded transition-colors ${viewMode === mode
-                                    ? 'bg-blue-600 text-white'
-                                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                    ? 'bg-amber-500 text-white'
+                                    : 'text-muted-foreground hover:bg-muted'
                                     }`}
                             >
                                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -216,7 +216,7 @@ const GanttChartPage: React.FC = () => {
                         <select
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
-                            className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                            className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                         >
                             <option value="">All Status</option>
                             <option value="Pending">Pending</option>
@@ -228,7 +228,7 @@ const GanttChartPage: React.FC = () => {
                         <select
                             value={filterPriority}
                             onChange={(e) => setFilterPriority(e.target.value)}
-                            className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                            className="px-3 py-1.5 text-sm border border-border rounded-lg bg-card text-foreground"
                         >
                             <option value="">All Priority</option>
                             <option value="High">High</option>
@@ -241,28 +241,28 @@ const GanttChartPage: React.FC = () => {
 
             {/* Gantt Chart */}
             {loading ? (
-                <div className="flex items-center justify-center py-12 bg-white dark:bg-gray-800 rounded-xl">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <div className="flex items-center justify-center py-12 bg-card rounded-xl">
+                    <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
                 </div>
             ) : tasks.length === 0 ? (
-                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div className="text-center py-12 bg-card rounded-xl border border-border">
                     <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 dark:text-gray-400">No tasks with due dates found</p>
+                    <p className="text-muted-foreground">No tasks with due dates found</p>
                 </div>
             ) : (
-                <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="flex-1 bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                     <div className="overflow-auto h-full" ref={chartRef}>
                         <div className="min-w-[800px]">
                             {/* Timeline Header */}
-                            <div className="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 sticky top-0 z-10">
-                                <div className="w-64 flex-shrink-0 p-3 border-r border-gray-200 dark:border-gray-700 font-medium text-sm text-gray-700 dark:text-gray-300">
+                            <div className="flex border-b border-border bg-muted/30 sticky top-0 z-10">
+                                <div className="w-64 flex-shrink-0 p-3 border-r border-border font-medium text-sm text-foreground/80">
                                     Task Name
                                 </div>
                                 <div className="flex-1 flex">
                                     {columns.map((date, index) => (
                                         <div
                                             key={index}
-                                            className="flex-1 p-3 text-center text-xs font-medium text-gray-600 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700"
+                                            className="flex-1 p-3 text-center text-xs font-medium text-muted-foreground border-r border-border"
                                             style={{ minWidth: '80px' }}
                                         >
                                             {formatDateHeader(date)}
@@ -281,19 +281,19 @@ const GanttChartPage: React.FC = () => {
                                     return (
                                         <div
                                             key={task._id}
-                                            className="flex border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                                            className="flex border-b border-border hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                                         >
                                             {/* Task Name */}
-                                            <div className="w-64 flex-shrink-0 p-3 border-r border-gray-200 dark:border-gray-700">
+                                            <div className="w-64 flex-shrink-0 p-3 border-r border-border">
                                                 <Link
                                                     to={`/dashboard/tasks/${task._id}`}
-                                                    className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 line-clamp-1"
+                                                    className="text-sm font-medium text-foreground hover:text-amber-500 line-clamp-1"
                                                 >
                                                     {task.title}
                                                 </Link>
                                                 <div className="flex gap-1 mt-1">
-                                                    <span className={`text-xs px-1.5 py-0.5 rounded ${task.priority === 'High' ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400' :
-                                                        task.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
+                                                    <span className={`text-xs px-1.5 py-0.5 rounded ${task.priority === 'High' ? 'bg-red-500/10 text-red-700 dark:bg-red-900/20 dark:text-red-400' :
+                                                        task.priority === 'Medium' ? 'bg-amber-500/10 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' :
                                                             'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                                                         }`}>
                                                         {task.priority}
@@ -324,24 +324,24 @@ const GanttChartPage: React.FC = () => {
             )}
 
             {/* Legend */}
-            <div className="mt-6 bg-gray-50 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Legend:</h3>
+            <div className="mt-6 bg-muted/30 rounded-xl p-4 border border-border">
+                <h3 className="text-sm font-semibold text-foreground/80 mb-3">Legend:</h3>
                 <div className="flex flex-wrap gap-4">
                     <div className="flex items-center gap-2">
                         <div className="w-6 h-3 bg-red-500 rounded"></div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">High Priority</span>
+                        <span className="text-sm text-muted-foreground">High Priority</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-3 bg-yellow-500 rounded"></div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Medium Priority</span>
+                        <div className="w-6 h-3 bg-amber-500 rounded"></div>
+                        <span className="text-sm text-muted-foreground">Medium Priority</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-3 bg-green-500 rounded"></div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Low Priority</span>
+                        <div className="w-6 h-3 bg-emerald-500 rounded"></div>
+                        <span className="text-sm text-muted-foreground">Low Priority</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="w-6 h-3 bg-gray-500 opacity-50 rounded"></div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Completed</span>
+                        <span className="text-sm text-muted-foreground">Completed</span>
                     </div>
                 </div>
             </div>

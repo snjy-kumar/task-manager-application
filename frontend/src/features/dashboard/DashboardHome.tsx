@@ -1,22 +1,16 @@
 import { useState, useEffect } from 'react';
 import {
-  ChevronRight,
-  Zap,
-  Calendar,
-  BarChart3,
-  Sparkles,
-  Target,
   ListTodo,
   TrendingUp,
   Clock,
   AlertCircle,
   CheckCircle2,
-  RefreshCw
+  RefreshCw,
+  ArrowRight,
+  Circle,
+  Loader2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import BentoGrid from '@/components/ui/bento/BentoGrid';
-import BentoCard from '@/components/ui/bento/BentoCard';
 import taskService, { Task } from '@/services/taskService';
 import { useAuth } from '@/context/AuthContext';
 
@@ -29,16 +23,72 @@ interface DashboardStats {
   completionRate: number;
 }
 
+const priorityColors: Record<string, string> = {
+  High: 'bg-red-500',
+  Medium: 'bg-amber-500',
+  Low: 'bg-emerald-500',
+};
+
+const statusColors: Record<string, string> = {
+  Completed: 'text-emerald-400',
+  'In Progress': 'text-amber-400',
+  Pending: 'text-white/40',
+  Archived: 'text-white/20',
+};
+
+function StatCard({
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  label: string;
+  value: string | number;
+  sub?: string;
+  accent?: string;
+}) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/5 p-5 flex flex-col gap-1">
+      <span className="text-xs font-medium text-white/40 uppercase tracking-widest">
+        {label}
+      </span>
+      <span className={`text-3xl font-bold ${accent ?? 'text-white'}`}>
+        {value}
+      </span>
+      {sub && <span className="text-xs text-white/30">{sub}</span>}
+    </div>
+  );
+}
+
+function TaskRow({ task }: { task: Task }) {
+  const dot = priorityColors[task.priority] ?? 'bg-white/20';
+  const statusText = statusColors[task.status] ?? 'text-white/40';
+
+  return (
+    <Link
+      to={`/dashboard/tasks/${task._id}`}
+      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors group"
+    >
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dot}`} />
+      <span className="flex-1 text-sm text-white/80 truncate group-hover:text-white transition-colors">
+        {task.title}
+      </span>
+      <span className={`text-xs font-medium shrink-0 ${statusText}`}>
+        {task.status}
+      </span>
+    </Link>
+  );
+}
+
 const DashboardHome = () => {
   const { user } = useAuth();
-  const [_tasks, setTasks] = useState<Task[]>([]);
   const [stats, setStats] = useState<DashboardStats>({
     total: 0,
     completed: 0,
     inProgress: 0,
     pending: 0,
     overdue: 0,
-    completionRate: 0
+    completionRate: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -54,8 +104,7 @@ const DashboardHome = () => {
       setLoading(true);
       setError('');
       const response = await taskService.getAllTasks();
-      const taskList = response.tasks || [];
-      setTasks(taskList);
+      const taskList: Task[] = response.tasks || [];
       calculateStats(taskList);
       filterTasks(taskList);
     } catch (err: any) {
@@ -67,25 +116,21 @@ const DashboardHome = () => {
 
   const calculateStats = (taskList: Task[]) => {
     const now = new Date();
-    const completed = taskList.filter(t => t.status === 'Completed').length;
-    const inProgress = taskList.filter(t => t.status === 'In Progress').length;
-    const pending = taskList.filter(t => t.status === 'Pending').length;
-    const overdue = taskList.filter(t => {
-      const dueDate = new Date(t.dueDate);
-      return dueDate < now && t.status !== 'Completed';
+    const completed = taskList.filter((t) => t.status === 'Completed').length;
+    const inProgress = taskList.filter((t) => t.status === 'In Progress').length;
+    const pending = taskList.filter((t) => t.status === 'Pending').length;
+    const overdue = taskList.filter((t) => {
+      const d = new Date(t.dueDate);
+      return d < now && t.status !== 'Completed';
     }).length;
-
-    const completionRate = taskList.length > 0
-      ? Math.round((completed / taskList.length) * 100)
-      : 0;
-
     setStats({
       total: taskList.length,
       completed,
       inProgress,
       pending,
       overdue,
-      completionRate
+      completionRate:
+        taskList.length > 0 ? Math.round((completed / taskList.length) * 100) : 0,
     });
   };
 
@@ -94,333 +139,235 @@ const DashboardHome = () => {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-
-    // Tasks due today
-    const todayTasks = taskList.filter(t => {
-      const dueDate = new Date(t.dueDate);
-      return dueDate >= today && dueDate < tomorrow && t.status !== 'Completed';
-    }).slice(0, 5);
-
-    // Upcoming tasks (next 7 days, excluding today)
     const nextWeek = new Date(today);
     nextWeek.setDate(nextWeek.getDate() + 7);
-    const upcoming = taskList.filter(t => {
-      const dueDate = new Date(t.dueDate);
-      return dueDate >= tomorrow && dueDate <= nextWeek && t.status !== 'Completed';
-    }).slice(0, 5);
 
-    setTodaysTasks(todayTasks);
-    setUpcomingTasks(upcoming);
+    setTodaysTasks(
+      taskList
+        .filter((t) => {
+          const d = new Date(t.dueDate);
+          return d >= today && d < tomorrow && t.status !== 'Completed';
+        })
+        .slice(0, 6)
+    );
+    setUpcomingTasks(
+      taskList
+        .filter((t) => {
+          const d = new Date(t.dueDate);
+          return d >= tomorrow && d <= nextWeek && t.status !== 'Completed';
+        })
+        .slice(0, 6)
+    );
   };
 
-  const getPriorityBadgeColor = (priority: string) => {
-    switch (priority.toLowerCase()) {
-      case 'high':
-        return 'bg-red-500';
-      case 'medium':
-        return 'bg-gray-500';
-      case 'low':
-        return 'bg-green-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = date.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Tomorrow';
-    if (diffDays === -1) return 'Yesterday';
-    if (diffDays < 0) return `${Math.abs(diffDays)} days ago`;
-    if (diffDays < 7) return `In ${diffDays} days`;
-
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const greeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good morning';
+    if (h < 17) return 'Good afternoon';
+    return 'Good evening';
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-gray-600 dark:text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500">Loading dashboard...</p>
-        </div>
+        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between">
+    <div className="space-y-8 p-1">
+      {/* Header row */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Welcome back, {user?.name || 'User'}!</h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <h1
+            className="text-2xl font-bold text-foreground"
+            style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+          >
+            {greeting()},{' '}
+            <span className="text-amber-500">{user?.name?.split(' ')[0] ?? 'there'}</span>
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
             {stats.total === 0
-              ? "You have no tasks yet. Start by creating one!"
-              : `You have ${stats.pending + stats.inProgress} active tasks today.`
-            }
+              ? "You have no tasks yet — create your first one."
+              : `${stats.pending + stats.inProgress} active task${stats.pending + stats.inProgress !== 1 ? 's' : ''} right now.`}
           </p>
         </div>
-        <div className="mt-4 md:mt-0 flex gap-2">
-          <Button variant="outline" onClick={fetchDashboardData} size="sm">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-          <Button asChild>
-            <Link to="/dashboard/tasks/new">
-              Create New Task
-            </Link>
-          </Button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={fetchDashboardData}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-muted-foreground hover:text-foreground text-sm transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5" /> Refresh
+          </button>
+          <Link
+            to="/dashboard/tasks/new"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-sm font-semibold transition-colors"
+          >
+            + New task
+          </Link>
         </div>
       </div>
 
-      {/* Error Message */}
+      {/* Error */}
       {error && (
-        <div className="p-4 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center">
-          <AlertCircle className="h-5 w-5 mr-2" />
+        <div className="flex items-center gap-2 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <AlertCircle className="w-4 h-4 shrink-0" />
           {error}
         </div>
       )}
 
-      {/* Primary Bento Grid */}
-      <BentoGrid cols={4} gap="md">
-        {/* Task Overview */}
-        <BentoCard
-          title="Task Overview"
-          icon={<ListTodo className="h-5 w-5" />}
-          size="md"
-          gradient
-          gradientFrom="from-blue-600/20"
-          gradientTo="to-emerald-600/20"
-        >
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
-              <span className="text-3xl font-bold text-green-600">{stats.completed}</span>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Completed</p>
-            </div>
-            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
-              <span className="text-3xl font-bold text-gray-600 dark:text-gray-400">{stats.inProgress}</span>
-              <p className="text-xs text-gray-500 dark:text-gray-400">In Progress</p>
-            </div>
-            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
-              <span className="text-3xl font-bold text-gray-600 dark:text-gray-400">{stats.pending}</span>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Pending</p>
-            </div>
-            <div className="rounded-2xl bg-white dark:bg-gray-900 p-4 text-center shadow-lg transition-all duration-300">
-              <span className="text-3xl font-bold text-red-600">{stats.overdue}</span>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Overdue</p>
-            </div>
-          </div>
-        </BentoCard>
+      {/* Stats grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard label="Total tasks" value={stats.total} />
+        <StatCard
+          label="Completed"
+          value={stats.completed}
+          sub={`${stats.completionRate}% completion rate`}
+          accent="text-emerald-400"
+        />
+        <StatCard
+          label="In progress"
+          value={stats.inProgress}
+          accent="text-amber-400"
+        />
+        <StatCard
+          label="Overdue"
+          value={stats.overdue}
+          accent={stats.overdue > 0 ? 'text-red-400' : 'text-white'}
+        />
+      </div>
 
-        {/* Completion Rate */}
-        <BentoCard
-          title="Completion Rate"
-          icon={<Target className="h-5 w-5" />}
-          size="sm"
-        >
-          <div className="mt-2 flex justify-center">
-            <div className="relative h-24 w-24">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-3xl font-bold">{stats.completionRate}%</span>
-              </div>
-              <svg className="h-full w-full transform -rotate-90" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  strokeOpacity="0.1"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="8"
-                  strokeDasharray="283"
-                  strokeDashoffset={283 - (283 * stats.completionRate) / 100}
-                  className="text-gray-600 dark:text-gray-400 transition-all duration-500"
-                />
-              </svg>
-            </div>
-          </div>
-          <p className="text-center text-xs text-gray-500 mt-3">
-            {stats.completed} of {stats.total} tasks
-          </p>
-        </BentoCard>
-
-        {/* Calendar Snapshot */}
-        <BentoCard
-          title="Calendar"
-          icon={<Calendar className="h-5 w-5" />}
-          size="sm"
-        >
-          <div className="mt-2 flex justify-center">
-            <div className="text-center p-3 bg-primary/10 rounded-lg">
-              <div className="text-xs uppercase font-bold text-gray-500">Today</div>
-              <div className="text-4xl font-bold">{new Date().getDate()}</div>
-              <div className="text-xs">{new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</div>
-            </div>
-          </div>
-          <div className="mt-3 space-y-1">
-            {todaysTasks.slice(0, 2).map(task => (
-              <div key={task._id} className="flex justify-between items-center px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-xs">
-                <span className="truncate">{task.title}</span>
-                <span className={`h-2 w-2 rounded-full ${getPriorityBadgeColor(task.priority)}`}></span>
-              </div>
-            ))}
-            {todaysTasks.length === 0 && (
-              <p className="text-xs text-gray-500 text-center py-2">No tasks due today</p>
-            )}
-          </div>
-        </BentoCard>
-
-        {/* Quick Stats */}
-        <BentoCard
-          title="Total Tasks"
-          icon={<BarChart3 className="h-5 w-5" />}
-          size="sm"
-        >
-          <div className="mt-4 text-center">
-            <div className="text-5xl font-bold text-gray-900 dark:text-white">{stats.total}</div>
-            <p className="text-sm text-gray-500 mt-2">All time</p>
-          </div>
-          <div className="mt-4 flex items-center justify-center text-sm">
-            <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-            <span className="text-green-500 font-medium">
-              {stats.total > 0 ? `${Math.round((stats.completed / stats.total) * 100)}%` : '0%'} done
+      {/* Completion ring */}
+      {stats.total > 0 && (
+        <div className="rounded-xl border border-border bg-card p-6 flex items-center gap-6">
+          {/* Ring */}
+          <div className="relative w-20 h-20 shrink-0">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="currentColor" strokeWidth="8" className="text-border" />
+              <circle
+                cx="40"
+                cy="40"
+                r="34"
+                fill="none"
+                stroke="hsl(38,95%,54%)"
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeDasharray={`${2 * Math.PI * 34}`}
+                strokeDashoffset={`${2 * Math.PI * 34 * (1 - stats.completionRate / 100)}`}
+                className="transition-all duration-700"
+              />
+            </svg>
+            <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-foreground">
+              {stats.completionRate}%
             </span>
           </div>
-        </BentoCard>
-
-        {/* Today's Tasks */}
-        <BentoCard
-          title="Today's Tasks"
-          icon={<ListTodo className="h-5 w-5" />}
-          size="lg"
-        >
-          <div className="space-y-2 mt-3">
-            {todaysTasks.length > 0 ? (
-              todaysTasks.map((task) => (
-                <Link
-                  key={task._id}
-                  to={`/dashboard/tasks/${task._id}/edit`}
-                  className="block"
-                >
-                  <div className="flex items-center p-3 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary transition-colors">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{task.title}</p>
-                      <div className="flex items-center mt-1 space-x-2">
-                        <span className={`h-2 w-2 rounded-full ${getPriorityBadgeColor(task.priority)}`}></span>
-                        <span className="text-xs text-gray-500">{task.priority} priority</span>
-                        <span className="text-xs text-gray-400">•</span>
-                        <span className="text-xs text-gray-500">{task.status}</span>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className="text-center py-8">
-                <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">No tasks due today!</p>
-                <p className="text-xs text-gray-400 mt-1">Enjoy your day 🎉</p>
-              </div>
-            )}
-          </div>
-          <Button variant="outline" className="w-full mt-3" asChild>
-            <Link to="/dashboard/tasks">
-              View All Tasks
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </Link>
-          </Button>
-        </BentoCard>
-
-        {/* Upcoming Tasks */}
-        <BentoCard
-          title="Upcoming This Week"
-          icon={<Clock className="h-5 w-5" />}
-          size="md"
-          gradient
-          gradientFrom="from-gray-600/20"
-          gradientTo="to-gray-600/20"
-        >
-          <div className="space-y-2 mt-3">
-            {upcomingTasks.length > 0 ? (
-              upcomingTasks.map((task) => (
-                <div key={task._id} className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{task.title}</p>
-                    <p className="text-xs text-gray-500">{formatDate(task.dueDate)}</p>
-                  </div>
-                  <span className={`h-2 w-2 rounded-full ${getPriorityBadgeColor(task.priority)}`}></span>
+          <div>
+            <p className="font-semibold text-foreground">Completion rate</p>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {stats.completed} of {stats.total} tasks completed
+            </p>
+            <div className="flex gap-4 mt-3">
+              {[
+                { icon: CheckCircle2, label: 'Done', val: stats.completed, color: 'text-emerald-400' },
+                { icon: Loader2, label: 'Active', val: stats.inProgress, color: 'text-amber-400' },
+                { icon: Circle, label: 'Pending', val: stats.pending, color: 'text-white/40' },
+              ].map(({ icon: Icon, label, val, color }) => (
+                <div key={label} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Icon className={`w-3.5 h-3.5 ${color}`} />
+                  {val} {label}
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-4">
-                <p className="text-sm text-gray-500">No upcoming tasks</p>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
-        </BentoCard>
+        </div>
+      )}
 
-        {/* AI Suggestions */}
-        <BentoCard
-          title="Smart Insights"
-          icon={<Sparkles className="h-5 w-5" />}
-          size="md"
-          gradient
-          gradientFrom="from-gray-600/20"
-          gradientTo="to-gray-400/20"
-        >
-          <div className="space-y-3 mt-3">
-            {stats.overdue > 0 && (
-              <div className="flex items-start gap-2 p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-red-700 dark:text-red-300">
-                  You have {stats.overdue} overdue task{stats.overdue > 1 ? 's' : ''}. Consider prioritizing them.
-                </p>
-              </div>
-            )}
-
-            {stats.inProgress > 5 && (
-              <div className="flex items-start gap-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800/20 border border-gray-200 dark:border-gray-700">
-                <Zap className="h-5 w-5 text-gray-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  You have {stats.inProgress} tasks in progress. Focus on completing a few before starting new ones.
-                </p>
-              </div>
-            )}
-
-            {stats.completionRate >= 80 && stats.total > 0 && (
-              <div className="flex items-start gap-2 p-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
-                <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-green-700 dark:text-green-300">
-                  Great job! You've completed {stats.completionRate}% of your tasks. Keep it up!
-                </p>
-              </div>
-            )}
-
-            {stats.total === 0 && (
-              <div className="flex items-start gap-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800/20 border border-gray-200 dark:border-gray-700">
-                <Sparkles className="h-5 w-5 text-gray-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Start organizing your day by creating your first task!
-                </p>
-              </div>
-            )}
+      {/* Task panels */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Today */}
+        <div className="rounded-xl border border-border bg-card p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-amber-500" />
+              <h2 className="font-semibold text-foreground text-sm">Due today</h2>
+              {todaysTasks.length > 0 && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 font-medium">
+                  {todaysTasks.length}
+                </span>
+              )}
+            </div>
+            <Link
+              to="/dashboard/tasks"
+              className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+            >
+              All tasks <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
-        </BentoCard>
-      </BentoGrid>
+          {todaysTasks.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4 text-center">
+              Nothing due today 🎉
+            </p>
+          ) : (
+            <div className="-mx-1">
+              {todaysTasks.map((t) => (
+                <TaskRow key={t._id} task={t} />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Upcoming */}
+        <div className="rounded-xl border border-border bg-card p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-amber-500" />
+              <h2 className="font-semibold text-foreground text-sm">
+                Coming up (7 days)
+              </h2>
+              {upcomingTasks.length > 0 && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-white/8 text-white/50 font-medium">
+                  {upcomingTasks.length}
+                </span>
+              )}
+            </div>
+            <Link
+              to="/dashboard/tasks"
+              className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+            >
+              All tasks <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          {upcomingTasks.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-4 text-center">
+              No upcoming tasks this week
+            </p>
+          ) : (
+            <div className="-mx-1">
+              {upcomingTasks.map((t) => (
+                <TaskRow key={t._id} task={t} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Empty state CTA */}
+      {stats.total === 0 && (
+        <div className="rounded-xl border border-dashed border-border p-12 text-center">
+          <ListTodo className="w-10 h-10 text-muted-foreground mx-auto mb-4" />
+          <h3 className="font-semibold text-foreground mb-2">No tasks yet</h3>
+          <p className="text-muted-foreground text-sm mb-6">
+            Create your first task and start getting things done.
+          </p>
+          <Link
+            to="/dashboard/tasks/new"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-sm font-semibold transition-colors"
+          >
+            Create a task <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+import { asyncHandler, NotFoundError, BadRequestError } from '../middleware/errorHandler.js';
 import Reminder from '../models/reminder.model.js';
 import Task from '../models/task.model.js';
 
@@ -10,21 +10,19 @@ export const createReminder = asyncHandler(async (req, res) => {
   const { reminderTime, type, message } = req.body;
 
   // Verify task exists and user owns it
-  const task = await Task.findOne({ _id: taskId, user: req.user._id, isDeleted: false });
+  const task = await Task.findOne({ _id: taskId, user: req.User._id, isDeleted: false });
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   // Validate reminder time is in the future
   if (new Date(reminderTime) <= new Date()) {
-    res.status(400);
-    throw new Error('Reminder time must be in the future');
+    throw new BadRequestError('Reminder time must be in the future');
   }
 
   const reminder = await Reminder.create({
     task: taskId,
-    user: req.user._id,
+    user: req.User._id,
     reminderTime,
     type: type || 'in-app',
     message: message || `Reminder for task: ${task.title}`
@@ -43,10 +41,9 @@ export const getTaskReminders = asyncHandler(async (req, res) => {
   const { taskId } = req.params;
 
   // Verify task exists and user owns it
-  const task = await Task.findOne({ _id: taskId, user: req.user._id, isDeleted: false });
+  const task = await Task.findOne({ _id: taskId, user: req.User._id, isDeleted: false });
   if (!task) {
-    res.status(404);
-    throw new Error('Task not found');
+    throw new NotFoundError('Task not found');
   }
 
   const reminders = await Reminder.find({ 
@@ -67,7 +64,7 @@ export const getTaskReminders = asyncHandler(async (req, res) => {
 export const getUserReminders = asyncHandler(async (req, res) => {
   const { status } = req.query; // pending, sent, all
   
-  let filter = { user: req.user._id, isActive: true };
+  let filter = { user: req.User._id, isActive: true };
   
   if (status === 'pending') {
     filter.isSent = false;
@@ -100,18 +97,16 @@ export const updateReminder = asyncHandler(async (req, res) => {
   const reminder = await Reminder.findOne({
     _id: reminderId,
     task: taskId,
-    user: req.user._id
+    user: req.User._id
   });
 
   if (!reminder) {
-    res.status(404);
-    throw new Error('Reminder not found');
+    throw new NotFoundError('Reminder not found');
   }
 
   // Don't allow updating sent reminders unless just changing isActive
   if (reminder.isSent && (reminderTime || type || message)) {
-    res.status(400);
-    throw new Error('Cannot update sent reminders');
+    throw new BadRequestError('Cannot update sent reminders');
   }
 
   if (reminderTime !== undefined) {
@@ -142,12 +137,11 @@ export const deleteReminder = asyncHandler(async (req, res) => {
   const reminder = await Reminder.findOne({
     _id: reminderId,
     task: taskId,
-    user: req.user._id
+    user: req.User._id
   });
 
   if (!reminder) {
-    res.status(404);
-    throw new Error('Reminder not found');
+    throw new NotFoundError('Reminder not found');
   }
 
   // Soft delete by setting isActive to false
@@ -169,8 +163,7 @@ export const markReminderAsSent = asyncHandler(async (req, res) => {
   const reminder = await Reminder.markAsSent(reminderId);
 
   if (!reminder) {
-    res.status(404);
-    throw new Error('Reminder not found');
+    throw new NotFoundError('Reminder not found');
   }
 
   res.status(200).json({

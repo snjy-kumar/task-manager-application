@@ -69,13 +69,13 @@ const TaskTags: React.FC<TaskTagsProps> = ({ taskId, initialTags, onUpdate }) =>
                 {tags.map((tag) => (
                     <span
                         key={tag}
-                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
+                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-amber-500/10 text-amber-400"
                     >
                         {tag}
                         <button
                             onClick={() => handleRemoveTag(tag)}
                             disabled={saving}
-                            className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
+                            className="hover:bg-amber-500/20 rounded-full p-0.5 transition-colors"
                         >
                             <X className="h-3 w-3" />
                         </button>
@@ -90,7 +90,7 @@ const TaskTags: React.FC<TaskTagsProps> = ({ taskId, initialTags, onUpdate }) =>
                             onChange={(e) => setNewTag(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
                             placeholder="Enter tag name"
-                            className="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                            className="px-3 py-1 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-amber-500 transition-colors"
                             autoFocus
                         />
                         <Button
@@ -117,7 +117,7 @@ const TaskTags: React.FC<TaskTagsProps> = ({ taskId, initialTags, onUpdate }) =>
                 ) : (
                     <button
                         onClick={() => setIsAdding(true)}
-                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-primary hover:text-primary transition-colors"
+                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-dashed border-border text-muted-foreground hover:border-amber-500 hover:text-amber-500 transition-colors"
                     >
                         <Plus className="h-3 w-3" />
                         Add Tag

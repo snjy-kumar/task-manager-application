@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+import { asyncHandler, NotFoundError } from '../middleware/errorHandler.js';
 import Notification from '../models/notification.model.js';
 
 // @desc    Get all notifications for the authenticated user
@@ -7,7 +7,7 @@ import Notification from '../models/notification.model.js';
 export const getNotifications = asyncHandler(async (req, res) => {
   const { status, type, limit = 50, page = 1 } = req.query;
   
-  let filter = { user: req.user._id };
+  let filter = { user: req.User._id };
   
   if (status === 'unread') {
     filter.isRead = false;
@@ -28,7 +28,7 @@ export const getNotifications = asyncHandler(async (req, res) => {
       .limit(parseInt(limit))
       .populate('task', 'title status priority'),
     Notification.countDocuments(filter),
-    Notification.getUnreadCount(req.user._id)
+    Notification.getUnreadCount(req.User._id)
   ]);
 
   res.status(200).json({
@@ -49,7 +49,7 @@ export const createNotification = asyncHandler(async (req, res) => {
   const { type, title, message, task, actionUrl, priority, metadata } = req.body;
 
   const notification = await Notification.createNotification({
-    user: req.user._id,
+    user: req.User._id,
     task,
     type,
     title,
@@ -71,11 +71,10 @@ export const createNotification = asyncHandler(async (req, res) => {
 export const markAsRead = asyncHandler(async (req, res) => {
   const { notificationId } = req.params;
 
-  const notification = await Notification.markAsRead(req.user._id, notificationId);
+  const notification = await Notification.markAsRead(req.User._id, notificationId);
 
   if (!notification) {
-    res.status(404);
-    throw new Error('Notification not found');
+    throw new NotFoundError('Notification not found');
   }
 
   res.status(200).json({
@@ -88,7 +87,7 @@ export const markAsRead = asyncHandler(async (req, res) => {
 // @route   PUT /api/v1/notifications/read-all
 // @access  Private
 export const markAllAsRead = asyncHandler(async (req, res) => {
-  await Notification.markAllAsRead(req.user._id);
+  await Notification.markAllAsRead(req.User._id);
 
   res.status(200).json({
     success: true,
@@ -104,12 +103,11 @@ export const deleteNotification = asyncHandler(async (req, res) => {
 
   const notification = await Notification.findOneAndDelete({
     _id: notificationId,
-    user: req.user._id
+    user: req.User._id
   });
 
   if (!notification) {
-    res.status(404);
-    throw new Error('Notification not found');
+    throw new NotFoundError('Notification not found');
   }
 
   res.status(200).json({
@@ -123,7 +121,7 @@ export const deleteNotification = asyncHandler(async (req, res) => {
 // @access  Private
 export const deleteReadNotifications = asyncHandler(async (req, res) => {
   const result = await Notification.deleteMany({
-    user: req.user._id,
+    user: req.User._id,
     isRead: true
   });
 
@@ -137,7 +135,7 @@ export const deleteReadNotifications = asyncHandler(async (req, res) => {
 // @route   GET /api/v1/notifications/unread/count
 // @access  Private
 export const getUnreadCount = asyncHandler(async (req, res) => {
-  const count = await Notification.getUnreadCount(req.user._id);
+  const count = await Notification.getUnreadCount(req.User._id);
 
   res.status(200).json({
     success: true,

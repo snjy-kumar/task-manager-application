@@ -96,18 +96,18 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      Pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-      'In Progress': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-      Completed: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-      Archived: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
+      Pending: 'bg-muted text-muted-foreground',
+      'In Progress': 'bg-amber-500/15 text-amber-400',
+      Completed: 'bg-emerald-500/15 text-emerald-400',
+      Archived: 'bg-gray-100 text-gray-800 dark:bg-gray-800 '
     };
     return colors[status as keyof typeof colors] || colors.Pending;
   };
 
   const getPriorityBadge = (priority: string) => {
     const colors = {
-      Low: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
-      Medium: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+      Low: 'bg-gray-100 text-gray-800 dark:bg-gray-800 ',
+      Medium: 'bg-amber-500/10 text-amber-400',
       High: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
     };
     return colors[priority as keyof typeof colors] || colors.Medium;
@@ -116,7 +116,7 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
       </div>
     );
   }
@@ -125,14 +125,14 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
     <div className="space-y-6">
       {/* Blocking Status Alert */}
       {dependencies.length > 0 && !canStart && (
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+        <div className="bg-amber-500/8 border border-amber-500/20 rounded-xl p-4">
           <div className="flex items-start">
-            <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-3 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-amber-500 mr-3 mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
+              <h4 className="text-sm font-medium text-amber-400">
                 Task is Blocked
               </h4>
-              <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
+              <p className="text-sm text-foreground/70 mt-1">
                 This task cannot be started until all dependencies are completed.
               </p>
             </div>
@@ -141,14 +141,14 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
       )}
 
       {dependencies.length > 0 && canStart && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+        <div className="bg-emerald-500/8 border border-emerald-500/20 rounded-xl p-4">
           <div className="flex items-start">
-            <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 mr-3 mt-0.5" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 mr-3 mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-green-800 dark:text-green-300">
+              <h4 className="text-sm font-medium text-emerald-400">
                 Ready to Start
               </h4>
-              <p className="text-sm text-green-700 dark:text-green-400 mt-1">
+              <p className="text-sm text-foreground/70 mt-1">
                 All dependencies have been completed. This task can be started.
               </p>
             </div>
@@ -159,7 +159,7 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
       {/* Dependencies Section */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+          <h3 className="text-lg font-semibold text-foreground flex items-center">
             <GitBranch className="w-5 h-5 mr-2" />
             Dependencies ({dependencies.length})
           </h3>
@@ -170,9 +170,9 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
         </div>
 
         {dependencies.length === 0 ? (
-          <div className="text-center py-8 bg-gray-50 dark:bg-gray-900/50 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
+          <div className="text-center py-8 bg-muted/30 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
             <GitBranch className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
+            <p className="text-muted-foreground text-sm">
               No dependencies added yet
             </p>
           </div>
@@ -181,17 +181,17 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
             {dependencies.map((dep) => (
               <div
                 key={dep._id}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow"
+                className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       {dep.isBlocking ? (
-                        <Clock className="w-4 h-4 text-yellow-500" />
+                        <Clock className="w-4 h-4 text-amber-400" />
                       ) : (
-                        <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                       )}
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                      <h4 className="font-medium text-foreground">
                         {dep.title}
                       </h4>
                     </div>
@@ -202,11 +202,11 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
                       <span className={`text-xs px-2 py-1 rounded-full ${getPriorityBadge(dep.priority)}`}>
                         {dep.priority}
                       </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-muted-foreground">
                         Due: {new Date(dep.dueDate).toLocaleDateString()}
                       </span>
                       {dep.isBlocking && (
-                        <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+                        <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
                           Blocking
                         </span>
                       )}
@@ -228,21 +228,21 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
       {/* Dependent Tasks Section */}
       {dependents.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+          <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
             <Link className="w-5 h-5 mr-2" />
             Dependent Tasks ({dependents.length})
           </h3>
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
+          <div className="bg-muted/50 border border-border rounded-xl p-4">
+            <p className="text-sm text-foreground/80 mb-3">
               These tasks are waiting for this task to be completed:
             </p>
             <div className="space-y-2">
               {dependents.map((dep) => (
                 <div
                   key={dep._id}
-                  className="bg-white dark:bg-gray-800 rounded-md p-3 flex items-center justify-between"
+                  className="bg-muted/50 rounded-lg p-3 flex items-center justify-between"
                 >
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{dep.title}</span>
+                  <span className="font-medium text-foreground">{dep.title}</span>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2 py-1 rounded-full ${getStatusBadge(dep.status)}`}>
                       {dep.status}
@@ -258,10 +258,10 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
       {/* Add Dependency Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="bg-card border border-border rounded-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 className="text-lg font-semibold text-foreground">
                   Add Dependency
                 </h3>
                 <button
@@ -275,7 +275,7 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 Search for a task that must be completed before this task can start
               </p>
             </div>
@@ -289,7 +289,7 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && searchTasks()}
                   placeholder="Search tasks..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                  className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:border-amber-500 dark:bg-gray-700 "
                 />
               </div>
               <Button onClick={searchTasks} className="mt-3 w-full" disabled={searchLoading}>
@@ -299,7 +299,7 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
 
             <div className="flex-1 overflow-y-auto p-6 pt-0">
               {availableTasks.length === 0 && searchQuery ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No tasks found
                 </p>
               ) : (
@@ -307,10 +307,10 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
                   {availableTasks.map((task) => (
                     <div
                       key={task._id}
-                      className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer transition-colors"
+                      className="rounded-lg p-4 hover:bg-muted cursor-pointer transition-colors border border-transparent hover:border-border"
                       onClick={() => handleAddDependency(task._id)}
                     >
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                      <h4 className="font-medium text-foreground mb-2">
                         {task.title}
                       </h4>
                       <div className="flex items-center gap-2 flex-wrap">
@@ -320,7 +320,7 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({ taskId }) => {
                         <span className={`text-xs px-2 py-1 rounded-full ${getPriorityBadge(task.priority)}`}>
                           {task.priority}
                         </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {task.category}
                         </span>
                       </div>

@@ -62,7 +62,7 @@ const TaskDetailsPage: React.FC = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full"></div>
+                <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
         );
     }
@@ -104,9 +104,9 @@ const TaskDetailsPage: React.FC = () => {
             </div>
 
             {/* Task Card */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                 {/* Task Header */}
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="p-6 border-b border-border">
                     <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                             <h1 className="text-3xl font-bold mb-2">{task.title}</h1>
@@ -118,7 +118,7 @@ const TaskDetailsPage: React.FC = () => {
                                     {task.status}
                                 </span>
                                 {task.category && (
-                                    <span className="px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 font-medium">
+                                    <span className="px-3 py-1 rounded-full bg-muted text-foreground font-medium">
                                         {task.category}
                                     </span>
                                 )}
@@ -127,14 +127,14 @@ const TaskDetailsPage: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-2 text-muted-foreground">
                             <Calendar className="h-5 w-5" />
                             <div>
                                 <p className="text-xs text-gray-500">Due Date</p>
                                 <p className="font-medium">{formatDate(task.dueDate)}</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-2 text-muted-foreground">
                             <Clock className="h-5 w-5" />
                             <div>
                                 <p className="text-xs text-gray-500">Created</p>
@@ -142,7 +142,7 @@ const TaskDetailsPage: React.FC = () => {
                             </div>
                         </div>
                         {task.completedAt && (
-                            <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                            <div className="flex items-center gap-2 text-emerald-400">
                                 <CheckCircle className="h-5 w-5" />
                                 <div>
                                     <p className="text-xs text-gray-500">Completed</p>
@@ -154,7 +154,7 @@ const TaskDetailsPage: React.FC = () => {
 
                     <div className="mt-4">
                         <h3 className="text-sm font-medium text-gray-500 mb-2">Description</h3>
-                        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                        <p className="text-foreground/80 whitespace-pre-wrap">
                             {task.description}
                         </p>
                     </div>
@@ -166,13 +166,13 @@ const TaskDetailsPage: React.FC = () => {
                 </div>
 
                 {/* Tabs */}
-                <div className="border-b border-gray-200 dark:border-gray-700">
+                <div className="border-b border-border">
                     <div className="flex">
                         <button
                             onClick={() => setActiveTab('subtasks')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'subtasks'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <CheckCircle className="h-4 w-4 inline mr-2" />
@@ -181,8 +181,8 @@ const TaskDetailsPage: React.FC = () => {
                         <button
                             onClick={() => setActiveTab('comments')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'comments'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <MessageSquare className="h-4 w-4 inline mr-2" />
@@ -191,8 +191,8 @@ const TaskDetailsPage: React.FC = () => {
                         <button
                             onClick={() => setActiveTab('time')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'time'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <Timer className="h-4 w-4 inline mr-2" />
@@ -201,8 +201,8 @@ const TaskDetailsPage: React.FC = () => {
                         <button
                             onClick={() => setActiveTab('activity')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'activity'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <ActivityIcon className="h-4 w-4 inline mr-2" />
@@ -211,8 +211,8 @@ const TaskDetailsPage: React.FC = () => {
                         <button
                             onClick={() => setActiveTab('dependencies')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'dependencies'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <GitBranch className="h-4 w-4 inline mr-2" />
@@ -221,8 +221,8 @@ const TaskDetailsPage: React.FC = () => {
                         <button
                             onClick={() => setActiveTab('attachments')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'attachments'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <Paperclip className="h-4 w-4 inline mr-2" />
@@ -231,8 +231,8 @@ const TaskDetailsPage: React.FC = () => {
                         <button
                             onClick={() => setActiveTab('reminders')}
                             className={`px-6 py-3 font-medium transition-colors relative ${activeTab === 'reminders'
-                                ? 'text-primary border-b-2 border-primary'
-                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             <Bell className="h-4 w-4 inline mr-2" />

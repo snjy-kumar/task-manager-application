@@ -1,215 +1,183 @@
-import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, Twitter, Facebook, Instagram, Linkedin, Send } from "lucide-react";
-import { motion } from "framer-motion";
 import { useState } from "react";
+import { Mail, MapPin, Send } from "lucide-react";
 
 export default function ContactSection() {
-  const [isSending, setIsSending] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => setForm({ ...form, [e.target.id]: e.target.value });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSending(true);
-    // Simulate API call
+    setSending(true);
     setTimeout(() => {
-      setIsSending(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 2000);
+      setSending(false);
+      setSent(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
+    }, 1500);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+  const inputBase =
+    "w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:border-amber-500 transition-colors";
 
   return (
-    <section id="contact" className="w-full py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-96 h-96 bg-gray-200 dark:bg-gray-800/30 rounded-full blur-3xl opacity-50 animate-float"></div>
-        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-gray-200 dark:bg-gray-800/30 rounded-full blur-3xl opacity-50 animate-float-delayed"></div>
-      </div>
+    <section id="contact" className="w-full py-24 md:py-32 bg-background">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* Left — info */}
+          <div>
+            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-amber-500 mb-4">
+              Contact
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold text-foreground leading-tight mb-6"
+              style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
+            >
+              Let's talk.
+            </h2>
+            <p className="text-muted-foreground max-w-sm leading-relaxed mb-10">
+              Whether you have a question, a feature request, or just want to
+              say hello — we read every message.
+            </p>
 
-      <div className=" px-4 md:px-6 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="max-w-7xl mx-auto"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Info Section */}
-            <div className="flex flex-col justify-center space-y-8">
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-                  Let's Connect
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md">
-                  Have questions or want to collaborate? Reach out and let's create something amazing together.
-                </p>
-              </motion.div>
-
-              <div className="space-y-6">
-                <motion.div
-                  initial={{ x: -20 }}
-                  whileInView={{ x: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-gray-200 dark:bg-gray-800 rounded-lg">
-                      <Mail className="h-6 w-6 text-gray-900 dark:text-gray-100" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-1">Email Address</h3>
-                      <p className="text-gray-600 dark:text-gray-400">contact@aitaskmanager.com</p>
-                    </div>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                  <Mail className="w-4 h-4 text-amber-500" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-foreground mb-0.5">
+                    Email
                   </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ x: -20 }}
-                  whileInView={{ x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                  className="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-gray-200 dark:bg-gray-800 rounded-lg">
-                      <Phone className="h-6 w-6 text-gray-900 dark:text-gray-100" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-1">Phone Number</h3>
-                      <p className="text-gray-600 dark:text-gray-400">+1 (555) 123-4567</p>
-                    </div>
+                  <div className="text-sm text-muted-foreground">
+                    hello@taskmanager.app
                   </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ x: -20 }}
-                  whileInView={{ x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
-                  className="p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-gray-200 dark:bg-gray-800 rounded-lg">
-                      <MapPin className="h-6 w-6 text-gray-900 dark:text-gray-100" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-1">Office Location</h3>
-                      <p className="text-gray-600 dark:text-gray-400">123 AI Boulevard, San Francisco, CA</p>
-                    </div>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-amber-500" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-foreground mb-0.5">
+                    Based in
                   </div>
-                </motion.div>
-
-                <div className="flex space-x-4 mt-6">
-                  {[Twitter, Facebook, Instagram, Linkedin].map((Icon, index) => (
-                    <motion.a
-                      key={index}
-                      href="#"
-                      whileHover={{ y: -5, scale: 1.1 }}
-                      className="p-3 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
-                    >
-                      <Icon className="h-6 w-6 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors" />
-                    </motion.a>
-                  ))}
+                  <div className="text-sm text-muted-foreground">
+                    Remote-first — team across 3 continents
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Contact Form Section */}
-            <motion.div
-              initial={{ scale: 0.95 }}
-              whileInView={{ scale: 1 }}
-              className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8"
-            >
-              <h3 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">
-                Send Your Message
-              </h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+          {/* Right — form */}
+          <div className="bg-card border border-border rounded-2xl p-7">
+            {sent ? (
+              <div className="flex flex-col items-center justify-center h-full min-h-64 text-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center">
+                  <Send className="w-5 h-5 text-amber-500" />
+                </div>
+                <h3 className="font-semibold text-foreground">Message sent!</h3>
+                <p className="text-muted-foreground text-sm">
+                  We'll get back to you within 24 hours.
+                </p>
+                <button
+                  onClick={() => setSent(false)}
+                  className="mt-2 text-sm text-amber-500 hover:text-amber-400 transition-colors"
+                >
+                  Send another
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-xs font-medium text-muted-foreground mb-1.5"
+                    >
+                      Name
+                    </label>
                     <input
                       id="name"
-                      type="text"
-                      value={formData.name}
+                      value={form.name}
                       onChange={handleChange}
-                      className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary dark:bg-gray-800 transition-all duration-300"
-                      placeholder="Your name"
                       required
+                      placeholder="Jane Smith"
+                      className={inputBase}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-xs font-medium text-muted-foreground mb-1.5"
+                    >
+                      Email
+                    </label>
                     <input
                       id="email"
                       type="email"
-                      value={formData.email}
+                      value={form.email}
                       onChange={handleChange}
-                      className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary dark:bg-gray-800 transition-all duration-300"
-                      placeholder="your@email.com"
                       required
+                      placeholder="jane@example.com"
+                      className={inputBase}
                     />
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+                <div>
+                  <label
+                    htmlFor="subject"
+                    className="block text-xs font-medium text-muted-foreground mb-1.5"
+                  >
+                    Subject
+                  </label>
                   <input
                     id="subject"
-                    type="text"
-                    value={formData.subject}
+                    value={form.subject}
                     onChange={handleChange}
-                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary dark:bg-gray-800 transition-all duration-300"
-                    placeholder="Message subject"
                     required
+                    placeholder="How can we help?"
+                    className={inputBase}
                   />
                 </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-xs font-medium text-muted-foreground mb-1.5"
+                  >
+                    Message
+                  </label>
                   <textarea
                     id="message"
-                    rows={4}
-                    value={formData.message}
+                    rows={5}
+                    value={form.message}
                     onChange={handleChange}
-                    className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary dark:bg-gray-800 transition-all duration-300"
-                    placeholder="Write your message here..."
                     required
+                    placeholder="Tell us more..."
+                    className={inputBase + " resize-none"}
                   />
                 </div>
-
-                <Button
+                <button
                   type="submit"
-                  className="w-full py-6 rounded-xl font-semibold text-lg transition-all hover:-translate-y-0.5"
-                  disabled={isSending}
+                  disabled={sending}
+                  className="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-black font-semibold text-sm transition-colors"
                 >
-                  {isSending ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="animate-spin h-5 w-5 border-2 border-t-transparent rounded-full"></div>
-                      <span>Sending...</span>
-                    </div>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5 mr-2" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
+                  {sending ? "Sending…" : "Send message"}
+                  <Send className="w-4 h-4" />
+                </button>
               </form>
-            </motion.div>
+            )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

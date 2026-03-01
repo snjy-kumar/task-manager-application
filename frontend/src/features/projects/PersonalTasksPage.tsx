@@ -152,7 +152,7 @@ const PersonalTasksPage: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Personal Tasks</h1>
-          <p className="text-gray-500 dark:text-gray-400">Manage your personal to-dos and errands</p>
+          <p className="text-muted-foreground">Manage your personal to-dos and errands</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
           <Button variant="outline" size="sm" className="transition-all duration-300">
@@ -167,23 +167,23 @@ const PersonalTasksPage: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg w-fit">
+      <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'all' ? 'bg-card shadow-sm' : 'text-muted-foreground'
             }`}
           onClick={() => setFilter('all')}
         >
           All
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'active' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'active' ? 'bg-card shadow-sm' : 'text-muted-foreground'
             }`}
           onClick={() => setFilter('active')}
         >
           Active
         </button>
         <button
-          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'completed' ? 'bg-white dark:bg-gray-700 shadow-sm' : 'text-gray-500 dark:text-gray-400'
+          className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${filter === 'completed' ? 'bg-card shadow-sm' : 'text-muted-foreground'
             }`}
           onClick={() => setFilter('completed')}
         >
@@ -195,7 +195,7 @@ const PersonalTasksPage: React.FC = () => {
       <div className="flex items-center space-x-4 text-sm">
         <span className="text-gray-500">Sort by:</span>
         <button
-          className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'priority' ? 'text-foreground font-medium' : ''}`}
           onClick={() => handleSortChange('priority')}
         >
           Priority
@@ -204,7 +204,7 @@ const PersonalTasksPage: React.FC = () => {
           )}
         </button>
         <button
-          className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'dueDate' ? 'text-foreground font-medium' : ''}`}
           onClick={() => handleSortChange('dueDate')}
         >
           Due Date
@@ -213,7 +213,7 @@ const PersonalTasksPage: React.FC = () => {
           )}
         </button>
         <button
-          className={`flex items-center transition-all duration-300 ${sortBy === 'category' ? 'text-gray-900 dark:text-white font-medium' : ''}`}
+          className={`flex items-center transition-all duration-300 ${sortBy === 'category' ? 'text-foreground font-medium' : ''}`}
           onClick={() => handleSortChange('category')}
         >
           Category
@@ -244,12 +244,12 @@ const PersonalTasksPage: React.FC = () => {
             ))}
 
             {sortedTasks.length === 0 && (
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-8 text-center">
+              <div className="bg-card rounded-xl shadow-sm p-8 text-center">
                 <div className="flex justify-center mb-4">
                   <CheckCircle className="h-12 w-12 text-gray-300 dark:text-gray-600" />
                 </div>
                 <h3 className="text-lg font-medium mb-2">No tasks found</h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                <p className="text-muted-foreground mb-4">
                   {filter === 'completed'
                     ? "You haven't completed any personal tasks yet."
                     : "You don't have any personal tasks. Create one to get started."}
@@ -267,7 +267,7 @@ const PersonalTasksPage: React.FC = () => {
           <div className="space-y-6">
             {/* Categories */}
             {categoryStats.length > 0 && (
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+              <div className="bg-card rounded-xl shadow-sm p-4">
                 <h3 className="text-lg font-medium mb-3">Categories</h3>
                 <div className="space-y-2">
                   {categoryStats.map((category) => (
@@ -276,7 +276,7 @@ const PersonalTasksPage: React.FC = () => {
                         <span className="h-3 w-3 rounded-full bg-gray-400 dark:bg-gray-600 mr-2"></span>
                         <span className="text-sm">{category.name}</span>
                       </div>
-                      <span className="text-xs bg-gray-100 dark:bg-gray-700 rounded-full px-2 py-0.5">
+                      <span className="text-xs bg-muted rounded-full px-2 py-0.5">
                         {category.count}
                       </span>
                     </div>
@@ -287,12 +287,12 @@ const PersonalTasksPage: React.FC = () => {
 
             {/* Upcoming Dates */}
             {upcomingStats.length > 0 && (
-              <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+              <div className="bg-card rounded-xl shadow-sm p-4">
                 <h3 className="text-lg font-medium mb-3">Upcoming</h3>
                 <div className="space-y-3">
                   {upcomingStats.map((item) => (
                     <div key={item.label} className="flex items-center">
-                      <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                      <div className="flex-shrink-0 w-10 h-10 bg-amber-500/10 rounded-full flex items-center justify-center mr-3">
                         <span className="font-medium">{item.day}</span>
                       </div>
                       <div>
@@ -306,7 +306,7 @@ const PersonalTasksPage: React.FC = () => {
             )}
 
             {/* Quick Actions */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-4">
+            <div className="bg-card rounded-xl shadow-sm p-4">
               <h3 className="text-lg font-medium mb-3">Quick Actions</h3>
               <div className="space-y-2">
                 <Button variant="outline" size="sm" className="w-full justify-start transition-all duration-300">
@@ -339,19 +339,19 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle }) => {
   const statusColorClass = getStatusColor(task.status);
 
   return (
-    <div className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isCompleted
-      ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
-      : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+    <div className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${isCompleted
+      ? 'bg-muted/50 border-border'
+      : 'bg-card border-border'
       }`}>
       <div className="flex items-center min-w-0">
         <input
           type="checkbox"
           checked={isCompleted}
           onChange={() => onToggle(task._id, task.status)}
-          className="h-5 w-5 text-gray-600 dark:text-gray-400 rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
+          className="h-5 w-5 text-muted-foreground rounded border-gray-300 focus:ring-gray-500 mr-3 cursor-pointer"
         />
         <div className="min-w-0">
-          <h3 className={`text-sm font-medium truncate ${isCompleted ? 'text-gray-500 dark:text-gray-400 line-through' : ''
+          <h3 className={`text-sm font-medium truncate ${isCompleted ? 'text-muted-foreground line-through' : ''
             }`}>
             {task.title}
           </h3>
@@ -359,15 +359,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle }) => {
             <span className={`h-2 w-2 rounded-full ${priorityColorClass}`}></span>
             <span className="flex items-center">
               <Clock className="h-3 w-3 mr-1" />
-              {formatDueDate(task.dueDate)}
+              {formatDueDate(task.dueDate, task.status).text}
             </span>
             {task.category && (
-              <span className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+              <span className="px-1.5 py-0.5 rounded bg-muted text-foreground">
                 {task.category}
               </span>
             )}
             {task.isOverdue && !isCompleted && (
-              <span className="px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+              <span className="px-1.5 py-0.5 rounded bg-red-500/10 dark:bg-red-900/30 text-red-800 dark:text-red-300">
                 Overdue
               </span>
             )}

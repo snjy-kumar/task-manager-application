@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 import environment from '../config/environment.js';
 import logger from '../config/logger.js';

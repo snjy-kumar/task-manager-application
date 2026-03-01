@@ -108,26 +108,26 @@ const ImportExportPage: React.FC = () => {
     return (
         <div className="max-w-5xl mx-auto">
             <div className="mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     Import & Export Tasks
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                     Import tasks from files or export your tasks to backup or share
                 </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Export Section */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <div className="bg-card rounded-xl shadow-sm border border-border p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                            <Download className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        <div className="p-3 bg-amber-500/10 rounded-lg">
+                            <Download className="w-6 h-6 text-amber-500" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                            <h2 className="text-xl font-bold text-foreground">
                                 Export Tasks
                             </h2>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Download your tasks as CSV or JSON
                             </p>
                         </div>
@@ -136,14 +136,14 @@ const ImportExportPage: React.FC = () => {
                     {/* Export Filters */}
                     <div className="space-y-4 mb-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
                                 <Filter className="w-4 h-4 inline mr-1" />
                                 Filter by Status
                             </label>
                             <select
                                 value={exportFilters.status}
                                 onChange={(e) => setExportFilters({ ...exportFilters, status: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="Pending">Pending</option>
@@ -154,13 +154,13 @@ const ImportExportPage: React.FC = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
                                 Filter by Priority
                             </label>
                             <select
                                 value={exportFilters.priority}
                                 onChange={(e) => setExportFilters({ ...exportFilters, priority: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                             >
                                 <option value="">All Priorities</option>
                                 <option value="High">High</option>
@@ -170,13 +170,13 @@ const ImportExportPage: React.FC = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-medium text-foreground/80 mb-2">
                                 Filter by Category
                             </label>
                             <select
                                 value={exportFilters.category}
                                 onChange={(e) => setExportFilters({ ...exportFilters, category: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                             >
                                 <option value="">All Categories</option>
                                 <option value="Personal">Personal</option>
@@ -191,7 +191,7 @@ const ImportExportPage: React.FC = () => {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     <Calendar className="w-4 h-4 inline mr-1" />
                                     Date From
                                 </label>
@@ -199,18 +199,18 @@ const ImportExportPage: React.FC = () => {
                                     type="date"
                                     value={exportFilters.dateFrom}
                                     onChange={(e) => setExportFilters({ ...exportFilters, dateFrom: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label className="block text-sm font-medium text-foreground/80 mb-2">
                                     Date To
                                 </label>
                                 <input
                                     type="date"
                                     value={exportFilters.dateTo}
                                     onChange={(e) => setExportFilters({ ...exportFilters, dateTo: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                                    className="w-full px-3 py-2 border border-border rounded-lg bg-card text-foreground"
                                 />
                             </div>
                         </div>
@@ -220,9 +220,9 @@ const ImportExportPage: React.FC = () => {
                                 type="checkbox"
                                 checked={exportFilters.includeSubtasks}
                                 onChange={(e) => setExportFilters({ ...exportFilters, includeSubtasks: e.target.checked })}
-                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2"
+                                className="rounded border-gray-300 text-amber-500 focus:ring-blue-500 mr-2"
                             />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">Include subtasks in JSON export</span>
+                            <span className="text-sm text-foreground/80">Include subtasks in JSON export</span>
                         </label>
                     </div>
 
@@ -256,16 +256,16 @@ const ImportExportPage: React.FC = () => {
                 </div>
 
                 {/* Import Section */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <div className="bg-card rounded-xl shadow-sm border border-border p-6">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                            <Upload className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        <div className="p-3 bg-emerald-500/10 dark:bg-green-900/20 rounded-lg">
+                            <Upload className="w-6 h-6 text-emerald-400 dark:text-green-400" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                            <h2 className="text-xl font-bold text-foreground">
                                 Import Tasks
                             </h2>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Upload tasks from JSON file
                             </p>
                         </div>
@@ -273,11 +273,11 @@ const ImportExportPage: React.FC = () => {
 
                     {/* Import Mode */}
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        <label className="block text-sm font-medium text-foreground/80 mb-3">
                             Import Mode
                         </label>
                         <div className="space-y-2">
-                            <label className="flex items-start p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <label className="flex items-start p-3 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <input
                                     type="radio"
                                     value="add"
@@ -286,13 +286,13 @@ const ImportExportPage: React.FC = () => {
                                     className="mt-0.5 mr-3"
                                 />
                                 <div>
-                                    <div className="font-medium text-gray-900 dark:text-white">Add to Existing</div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                                    <div className="font-medium text-foreground">Add to Existing</div>
+                                    <div className="text-sm text-muted-foreground">
                                         Import tasks without affecting existing tasks
                                     </div>
                                 </div>
                             </label>
-                            <label className="flex items-start p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <label className="flex items-start p-3 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <input
                                     type="radio"
                                     value="replace"
@@ -301,7 +301,7 @@ const ImportExportPage: React.FC = () => {
                                     className="mt-0.5 mr-3"
                                 />
                                 <div>
-                                    <div className="font-medium text-gray-900 dark:text-white">Replace All</div>
+                                    <div className="font-medium text-foreground">Replace All</div>
                                     <div className="text-sm text-red-600 dark:text-red-400">
                                         ⚠️ This will delete all existing tasks
                                     </div>
@@ -313,9 +313,9 @@ const ImportExportPage: React.FC = () => {
                     {/* File Upload */}
                     <div className="mb-6">
                         <label className="block">
-                            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer">
+                            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer">
                                 <Upload className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-                                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                <p className="text-sm font-medium text-foreground/80 mb-1">
                                     Click to upload JSON file
                                 </p>
                                 <p className="text-xs text-gray-500 dark:text-gray-500">
@@ -343,18 +343,18 @@ const ImportExportPage: React.FC = () => {
 
                     {/* Import Results */}
                     {importResults && (
-                        <div className="mt-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+                        <div className="mt-6 p-4 rounded-lg bg-muted/30 border border-border">
                             <div className="flex items-start gap-3 mb-3">
                                 {importResults.failed === 0 ? (
-                                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                                    <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
                                 ) : (
-                                    <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                                    <AlertCircle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                                 )}
                                 <div className="flex-1">
-                                    <h3 className="font-medium text-gray-900 dark:text-white mb-1">
+                                    <h3 className="font-medium text-foreground mb-1">
                                         Import Results
                                     </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    <p className="text-sm text-muted-foreground">
                                         Successfully imported: {importResults.imported}
                                     </p>
                                     {importResults.failed > 0 && (
@@ -366,8 +366,8 @@ const ImportExportPage: React.FC = () => {
                             </div>
 
                             {importResults.errors && importResults.errors.length > 0 && (
-                                <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                    <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                <div className="mt-3 pt-3 border-t border-border">
+                                    <h4 className="text-sm font-medium text-foreground mb-2">
                                         Errors:
                                     </h4>
                                     <div className="space-y-1 max-h-40 overflow-y-auto">
@@ -385,11 +385,11 @@ const ImportExportPage: React.FC = () => {
             </div>
 
             {/* Info Section */}
-            <div className="mt-6 bg-blue-50 dark:bg-blue-900/10 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+            <div className="mt-6 bg-muted/50 rounded-xl p-6 border border-border">
+                <h3 className="font-semibold text-foreground mb-2">
                     💡 Import/Export Tips
                 </h3>
-                <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-200">
+                <ul className="space-y-1 text-sm text-foreground/80">
                     <li>• CSV exports are best for viewing in spreadsheet applications</li>
                     <li>• JSON exports preserve all task data including subtasks and metadata</li>
                     <li>• Use the template to ensure your import file has the correct format</li>

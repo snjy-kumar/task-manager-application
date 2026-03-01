@@ -21,6 +21,8 @@ import attachmentRouter from './attachmentRouter.js';
 import reminderRouter from './reminderRouter.js';
 import dependencyRouter from './dependencyRouter.js';
 import { getTaskActivity } from '../controllers/activityController.js';
+import { getActiveTimer } from '../controllers/timeEntryController.js';
+import { getStorageStats } from '../controllers/attachmentController.js';
 
 const router = express.Router();
 
@@ -28,6 +30,12 @@ const router = express.Router();
 
 // Task statistics (must be before /:id routes)
 router.get("/stats", protect, getTaskStats);
+
+// Active timer for user (not task-specific, must be before /:id routes)
+router.get("/active-timer", protect, getActiveTimer);
+
+// User storage stats (not task-specific, must be before /:id routes)
+router.get("/storage-stats", protect, getStorageStats);
 
 // Bulk operations
 router.patch("/bulk", protect, bulkUpdateTasks);

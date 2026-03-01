@@ -170,7 +170,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
   if (loadingTask) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full"></div>
+        <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -180,7 +180,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">{editMode ? 'Edit Task' : 'Create New Task'}</h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-muted-foreground">
             {editMode ? 'Update the details of your task' : 'Add a new task to your list'}
           </p>
         </div>
@@ -191,7 +191,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-all duration-300">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-card rounded-xl shadow-sm p-6 border border-border transition-all duration-300">
         {/* Error Message */}
         {error && (
           <div className="p-3 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
@@ -201,7 +201,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
 
         {/* Title */}
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="title" className="block text-sm font-medium text-foreground/80 mb-1">
             Title <span className="text-red-500">*</span>
           </label>
           <input
@@ -212,13 +212,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
             value={task.title}
             onChange={handleChange}
             placeholder="Task title"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+            className="w-full p-3 border border-border rounded-lg focus:outline-none focus:border-amber-500 bg-card text-foreground transition-all duration-300"
           />
         </div>
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="description" className="block text-sm font-medium text-foreground/80 mb-1">
             Description <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -229,14 +229,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
             value={task.description}
             onChange={handleChange}
             placeholder="Describe your task"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+            className="w-full p-3 border border-border rounded-lg focus:outline-none focus:border-amber-500 bg-card text-foreground transition-all duration-300"
           />
         </div>
 
         {/* Due Date and Category */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="dueDate" className="block text-sm font-medium text-foreground/80 mb-1">
               Due Date <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -250,13 +250,13 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 required
                 value={task.dueDate}
                 onChange={handleChange}
-                className="pl-10 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                className="pl-10 w-full p-3 border border-border rounded-lg focus:outline-none focus:border-amber-500 bg-card text-foreground transition-all duration-300"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="category" className="block text-sm font-medium text-foreground/80 mb-1">
               Category
             </label>
             <div className="relative">
@@ -265,7 +265,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 name="category"
                 value={task.category}
                 onChange={handleChange}
-                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                className="appearance-none w-full p-3 border border-border rounded-md focus:outline-none focus:border-amber-500 bg-card text-foreground"
               >
                 {CATEGORIES.map(cat => (
                   <option key={cat} value={cat}>{cat}</option>
@@ -281,7 +281,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         {/* Priority and Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="priority" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="priority" className="block text-sm font-medium text-foreground/80 mb-1">
               Priority
             </label>
             <div className="relative">
@@ -290,7 +290,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 name="priority"
                 value={task.priority}
                 onChange={handleChange}
-                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                className="appearance-none w-full p-3 border border-border rounded-lg focus:outline-none focus:border-amber-500 bg-card text-foreground transition-all duration-300"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -303,7 +303,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
           </div>
 
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="status" className="block text-sm font-medium text-foreground/80 mb-1">
               Status
             </label>
             <div className="relative">
@@ -312,7 +312,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
                 name="status"
                 value={task.status}
                 onChange={handleChange}
-                className="appearance-none w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+                className="appearance-none w-full p-3 border border-border rounded-lg focus:outline-none focus:border-amber-500 bg-card text-foreground transition-all duration-300"
               >
                 <option value="Pending">Pending</option>
                 <option value="In Progress">In Progress</option>
@@ -328,14 +328,14 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
 
         {/* Tags */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-foreground/80 mb-1">
             Tags <span className="text-gray-400 text-xs">(max 5)</span>
           </label>
           <div className="flex flex-wrap gap-2 mb-2">
             {task.tags.map(tag => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-gray-200 dark:bg-gray-800/30 text-gray-900 dark:text-gray-100 rounded-full text-sm"
+                className="inline-flex items-center gap-1 px-3 py-1 bg-gray-200 dark:bg-gray-800/30 text-foreground rounded-full text-sm"
               >
                 <Tag className="w-3 h-3" />
                 {tag}
@@ -356,7 +356,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleTagKeyDown}
               placeholder="Add a tag"
-              className="flex-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-300"
+              className="flex-1 p-3 border border-border rounded-lg focus:outline-none focus:border-amber-500 bg-card text-foreground transition-all duration-300"
               disabled={task.tags.length >= 5}
             />
             <Button
@@ -380,7 +380,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ editMode = false }) => {
         />
 
         {/* Submit Button */}
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex justify-end gap-3 pt-4 border-t border-border">
           <Button variant="outline" type="button" asChild>
             <Link to="/dashboard/tasks">Cancel</Link>
           </Button>

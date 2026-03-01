@@ -61,7 +61,7 @@ class AttachmentService {
 
   // Get storage stats
   async getStorageStats(): Promise<StorageStats> {
-    const response = await api.get('/tasks/attachments/storage');
+    const response = await api.get('/tasks/storage-stats');
     return response.data.data;
   }
 }
