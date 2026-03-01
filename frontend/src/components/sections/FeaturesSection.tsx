@@ -74,7 +74,7 @@ export default function FeaturesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Taskr adapts to how you actually work — not the other way around.
+            Naumin adapts to how you actually work — not the other way around.
           </motion.p>
         </div>
 

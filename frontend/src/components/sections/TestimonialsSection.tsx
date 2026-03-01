@@ -11,7 +11,7 @@ const testimonials = [
   },
   {
     quote:
-      "Finally a task manager that gets out of my way. The amber dashboard is clean and the keyboard shortcuts are A+.",
+      "Finally a Naumin that gets out of my way. The amber dashboard is clean and the keyboard shortcuts are A+.",
     author: "David Chen",
     title: "Senior Software Engineer",
     initials: "DC",

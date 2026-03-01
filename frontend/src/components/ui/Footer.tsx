@@ -96,11 +96,11 @@ const Footer = () => {
               className="font-bold text-white text-lg"
               style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}
             >
-              TaskManager
+              Naumin
             </span>
           </Link>
           <p className="text-white/50 text-sm leading-relaxed max-w-xs">
-            The task manager built for how people actually work. Fast, focused,
+            The Naumin built for how people actually work. Fast, focused,
             and smart.
           </p>
 
@@ -144,7 +144,7 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="border-t border-white/8">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30">
-          <span>© {new Date().getFullYear()} TaskManager. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Naumin. All rights reserved.</span>
           <div className="flex gap-5">
             <Link to="#" className="hover:text-white/60 transition-colors">Privacy</Link>
             <Link to="#" className="hover:text-white/60 transition-colors">Terms</Link>

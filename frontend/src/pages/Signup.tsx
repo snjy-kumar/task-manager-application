@@ -85,7 +85,7 @@ const SignupPage: React.FC = () => {
           <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
             <CheckCircle2 className="w-5 h-5 text-[hsl(222,25%,7%)]" strokeWidth={2.5} />
           </div>
-          <span className="text-white font-display text-xl font-semibold tracking-tight">Taskr</span>
+          <span className="text-white font-display text-xl font-semibold tracking-tight">Naumin</span>
         </div>
 
         {/* Copy */}
@@ -101,7 +101,7 @@ const SignupPage: React.FC = () => {
             <span className="text-amber-400">Stress less.</span>
           </h1>
           <p className="text-white/40 text-base leading-relaxed max-w-xs mb-8">
-            Join thousands of teams who ship more with Taskr's AI-powered task management.
+            Join thousands of teams who ship more with Naumin's AI-powered task management.
           </p>
           <ul className="space-y-3">
             {perks.map((perk) => (
@@ -130,7 +130,7 @@ const SignupPage: React.FC = () => {
             <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center">
               <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
-            <span className="font-display font-semibold text-xl">Taskr</span>
+            <span className="font-display font-semibold text-xl">Naumin</span>
           </div>
 
           <div className="mb-8">

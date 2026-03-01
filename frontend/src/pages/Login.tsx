@@ -70,7 +70,7 @@ const LoginPage: React.FC = () => {
           <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
             <CheckCircle2 className="w-5 h-5 text-[hsl(222,25%,7%)]" strokeWidth={2.5} />
           </div>
-          <span className="text-white font-display text-xl font-semibold tracking-tight">Taskr</span>
+          <span className="text-white font-display text-xl font-semibold tracking-tight">Naumin</span>
         </div>
 
         {/* Main editorial copy */}
@@ -112,7 +112,7 @@ const LoginPage: React.FC = () => {
             <div className="w-9 h-9 rounded-xl bg-amber-500 flex items-center justify-center">
               <CheckCircle2 className="w-5 h-5 text-white" strokeWidth={2.5} />
             </div>
-            <span className="font-display font-semibold text-xl">Taskr</span>
+            <span className="font-display font-semibold text-xl">Naumin</span>
           </div>
 
           <div className="mb-8">

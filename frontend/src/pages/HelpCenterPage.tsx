@@ -26,7 +26,7 @@ const HelpCenterPage: React.FC = () => {
             id: 'getting-started',
             title: 'Getting Started',
             icon: Book,
-            description: 'Learn the basics of using Task Manager',
+            description: 'Learn the basics of using Naumin',
             articles: [
                 { title: 'Creating your first task', views: 1250 },
                 { title: 'Understanding task priorities', views: 980 },

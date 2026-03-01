@@ -51,7 +51,7 @@ const FaqPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Find answers to common questions about AI Task Manager.
+              Find answers to common questions about Naumin.
             </motion.p>
             
             <motion.div
@@ -279,8 +279,8 @@ const categories = [
 // FAQ Data
 const faqs = [
   {
-    question: "What is AI Task Manager?",
-    answer: "AI Task Manager is a productivity platform that uses artificial intelligence to help you manage and prioritize tasks, optimize your workflow, and boost your productivity. Our AI analyzes your work patterns, deadlines, and priorities to suggest the most effective task schedule.",
+    question: "What is Naumin?",
+    answer: "Naumin is a productivity platform that uses artificial intelligence to help you manage and prioritize tasks, optimize your workflow, and boost your productivity. Our AI analyzes your work patterns, deadlines, and priorities to suggest the most effective task schedule.",
     category: "general"
   },
   {
@@ -294,7 +294,7 @@ const faqs = [
     category: "security"
   },
   {
-    question: "Can I use AI Task Manager offline?",
+    question: "Can I use Naumin offline?",
     answer: "Yes, our mobile apps support offline mode. You can view and update your tasks without an internet connection, and all changes will sync once you're back online. However, AI features like smart prioritization require an internet connection to function.",
     category: "mobile"
   },
@@ -325,7 +325,7 @@ const faqs = [
   },
   {
     question: "Is there a free trial?",
-    answer: "Yes, we offer a 14-day free trial of our Pro plan, no credit card required. This gives you full access to all features so you can determine if AI Task Manager is right for you. If you choose not to subscribe after the trial, your account will automatically revert to our Free plan with limited features.",
+    answer: "Yes, we offer a 14-day free trial of our Pro plan, no credit card required. This gives you full access to all features so you can determine if Naumin is right for you. If you choose not to subscribe after the trial, your account will automatically revert to our Free plan with limited features.",
     category: "billing"
   },
   {

@@ -39,7 +39,7 @@ const Navbar = () => {
           <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center shadow-md shadow-amber-500/30">
             <CheckCircle2 className="w-4 h-4 text-[hsl(222,25%,7%)]" strokeWidth={2.5} />
           </div>
-          <span className="text-white font-display font-semibold text-base tracking-tight">Taskr</span>
+          <span className="text-white font-display font-semibold text-base tracking-tight">Naumin</span>
         </Link>
 
         {/* Desktop nav */}

@@ -52,7 +52,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-display text-5xl md:text-6xl lg:text-[4.25rem] font-bold text-white leading-[1.08] tracking-tight mb-6"
             >
-              The task manager
+              The Naumin
               <br />
               <span className="text-amber-400">built for how</span>
               <br />

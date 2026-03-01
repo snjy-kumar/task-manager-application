@@ -445,9 +445,9 @@ const featuredPost: BlogPost = {
 const secondaryFeaturedPosts: BlogPost[] = [
   {
     id: '2',
-    title: '10 Productivity Hacks Using AI Task Manager',
+    title: '10 Productivity Hacks Using Naumin',
     slug: '10-productivity-hacks-using-ai-task-manager',
-    excerpt: 'Learn how to supercharge your productivity with these advanced tips for AI Task Manager.',
+    excerpt: 'Learn how to supercharge your productivity with these advanced tips for Naumin.',
     content: '(Full article content)',
     image: 'https://placehold.co/400x300/2563eb/FFFFFF/png?text=Productivity+Hacks',
     date: 'May 10, 2024',
@@ -461,7 +461,7 @@ const secondaryFeaturedPosts: BlogPost[] = [
     id: '3',
     title: 'Case Study: How Company X Increased Efficiency by 40%',
     slug: 'case-study-company-x-increased-efficiency',
-    excerpt: 'See how a leading tech company transformed their workflow using AI Task Manager.',
+    excerpt: 'See how a leading tech company transformed their workflow using Naumin.',
     content: '(Full article content)',
     image: 'https://placehold.co/400x300/2563eb/FFFFFF/png?text=Case+Study',
     date: 'May 5, 2024',
@@ -534,9 +534,9 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: '8',
-    title: 'How to Integrate AI Task Manager with Your Favorite Tools',
+    title: 'How to Integrate Naumin with Your Favorite Tools',
     slug: 'how-to-integrate-ai-task-manager-favorite-tools',
-    excerpt: 'A step-by-step guide to connecting AI Task Manager with other productivity tools for a seamless workflow.',
+    excerpt: 'A step-by-step guide to connecting Naumin with other productivity tools for a seamless workflow.',
     content: '(Full article content)',
     image: 'https://placehold.co/600x400/2563eb/FFFFFF/png?text=Integration+Guide',
     date: 'April 1, 2024',

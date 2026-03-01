@@ -257,7 +257,7 @@ const AboutPage: React.FC = () => {
               </h2>
               <div className="space-y-4 text-white/55 leading-relaxed">
                 <p>
-                  Founded in 2022, AI Task Manager started with a simple conviction: existing tools were treating people like filing cabinets, not humans with fluctuating energy, competing priorities, and real deadlines.
+                  Founded in 2022, Naumin started with a simple conviction: existing tools were treating people like filing cabinets, not humans with fluctuating energy, competing priorities, and real deadlines.
                 </p>
                 <p>
                   Our founders — a team of AI researchers and productivity enthusiasts — wanted a platform that didn't just store tasks, but actively helped you think through them.

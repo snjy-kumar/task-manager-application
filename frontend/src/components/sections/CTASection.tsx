@@ -31,7 +31,7 @@ export default function CTASection() {
 
         <p className="text-white/60 text-lg max-w-xl mx-auto mb-10">
           Join thousands of teams who ship faster, stress less, and stay
-          focused with a task manager built for real work.
+          focused with a Naumin built for real work.
         </p>
 
         {/* CTA buttons */}
